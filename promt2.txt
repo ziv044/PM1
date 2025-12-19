@@ -1,0 +1,20 @@
+Promt 2:
+design very simple UI for the app admin panel
+Show agents list
+Show agent details
+Add agent
+Remove agent
+Edit agent
+Show agent logs
+Show agent memory
+Show agent skills
+Show agent conversation
+
+
+
+
+
+
+
+
+

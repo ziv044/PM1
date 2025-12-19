@@ -1,4 +1,6 @@
 import os
+import json
+from pathlib import Path
 from dotenv import load_dotenv
 import anthropic
 from typing import Optional
@@ -10,9 +12,44 @@ logger = setup_logger("app_logs")
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
+# Data file path
+DATA_DIR = Path(__file__).parent.parent / "data"
+AGENTS_FILE = DATA_DIR / "agents.json"
+
 agents = {}
 agent_skills = {}
 agent_memory = {}
+
+
+def save_agents() -> None:
+    """Save agents, skills, and memory to JSON file."""
+    DATA_DIR.mkdir(exist_ok=True)
+    data = {
+        "agents": agents,
+        "skills": agent_skills,
+        "memory": agent_memory
+    }
+    with open(AGENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    logger.info("Agents saved to file")
+
+
+def load_agents() -> None:
+    """Load agents, skills, and memory from JSON file."""
+    global agents, agent_skills, agent_memory
+    if AGENTS_FILE.exists():
+        with open(AGENTS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        agents = data.get("agents", {})
+        agent_skills = data.get("skills", {})
+        agent_memory = data.get("memory", {})
+        logger.info(f"Loaded {len(agents)} agents from file")
+    else:
+        logger.info("No agents file found, starting fresh")
+
+
+# Load agents on module import
+load_agents()
 
 
 def agent_add(agent_id: str, model: str = "claude-sonnet-4-20250514", system_prompt: str = "") -> dict:
@@ -24,6 +61,7 @@ def agent_add(agent_id: str, model: str = "claude-sonnet-4-20250514", system_pro
     }
     agent_skills[agent_id] = []
     agent_memory[agent_id] = []
+    save_agents()
     logger.info(f"Agent {agent_id} created successfully")
     return {"status": "success", "agent_id": agent_id}
 
@@ -34,6 +72,7 @@ def agent_remove(agent_id: str) -> dict:
         del agents[agent_id]
         del agent_skills[agent_id]
         del agent_memory[agent_id]
+        save_agents()
         logger.info(f"Agent {agent_id} removed successfully")
         return {"status": "success", "message": f"Agent {agent_id} removed"}
     logger.warning(f"Agent {agent_id} not found")
@@ -46,6 +85,7 @@ def add_skills(agent_id: str, skills: list) -> dict:
         logger.error(f"Agent {agent_id} not found")
         return {"status": "error", "message": f"Agent {agent_id} not found"}
     agent_skills[agent_id].extend(skills)
+    save_agents()
     logger.info(f"Skills added to agent {agent_id}: {skills}")
     return {"status": "success", "skills": agent_skills[agent_id]}
 
@@ -56,8 +96,71 @@ def add_memory(agent_id: str, memory_item: str) -> dict:
         logger.error(f"Agent {agent_id} not found")
         return {"status": "error", "message": f"Agent {agent_id} not found"}
     agent_memory[agent_id].append(memory_item)
+    save_agents()
     logger.info(f"Memory added to agent {agent_id}")
     return {"status": "success", "memory": agent_memory[agent_id]}
+
+
+def get_all_agents() -> dict:
+    """Get all agents with their details."""
+    result = {}
+    for agent_id in agents:
+        result[agent_id] = {
+            **agents[agent_id],
+            "skills": agent_skills.get(agent_id, []),
+            "memory": agent_memory.get(agent_id, [])
+        }
+    return result
+
+
+def get_agent(agent_id: str) -> dict:
+    """Get a single agent's details."""
+    if agent_id not in agents:
+        return {"status": "error", "message": f"Agent {agent_id} not found"}
+    return {
+        "status": "success",
+        "agent": {
+            **agents[agent_id],
+            "skills": agent_skills.get(agent_id, []),
+            "memory": agent_memory.get(agent_id, [])
+        }
+    }
+
+
+def get_skills(agent_id: str) -> dict:
+    """Get an agent's skills."""
+    if agent_id not in agents:
+        return {"status": "error", "message": f"Agent {agent_id} not found"}
+    return {"status": "success", "skills": agent_skills.get(agent_id, [])}
+
+
+def get_memory(agent_id: str) -> dict:
+    """Get an agent's memory."""
+    if agent_id not in agents:
+        return {"status": "error", "message": f"Agent {agent_id} not found"}
+    return {"status": "success", "memory": agent_memory.get(agent_id, [])}
+
+
+def get_conversation(agent_id: str) -> dict:
+    """Get an agent's conversation history."""
+    if agent_id not in agents:
+        return {"status": "error", "message": f"Agent {agent_id} not found"}
+    return {"status": "success", "conversation": agents[agent_id].get("conversation", [])}
+
+
+def agent_update(agent_id: str, model: str = None, system_prompt: str = None) -> dict:
+    """Update an existing agent's properties."""
+    logger.info(f"agent_update called - agent_id: {agent_id}")
+    if agent_id not in agents:
+        logger.error(f"Agent {agent_id} not found")
+        return {"status": "error", "message": f"Agent {agent_id} not found"}
+    if model is not None:
+        agents[agent_id]["model"] = model
+    if system_prompt is not None:
+        agents[agent_id]["system_prompt"] = system_prompt
+    save_agents()
+    logger.info(f"Agent {agent_id} updated successfully")
+    return {"status": "success", "agent": agents[agent_id]}
 
 
 def prompt_caching(agent_id: str, cached_prompt: str) -> dict:
@@ -70,6 +173,7 @@ def prompt_caching(agent_id: str, cached_prompt: str) -> dict:
         "text": cached_prompt,
         "cache_control": {"type": "ephemeral"}
     }
+    save_agents()
     logger.info(f"Cached prompt set for agent {agent_id}")
     return {"status": "success", "message": "Prompt cached"}
 

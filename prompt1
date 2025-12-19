@@ -1,0 +1,21 @@
+0 : add log folder
+and each of the function below should execute a log line the logs folder
+app_logs
+1:
+add claude agents apis using ANTHROPIC_API_KEY ive alredy set .env
+need to function to interaact with agents
+Functions.
+Each function
+add skills
+add memoery
+prompt cacheing
+agent_add
+agents_remove
+interact with claude all varias options
+
+make sure they all have logs when called 
+
+Add unit test to each API and make sure each thing works
+
+
+

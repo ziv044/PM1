@@ -1,0 +1,95 @@
+/**
+ * Custom styles for PM1 Agent Admin Panel
+ * Most styling is handled by Tailwind CSS
+ */
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Main content scrollbar */
+main ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+main ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+}
+
+main ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Animation for toast notifications */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.fixed.bottom-4.right-4 {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Improve focus states for accessibility */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Agent card hover effect */
+.agent-card {
+    transition: all 0.15s ease-in-out;
+}
+
+/* Chat messages styling */
+#chatMessages {
+    min-height: 300px;
+}
+
+/* Pre/code block styling in logs */
+#logsContent {
+    line-height: 1.5;
+}
+
+/* Modal backdrop blur */
+#agentModal,
+#skillModal,
+#memoryModal,
+#deleteModal {
+    backdrop-filter: blur(2px);
+}
