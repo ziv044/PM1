@@ -95,6 +95,7 @@ class AgentCreate(BaseModel):
     agenda: str = ""
     primary_objectives: str = ""
     hard_rules: str = ""
+    is_enabled: bool = True
 
     @field_validator('agent_id')
     @classmethod
@@ -117,6 +118,7 @@ class AgentUpdate(BaseModel):
     agenda: Optional[str] = None
     primary_objectives: Optional[str] = None
     hard_rules: Optional[str] = None
+    is_enabled: Optional[bool] = None
 
 
 class SkillAdd(BaseModel):
@@ -187,7 +189,8 @@ def create_agent(agent: AgentCreate):
         is_reporting_government=agent.is_reporting_government,
         agenda=agent.agenda,
         primary_objectives=agent.primary_objectives,
-        hard_rules=agent.hard_rules
+        hard_rules=agent.hard_rules,
+        is_enabled=agent.is_enabled
     )
     return result
 
@@ -209,7 +212,8 @@ def update_agent(agent_id: str, agent: AgentUpdate):
         is_reporting_government=agent.is_reporting_government,
         agenda=agent.agenda,
         primary_objectives=agent.primary_objectives,
-        hard_rules=agent.hard_rules
+        hard_rules=agent.hard_rules,
+        is_enabled=agent.is_enabled
     )
     if result.get("status") == "error":
         raise NotFoundError(result["message"])
@@ -223,6 +227,27 @@ def delete_agent(agent_id: str):
     result = app.agent_remove(agent_id)
     if result.get("status") == "error":
         raise NotFoundError(result["message"])
+    return result
+
+
+@api.post("/agents/{agent_id}/toggle-enabled")
+def toggle_agent_enabled(agent_id: str):
+    """Toggle an agent's enabled status."""
+    validate_agent_id(agent_id)
+    result = app.toggle_agent_enabled(agent_id)
+    if result.get("status") == "error":
+        raise NotFoundError(result["message"])
+    return result
+
+
+class BulkEnabledUpdate(BaseModel):
+    enabled: bool
+
+
+@api.post("/agents/bulk-enabled")
+def set_all_agents_enabled(update: BulkEnabledUpdate):
+    """Enable or disable all agents."""
+    result = app.set_all_agents_enabled(update.enabled)
     return result
 
 
@@ -294,22 +319,37 @@ def chat_with_agent(agent_id: str, chat: ChatMessage):
 
 @api.get("/logs")
 def get_logs():
-    """Get application logs."""
+    """Get application logs including simulation/resolver logs."""
     logs_dir = Path(__file__).parent / "logs"
     if not logs_dir.exists():
         return {"status": "success", "logs": []}
 
-    # Find the most recent log file
-    log_files = list(logs_dir.glob("app_logs*.log"))
-    if not log_files:
+    # Find log files from both app_logs and simulation
+    all_lines = []
+
+    # Get app_logs
+    app_log_files = list(logs_dir.glob("app_logs*.log"))
+    if app_log_files:
+        app_log_file = max(app_log_files, key=lambda f: f.stat().st_mtime)
+        with open(app_log_file, "r", encoding="utf-8", errors="replace") as f:
+            all_lines.extend(f.readlines()[-50:])  # Last 50 from app logs
+
+    # Get simulation logs (includes resolver activity)
+    sim_log_files = list(logs_dir.glob("simulation*.log"))
+    if sim_log_files:
+        sim_log_file = max(sim_log_files, key=lambda f: f.stat().st_mtime)
+        with open(sim_log_file, "r", encoding="utf-8", errors="replace") as f:
+            all_lines.extend(f.readlines()[-50:])  # Last 50 from simulation logs
+
+    if not all_lines:
         return {"status": "success", "logs": []}
 
-    log_file = max(log_files, key=lambda f: f.stat().st_mtime)
+    # Sort by timestamp (logs format: 2025-12-20 00:42:24,819 - ...)
+    # Lines with timestamps sort correctly as strings
+    all_lines.sort()
 
-    with open(log_file, "r", encoding="utf-8") as f:
-        lines = f.readlines()[-100:]  # Last 100 lines
-
-    return {"status": "success", "logs": lines}
+    # Return last 100 combined
+    return {"status": "success", "logs": all_lines[-100:]}
 
 
 # Simulation Pydantic models
@@ -410,6 +450,33 @@ def clear_debug_activity():
     return app.clear_activity_log()
 
 
+@api.post("/admin/cleanup")
+def run_memory_and_event_cleanup():
+    """One-time cleanup: prune all memories and archive resolved events.
+
+    This endpoint:
+    1. Prunes all agent memories to respect MAX_MEMORIES_PER_AGENT (7)
+    2. Archives all resolved/failed events older than 60 game-minutes
+
+    Use this to clean up accumulated data from previous runs.
+    """
+    import simulation
+
+    # 1. Prune memories
+    memory_result = app.prune_all_memories()
+
+    # 2. Archive old events
+    manager = simulation.SimulationManager.get_instance()
+    game_time = manager.state.game_clock
+    archived_count = manager.state.archive_resolved_events(game_time, archive_after_minutes=60)
+
+    return {
+        "status": "success",
+        "memory_cleanup": memory_result,
+        "events_archived": archived_count
+    }
+
+
 @api.delete("/agents/{agent_id}/conversation")
 def clear_agent_conversation(agent_id: str):
     """Clear an agent's conversation history."""
@@ -425,6 +492,120 @@ def regenerate_all_prompts():
     """Regenerate system_prompt for all agents from their component fields."""
     result = app.regenerate_all_system_prompts()
     return result
+
+
+# KPI endpoints
+
+@api.get("/kpis")
+def get_all_kpis():
+    """Get KPIs for all entities."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    all_kpis = manager.kpi_manager.get_all_kpis()
+    return {"status": "success", "kpis": all_kpis}
+
+
+@api.get("/kpis/{entity_id}")
+def get_entity_kpis(entity_id: str):
+    """Get KPIs for a specific entity."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    kpis = manager.kpi_manager.get_entity_kpis(entity_id)
+    if not kpis:
+        raise NotFoundError(f"No KPIs found for entity: {entity_id}")
+    return {"status": "success", "entity_id": entity_id, "kpis": kpis}
+
+
+@api.get("/simulation/pending-events")
+def get_pending_events():
+    """Get all events with pending resolution status."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    pending = manager.state.get_pending_events()
+    return {
+        "status": "success",
+        "count": len(pending),
+        "events": [e.to_dict() for e in pending]
+    }
+
+
+@api.post("/simulation/resolve")
+async def trigger_resolution():
+    """Manually trigger a resolution cycle."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    game_time = manager.clock.get_game_time_str()
+    result = await manager.resolver.run_resolution_cycle(game_time)
+    return result
+
+
+# PM Approval endpoints
+
+class PMDecision(BaseModel):
+    decision: str  # approve | reject | modify
+    notes: Optional[str] = None
+
+
+@api.get("/simulation/pm-approvals")
+def get_pm_approvals():
+    """Get pending PM approval requests for the player."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    pending = manager.state.get_pending_approvals()
+    return {
+        "status": "success",
+        "count": len(pending),
+        "approvals": [r.to_dict() for r in pending]
+    }
+
+
+@api.post("/simulation/pm-approve/{approval_id}")
+def process_pm_approval(approval_id: str, decision: PMDecision):
+    """Process player's decision on an approval request."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    game_time = manager.clock.get_game_time_str()
+
+    # Validate decision
+    if decision.decision not in ["approve", "reject", "modify"]:
+        raise ValidationError("Decision must be 'approve', 'reject', or 'modify'")
+
+    success = manager.state.process_pm_decision(approval_id, decision.decision, game_time)
+    if not success:
+        raise NotFoundError(f"Approval request {approval_id} not found or already processed")
+
+    return {
+        "status": "success",
+        "message": f"Decision '{decision.decision}' recorded for {approval_id}",
+        "approval_id": approval_id,
+        "decision": decision.decision
+    }
+
+
+@api.get("/simulation/ongoing-situations")
+def get_ongoing_situations():
+    """Get all active ongoing situations."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    active = manager.state.get_active_situations()
+    return {
+        "status": "success",
+        "count": len(active),
+        "situations": [s.to_dict() for s in active]
+    }
+
+
+@api.get("/simulation/situations")
+def get_all_situations():
+    """Get all ongoing situations (including completed)."""
+    import simulation
+    manager = simulation.SimulationManager.get_instance()
+    all_situations = manager.state.ongoing_situations
+    return {
+        "status": "success",
+        "count": len(all_situations),
+        "situations": [s.to_dict() for s in all_situations]
+    }
 
 
 # Mount static files for frontend (CSS, JS)

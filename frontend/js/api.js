@@ -284,5 +284,31 @@ const api = {
             throw new Error(error.detail || 'Failed to clear conversation');
         }
         return response.json();
+    },
+
+    /**
+     * Toggle an agent's enabled status
+     */
+    async toggleAgentEnabled(agentId) {
+        const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}/toggle-enabled`, {
+            method: 'POST'
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to toggle agent enabled status');
+        }
+        return response.json();
+    },
+
+    /**
+     * Enable or disable all agents
+     */
+    async setAllAgentsEnabled(enabled) {
+        const response = await fetch(`${API_BASE}/agents/bulk-enabled`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enabled: enabled })
+        });
+        return response.json();
     }
 };

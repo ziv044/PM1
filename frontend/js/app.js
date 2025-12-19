@@ -84,14 +84,63 @@ async function loadAgentData(agentId) {
 }
 
 /**
+ * Toggle agent enabled status
+ */
+async function toggleAgentEnabled(agentId) {
+    try {
+        const result = await api.toggleAgentEnabled(agentId);
+        if (result.status === 'success') {
+            const status = result.is_enabled ? 'enabled' : 'disabled';
+            components.showToast(`Agent ${agentId} ${status}`, 'success');
+            await loadAgents();
+        }
+    } catch (error) {
+        console.error('Failed to toggle agent:', error);
+        components.showToast('Failed to toggle agent status', 'error');
+    }
+}
+
+/**
  * Set up all event listeners
  */
 function setupEventListeners() {
     // Agent list click
     document.getElementById('agentList').addEventListener('click', (e) => {
+        // Check if toggle button was clicked
+        const toggleBtn = e.target.closest('.toggle-enabled-btn');
+        if (toggleBtn) {
+            e.stopPropagation();
+            toggleAgentEnabled(toggleBtn.dataset.agentId);
+            return;
+        }
+
         const card = e.target.closest('.agent-card');
         if (card) {
             selectAgent(card.dataset.agentId);
+        }
+    });
+
+    // Enable All button
+    document.getElementById('enableAllBtn').addEventListener('click', async () => {
+        try {
+            await api.setAllAgentsEnabled(true);
+            components.showToast('All agents enabled', 'success');
+            await loadAgents();
+        } catch (error) {
+            console.error('Failed to enable all agents:', error);
+            components.showToast('Failed to enable all agents', 'error');
+        }
+    });
+
+    // Disable All button
+    document.getElementById('disableAllBtn').addEventListener('click', async () => {
+        try {
+            await api.setAllAgentsEnabled(false);
+            components.showToast('All agents disabled', 'success');
+            await loadAgents();
+        } catch (error) {
+            console.error('Failed to disable all agents:', error);
+            components.showToast('Failed to disable all agents', 'error');
         }
     });
 
@@ -140,6 +189,7 @@ function setupEventListeners() {
         document.getElementById('formEntityType').value = 'System';
         document.getElementById('formEventFrequency').value = '60';
         document.getElementById('formAgentCategory').value = '';
+        document.getElementById('formIsEnabled').checked = true;
         document.getElementById('formIsEnemy').checked = false;
         document.getElementById('formIsWest').checked = false;
         document.getElementById('formIsEvilAxis').checked = false;
@@ -166,6 +216,7 @@ function setupEventListeners() {
         document.getElementById('formEntityType').value = agent.entity_type || 'System';
         document.getElementById('formEventFrequency').value = agent.event_frequency || 60;
         document.getElementById('formAgentCategory').value = agent.agent_category || '';
+        document.getElementById('formIsEnabled').checked = agent.is_enabled !== false;
         document.getElementById('formIsEnemy').checked = agent.is_enemy || false;
         document.getElementById('formIsWest').checked = agent.is_west || false;
         document.getElementById('formIsEvilAxis').checked = agent.is_evil_axis || false;
@@ -219,6 +270,7 @@ function setupEventListeners() {
             entity_type: document.getElementById('formEntityType').value,
             event_frequency: parseInt(document.getElementById('formEventFrequency').value) || 60,
             agent_category: document.getElementById('formAgentCategory').value,
+            is_enabled: document.getElementById('formIsEnabled').checked,
             is_enemy: document.getElementById('formIsEnemy').checked,
             is_west: document.getElementById('formIsWest').checked,
             is_evil_axis: document.getElementById('formIsEvilAxis').checked,
@@ -675,12 +727,30 @@ function renderSimulationEvents(events) {
         });
         const typeColor = getActionTypeColor(event.action_type);
 
+        // Show resolution status badge
+        let statusBadge = '';
+        if (event.resolution_status === 'pending') {
+            statusBadge = '<span class="text-orange-400">[PENDING]</span>';
+        } else if (event.resolution_status === 'resolved') {
+            statusBadge = '<span class="text-green-300">[RESOLVED]</span>';
+        } else if (event.resolution_status === 'failed') {
+            statusBadge = '<span class="text-red-400">[FAILED]</span>';
+        }
+
+        // Show parent link for resolution events
+        let parentLink = '';
+        if (event.parent_event_id) {
+            parentLink = `<span class="text-gray-500 text-xs"> (resolves: ${event.parent_event_id})</span>`;
+        }
+
         return `<div class="mb-2 pb-2 border-b border-gray-700">
             <span class="text-gray-500">[${timeStr}]</span>
             <span class="${typeColor}">[${event.action_type.toUpperCase()}]</span>
             ${visibility}
+            ${statusBadge}
             <span class="text-blue-400">${event.agent_id}:</span>
             <span class="text-white">${event.summary}</span>
+            ${parentLink}
         </div>`;
     }).join('');
 }
@@ -695,6 +765,7 @@ function getActionTypeColor(actionType) {
         'economic': 'text-yellow-300',
         'intelligence': 'text-purple-300',
         'internal': 'text-gray-300',
+        'resolution': 'text-cyan-300',
         'none': 'text-gray-500'
     };
     return colors[actionType] || 'text-gray-300';
@@ -784,7 +855,8 @@ function renderGameFlow(activities) {
             'chat': 'text-blue-400',
             'simulation': 'text-green-400',
             'memory': 'text-purple-400',
-            'function': 'text-yellow-400'
+            'function': 'text-yellow-400',
+            'kpi': 'text-orange-400'
         };
         const typeColor = typeColors[activity.type] || 'text-gray-400';
 

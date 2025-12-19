@@ -28,6 +28,9 @@ _activity_log = []
 _activity_lock = threading.Lock()
 MAX_ACTIVITY_LOG = 500
 
+# Memory cap per agent - auto-prune oldest memories when exceeded
+MAX_MEMORIES_PER_AGENT = 7
+
 
 def log_activity(
     activity_type: str,
@@ -245,7 +248,8 @@ def agent_add(
     is_reporting_government: bool = False,
     agenda: str = "",
     primary_objectives: str = "",
-    hard_rules: str = ""
+    hard_rules: str = "",
+    is_enabled: bool = True
 ) -> dict:
     logger.info(f"agent_add called - agent_id: {agent_id}, model: {model}, entity_type: {entity_type}")
     with _state_lock:
@@ -262,7 +266,8 @@ def agent_add(
             "is_reporting_government": is_reporting_government,
             "agenda": agenda,
             "primary_objectives": primary_objectives,
-            "hard_rules": hard_rules
+            "hard_rules": hard_rules,
+            "is_enabled": is_enabled
         }
         # Auto-compile system_prompt from components (ignore passed system_prompt)
         agent_data["system_prompt"] = compile_system_prompt(agent_id, agent_data)
@@ -301,17 +306,87 @@ def add_skills(agent_id: str, skills: list) -> dict:
 
 
 def add_memory(agent_id: str, memory_item: str) -> dict:
+    """Add a memory item to an agent, auto-pruning oldest if over cap."""
     logger.info(f"add_memory called - agent_id: {agent_id}, memory_item: {memory_item}")
+    pruned_count = 0
     with _state_lock:
         if agent_id not in agents:
             logger.error(f"Agent {agent_id} not found")
             return {"status": "error", "message": f"Agent {agent_id} not found"}
+
         agent_memory[agent_id].append(memory_item)
+
+        # Auto-prune oldest memories if over cap
+        if len(agent_memory[agent_id]) > MAX_MEMORIES_PER_AGENT:
+            pruned_count = len(agent_memory[agent_id]) - MAX_MEMORIES_PER_AGENT
+            agent_memory[agent_id] = agent_memory[agent_id][-MAX_MEMORIES_PER_AGENT:]
+            logger.info(f"Auto-pruned {pruned_count} oldest memories from {agent_id} (cap: {MAX_MEMORIES_PER_AGENT})")
+
         save_agents()
+
     logger.info(f"Memory added to agent {agent_id}")
     # Log activity for debug console
-    log_activity("memory", agent_id, "memory_add", f"Added: {memory_item[:100]}", success=True)
-    return {"status": "success", "memory": agent_memory[agent_id]}
+    log_activity("memory", agent_id, "memory_add", f"Added: {memory_item[:100]}" + (f" (pruned {pruned_count})" if pruned_count else ""), success=True)
+    return {"status": "success", "memory": agent_memory[agent_id], "pruned_count": pruned_count}
+
+
+def remove_memory(agent_id: str, pattern: str) -> dict:
+    """Remove memory items matching a pattern from an agent's memory.
+
+    Args:
+        agent_id: The agent whose memory to modify
+        pattern: Substring to match - all memory items containing this pattern will be removed
+
+    Returns:
+        Dict with status and count of items removed
+    """
+    logger.info(f"remove_memory called - agent_id: {agent_id}, pattern: {pattern}")
+    with _state_lock:
+        if agent_id not in agents:
+            logger.error(f"Agent {agent_id} not found")
+            return {"status": "error", "message": f"Agent {agent_id} not found"}
+
+        original_count = len(agent_memory[agent_id])
+        # Filter out memories that contain the pattern
+        agent_memory[agent_id] = [m for m in agent_memory[agent_id] if pattern not in m]
+        removed_count = original_count - len(agent_memory[agent_id])
+
+        if removed_count > 0:
+            save_agents()
+            logger.info(f"Removed {removed_count} memory items from {agent_id} matching '{pattern}'")
+            log_activity("memory", agent_id, "memory_remove", f"Removed {removed_count} items matching: {pattern[:50]}", success=True)
+
+    return {"status": "success", "removed_count": removed_count}
+
+
+def prune_all_memories() -> dict:
+    """One-time cleanup: prune all agent memories to respect the cap.
+
+    Call this to clean up existing memories that exceed MAX_MEMORIES_PER_AGENT.
+    Returns stats about how many memories were pruned from each agent.
+    """
+    logger.info("Starting one-time memory pruning for all agents")
+    stats = {"total_pruned": 0, "agents_pruned": {}}
+
+    with _state_lock:
+        for agent_id in list(agent_memory.keys()):
+            original_count = len(agent_memory[agent_id])
+            if original_count > MAX_MEMORIES_PER_AGENT:
+                pruned_count = original_count - MAX_MEMORIES_PER_AGENT
+                agent_memory[agent_id] = agent_memory[agent_id][-MAX_MEMORIES_PER_AGENT:]
+                stats["agents_pruned"][agent_id] = {
+                    "original": original_count,
+                    "kept": MAX_MEMORIES_PER_AGENT,
+                    "pruned": pruned_count
+                }
+                stats["total_pruned"] += pruned_count
+                logger.info(f"Pruned {pruned_count} memories from {agent_id}")
+
+        if stats["total_pruned"] > 0:
+            save_agents()
+
+    logger.info(f"Memory pruning complete: {stats['total_pruned']} total memories pruned from {len(stats['agents_pruned'])} agents")
+    return {"status": "success", **stats}
 
 
 def clear_conversation(agent_id: str) -> dict:
@@ -389,7 +464,8 @@ def agent_update(
     is_reporting_government: bool = None,
     agenda: str = None,
     primary_objectives: str = None,
-    hard_rules: str = None
+    hard_rules: str = None,
+    is_enabled: bool = None
 ) -> dict:
     """Update an existing agent's properties. Automatically recompiles system_prompt when components change."""
     logger.info(f"agent_update called - agent_id: {agent_id}")
@@ -439,6 +515,8 @@ def agent_update(
         if hard_rules is not None:
             agents[agent_id]["hard_rules"] = hard_rules
             needs_recompile = True
+        if is_enabled is not None:
+            agents[agent_id]["is_enabled"] = is_enabled
 
         # Recompile system_prompt if any component changed (ignore direct system_prompt updates)
         if needs_recompile:
@@ -450,6 +528,33 @@ def agent_update(
 
     logger.info(f"Agent {agent_id} updated successfully")
     return {"status": "success", "agent": agent_copy}
+
+
+def toggle_agent_enabled(agent_id: str) -> dict:
+    """Toggle an agent's enabled status."""
+    logger.info(f"toggle_agent_enabled called - agent_id: {agent_id}")
+    with _state_lock:
+        if agent_id not in agents:
+            logger.error(f"Agent {agent_id} not found")
+            return {"status": "error", "message": f"Agent {agent_id} not found"}
+        current = agents[agent_id].get("is_enabled", True)
+        agents[agent_id]["is_enabled"] = not current
+        save_agents()
+    logger.info(f"Agent {agent_id} enabled status toggled to {not current}")
+    return {"status": "success", "agent_id": agent_id, "is_enabled": not current}
+
+
+def set_all_agents_enabled(enabled: bool) -> dict:
+    """Enable or disable all agents."""
+    logger.info(f"set_all_agents_enabled called - enabled: {enabled}")
+    with _state_lock:
+        count = 0
+        for agent_id in agents:
+            agents[agent_id]["is_enabled"] = enabled
+            count += 1
+        save_agents()
+    logger.info(f"Set {count} agents enabled status to {enabled}")
+    return {"status": "success", "count": count, "is_enabled": enabled}
 
 
 def regenerate_all_system_prompts() -> dict:

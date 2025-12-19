@@ -1,0 +1,18 @@
+{
+  "entity_id": "Egypt",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 475,
+    "population_millions": 104,
+    "military_personnel": 438500
+  },
+  "dynamic_metrics": {
+    "rafah_crossing_status": "controlled",
+    "humanitarian_aid_facilitated": 0,
+    "refugees_in_sinai": 0,
+    "mediation_credibility": 70,
+    "domestic_stability": 65,
+    "us_military_aid_billions": 1.3
+  },
+  "pending_operations": []
+}

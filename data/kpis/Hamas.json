@@ -1,0 +1,22 @@
+{
+  "entity_id": "Hamas",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "initial_fighters": 30000,
+    "initial_tunnel_network_km": 500,
+    "initial_rocket_inventory": 12000
+  },
+  "dynamic_metrics": {
+    "fighters_remaining": 30000,
+    "tunnel_network_operational_km": 500,
+    "rocket_inventory": 12000,
+    "hostages_held": 241,
+    "leadership_eliminated": 0,
+    "casualties": 0,
+    "ammunition_rockets_pct": 100,
+    "ammunition_small_arms_pct": 100,
+    "command_structure_intact_pct": 100,
+    "international_support": 40
+  },
+  "pending_operations": []
+}

@@ -14,13 +14,26 @@ const components = {
             return;
         }
 
-        container.innerHTML = Object.entries(agents).map(([id, agent]) => `
-            <div class="agent-card p-3 rounded cursor-pointer transition-colors ${id === selectedAgentId ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}"
+        container.innerHTML = Object.entries(agents).map(([id, agent]) => {
+            const isEnabled = agent.is_enabled !== false; // default to true if not set
+            const statusColor = isEnabled ? 'bg-green-500' : 'bg-gray-500';
+            const statusText = isEnabled ? 'ON' : 'OFF';
+            const opacityClass = isEnabled ? '' : 'opacity-60';
+
+            return `
+            <div class="agent-card p-3 rounded cursor-pointer transition-colors ${id === selectedAgentId ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} ${opacityClass}"
                  data-agent-id="${this.escapeHtml(id)}">
-                <div class="font-medium truncate">${this.escapeHtml(id)}</div>
+                <div class="flex items-center justify-between">
+                    <div class="font-medium truncate flex-1">${this.escapeHtml(id)}</div>
+                    <button class="toggle-enabled-btn ml-2 px-2 py-0.5 text-xs rounded ${statusColor} text-white hover:opacity-80"
+                            data-agent-id="${this.escapeHtml(id)}"
+                            title="${isEnabled ? 'Click to disable' : 'Click to enable'}">
+                        ${statusText}
+                    </button>
+                </div>
                 <div class="text-xs text-gray-300 truncate">${this.escapeHtml(agent.model)}</div>
             </div>
-        `).join('');
+        `}).join('');
     },
 
     /**
@@ -35,6 +48,7 @@ const components = {
         document.getElementById('detailEntityType').textContent = agent.entity_type || 'System';
         document.getElementById('detailEventFrequency').textContent = agent.event_frequency || 60;
         document.getElementById('detailAgentCategory').textContent = agent.agent_category || '(Not set)';
+        document.getElementById('detailIsEnabled').checked = agent.is_enabled !== false;
         document.getElementById('detailIsEnemy').checked = agent.is_enemy || false;
         document.getElementById('detailIsWest').checked = agent.is_west || false;
         document.getElementById('detailIsEvilAxis').checked = agent.is_evil_axis || false;

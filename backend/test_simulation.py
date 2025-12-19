@@ -278,16 +278,21 @@ class TestMemoryFlow:
 
     @pytest.fixture
     def setup_two_agents(self):
-        """Setup mock agents and memory for testing."""
-        # Create mock agents dict
+        """Setup mock agents and memory for testing.
+
+        Uses real agent IDs from ENTITY_AGENT_MAP so relevance-based
+        memory distribution works correctly. Both agents are Israeli
+        so they're in the same entity (colleagues can see each other's actions).
+        """
+        # Create mock agents dict - use real agent IDs from ENTITY_AGENT_MAP
         mock_agents = {
-            "Agent-A": {"entity_type": "Entity", "model": "test"},
-            "Agent-B": {"entity_type": "Entity", "model": "test"}
+            "IDF-Commander": {"entity_type": "Entity", "model": "test"},
+            "Defense-Minister": {"entity_type": "Entity", "model": "test"}
         }
         # Create mock memory dict
         mock_memory = {
-            "Agent-A": [],
-            "Agent-B": []
+            "IDF-Commander": [],
+            "Defense-Minister": []
         }
         return mock_agents, mock_memory
 
@@ -299,15 +304,15 @@ class TestMemoryFlow:
         state = SimulationState()
         processor = EventProcessor(state)
 
-        # Create a public event from Agent-A
+        # Create a public event from IDF-Commander
         event = SimulationEvent(
             event_id="evt_test001",
             timestamp="2023-10-07T08:00:00",
-            agent_id="Agent-A",
+            agent_id="IDF-Commander",
             action_type="diplomatic",
             summary="Made a diplomatic statement",
             is_public=True,
-            affected_agents=["Agent-B"]
+            affected_agents=["Defense-Minister"]
         )
 
         # Mock app module
@@ -325,27 +330,27 @@ class TestMemoryFlow:
             # Broadcast the event
             processor.broadcast_event_to_memories(event)
 
-        # Verify Agent-A has their own action with "YOU:" prefix
-        assert len(mock_memory["Agent-A"]) == 1
-        assert "YOU:" in mock_memory["Agent-A"][0]
-        assert "Made a diplomatic statement" in mock_memory["Agent-A"][0]
+        # Verify IDF-Commander has their own action with "YOU:" prefix
+        assert len(mock_memory["IDF-Commander"]) == 1
+        assert "YOU:" in mock_memory["IDF-Commander"][0]
+        assert "Made a diplomatic statement" in mock_memory["IDF-Commander"][0]
 
-    def test_public_event_broadcast_to_all_agents(self, setup_two_agents):
-        """Test that public events are broadcast to ALL other agents."""
+    def test_public_event_broadcast_to_relevant_agents(self, setup_two_agents):
+        """Test that public events are broadcast to RELEVANT agents (same entity or affected)."""
         mock_agents, mock_memory = setup_two_agents
 
         state = SimulationState()
         processor = EventProcessor(state)
 
-        # Create a public event
+        # Create a public event - both agents are Israeli so Defense-Minister should get it
         event = SimulationEvent(
             event_id="evt_test002",
             timestamp="2023-10-07T08:00:00",
-            agent_id="Agent-A",
+            agent_id="IDF-Commander",
             action_type="military",
             summary="Deployed forces to border",
             is_public=True,
-            affected_agents=[]  # Even with empty affected_agents, all should get it
+            affected_agents=[]  # No explicit affected agents, but same entity = relevant
         )
 
         with patch('simulation.app') as mock_app:
@@ -360,15 +365,15 @@ class TestMemoryFlow:
 
             processor.broadcast_event_to_memories(event)
 
-        # Agent-A should have "YOU:" version
-        assert len(mock_memory["Agent-A"]) == 1
-        assert "YOU:" in mock_memory["Agent-A"][0]
+        # IDF-Commander should have "YOU:" version
+        assert len(mock_memory["IDF-Commander"]) == 1
+        assert "YOU:" in mock_memory["IDF-Commander"][0]
 
-        # Agent-B should have "Agent-A:" version (not "YOU:")
-        assert len(mock_memory["Agent-B"]) == 1
-        assert "Agent-A:" in mock_memory["Agent-B"][0]
-        assert "YOU:" not in mock_memory["Agent-B"][0]
-        assert "Deployed forces to border" in mock_memory["Agent-B"][0]
+        # Defense-Minister should have "IDF-Commander:" version (same entity = relevant)
+        assert len(mock_memory["Defense-Minister"]) == 1
+        assert "IDF-Commander:" in mock_memory["Defense-Minister"][0]
+        assert "YOU:" not in mock_memory["Defense-Minister"][0]
+        assert "Deployed forces to border" in mock_memory["Defense-Minister"][0]
 
     def test_private_event_only_actor_remembers(self, setup_two_agents):
         """Test that private events are only remembered by the actor."""
@@ -381,11 +386,11 @@ class TestMemoryFlow:
         event = SimulationEvent(
             event_id="evt_test003",
             timestamp="2023-10-07T08:00:00",
-            agent_id="Agent-A",
+            agent_id="IDF-Commander",
             action_type="intelligence",
             summary="Conducted covert surveillance",
             is_public=False,  # Private!
-            affected_agents=["Agent-B"]
+            affected_agents=["Defense-Minister"]
         )
 
         with patch('simulation.app') as mock_app:
@@ -400,21 +405,21 @@ class TestMemoryFlow:
 
             processor.broadcast_event_to_memories(event)
 
-        # Agent-A should remember their own action
-        assert len(mock_memory["Agent-A"]) == 1
-        assert "YOU:" in mock_memory["Agent-A"][0]
+        # IDF-Commander should remember their own action
+        assert len(mock_memory["IDF-Commander"]) == 1
+        assert "YOU:" in mock_memory["IDF-Commander"][0]
 
-        # Agent-B should NOT know about the private action
-        assert len(mock_memory["Agent-B"]) == 0
+        # Defense-Minister should NOT know about the private action
+        assert len(mock_memory["Defense-Minister"]) == 0
 
     def test_memory_used_in_prompt(self, setup_two_agents):
         """Test that memory is correctly included in the prompt."""
         mock_agents, mock_memory = setup_two_agents
 
         # Pre-populate memory
-        mock_memory["Agent-A"] = [
+        mock_memory["IDF-Commander"] = [
             "[2023-10-07T07:00:00] YOU: Made first statement",
-            "[2023-10-07T07:30:00] Agent-B: Responded to statement"
+            "[2023-10-07T07:30:00] Defense-Minister: Responded to statement"
         ]
 
         state = SimulationState()
@@ -429,11 +434,11 @@ class TestMemoryFlow:
         with patch('simulation.app') as mock_app:
             mock_app.agent_memory = mock_memory
 
-            prompt = processor.build_prompt("Agent-A", agent, "2023-10-07T08:00:00")
+            prompt = processor.build_prompt("IDF-Commander", agent, "2023-10-07T08:00:00")
 
         # Verify memory content is in the prompt
         assert "YOU: Made first statement" in prompt
-        assert "Agent-B: Responded to statement" in prompt
+        assert "Defense-Minister: Responded to statement" in prompt
         assert "=== MEMORY ===" in prompt
 
     def test_multiple_turns_memory_accumulation(self, setup_two_agents):
@@ -453,36 +458,227 @@ class TestMemoryFlow:
 
             mock_app.add_memory = MagicMock(side_effect=add_memory_side_effect)
 
-            # Turn 1: Agent-A acts
+            # Turn 1: IDF-Commander acts
             event1 = SimulationEvent(
                 event_id="evt_turn1",
                 timestamp="2023-10-07T08:00:00",
-                agent_id="Agent-A",
+                agent_id="IDF-Commander",
                 action_type="diplomatic",
-                summary="Turn 1 action by A",
+                summary="Turn 1 action by IDF",
                 is_public=True,
-                affected_agents=[]
+                affected_agents=[]  # Same entity = relevant
             )
             processor.broadcast_event_to_memories(event1)
 
-            # Turn 2: Agent-B acts
+            # Turn 2: Defense-Minister acts
             event2 = SimulationEvent(
                 event_id="evt_turn2",
                 timestamp="2023-10-07T08:05:00",
-                agent_id="Agent-B",
+                agent_id="Defense-Minister",
                 action_type="diplomatic",
-                summary="Turn 2 response by B",
+                summary="Turn 2 response by Defense",
                 is_public=True,
-                affected_agents=[]
+                affected_agents=[]  # Same entity = relevant
             )
             processor.broadcast_event_to_memories(event2)
 
-        # Agent-A should have: own action (YOU:) + Agent-B's action
-        assert len(mock_memory["Agent-A"]) == 2
-        assert "YOU: Turn 1 action by A" in mock_memory["Agent-A"][0]
-        assert "Agent-B: Turn 2 response by B" in mock_memory["Agent-A"][1]
+        # IDF-Commander should have: own action (YOU:) + Defense-Minister's action
+        assert len(mock_memory["IDF-Commander"]) == 2
+        assert "YOU: Turn 1 action by IDF" in mock_memory["IDF-Commander"][0]
+        assert "Defense-Minister: Turn 2 response by Defense" in mock_memory["IDF-Commander"][1]
 
-        # Agent-B should have: Agent-A's action + own action (YOU:)
-        assert len(mock_memory["Agent-B"]) == 2
-        assert "Agent-A: Turn 1 action by A" in mock_memory["Agent-B"][0]
-        assert "YOU: Turn 2 response by B" in mock_memory["Agent-B"][1]
+        # Defense-Minister should have: IDF-Commander's action + own action (YOU:)
+        assert len(mock_memory["Defense-Minister"]) == 2
+        assert "IDF-Commander: Turn 1 action by IDF" in mock_memory["Defense-Minister"][0]
+        assert "YOU: Turn 2 response by Defense" in mock_memory["Defense-Minister"][1]
+
+    def test_system_agents_excluded_from_memory_broadcast(self):
+        """Test that System-* agents don't receive memory broadcasts."""
+        # Include a System-Resolver agent in mock agents (both Israeli agents + System)
+        mock_agents = {
+            "IDF-Commander": {"entity_type": "Entity", "model": "test"},
+            "Defense-Minister": {"entity_type": "Entity", "model": "test"},
+            "System-Resolver": {"entity_type": "System", "model": "test"}
+        }
+        mock_memory = {
+            "IDF-Commander": [],
+            "Defense-Minister": [],
+            "System-Resolver": []
+        }
+
+        state = SimulationState()
+        processor = EventProcessor(state)
+
+        # Create a public event from IDF-Commander
+        event = SimulationEvent(
+            event_id="evt_test_sys",
+            timestamp="2023-10-07T08:00:00",
+            agent_id="IDF-Commander",
+            action_type="diplomatic",
+            summary="Made a statement",
+            is_public=True,
+            affected_agents=[]  # Same entity = Defense-Minister gets it
+        )
+
+        with patch('simulation.app') as mock_app:
+            mock_app.agents = mock_agents
+            mock_app.agent_memory = mock_memory
+
+            def add_memory_side_effect(agent_id, memory_item):
+                mock_memory[agent_id].append(memory_item)
+                return {"status": "success"}
+
+            mock_app.add_memory = MagicMock(side_effect=add_memory_side_effect)
+
+            processor.broadcast_event_to_memories(event)
+
+        # IDF-Commander should have their own action
+        assert len(mock_memory["IDF-Commander"]) == 1
+        assert "YOU:" in mock_memory["IDF-Commander"][0]
+
+        # Defense-Minister should have IDF-Commander's action (same entity)
+        assert len(mock_memory["Defense-Minister"]) == 1
+        assert "IDF-Commander:" in mock_memory["Defense-Minister"][0]
+
+        # System-Resolver should have NO memory (excluded)
+        assert len(mock_memory["System-Resolver"]) == 0
+
+    def test_system_agent_events_not_broadcast(self):
+        """Test that events from System-* agents don't get broadcast."""
+        mock_agents = {
+            "IDF-Commander": {"entity_type": "Entity", "model": "test"},
+            "System-Resolver": {"entity_type": "System", "model": "test"}
+        }
+        mock_memory = {
+            "IDF-Commander": [],
+            "System-Resolver": []
+        }
+
+        state = SimulationState()
+        processor = EventProcessor(state)
+
+        # Create an event FROM System-Resolver
+        event = SimulationEvent(
+            event_id="res_test",
+            timestamp="2023-10-07T08:00:00",
+            agent_id="System-Resolver",
+            action_type="resolution",
+            summary="Resolved event",
+            is_public=True,
+            affected_agents=[]
+        )
+
+        with patch('simulation.app') as mock_app:
+            mock_app.agents = mock_agents
+            mock_app.agent_memory = mock_memory
+
+            def add_memory_side_effect(agent_id, memory_item):
+                mock_memory[agent_id].append(memory_item)
+                return {"status": "success"}
+
+            mock_app.add_memory = MagicMock(side_effect=add_memory_side_effect)
+
+            processor.broadcast_event_to_memories(event)
+
+        # No one should get memory from System-Resolver events
+        assert len(mock_memory["IDF-Commander"]) == 0
+        assert len(mock_memory["System-Resolver"]) == 0
+
+
+class TestResolverFiltering:
+    """Tests for the resolver's event filtering logic."""
+
+    def test_get_events_filters_by_status(self):
+        """Test that resolver only gets events with immediate/pending status."""
+        state = SimulationState()
+
+        # Add events with different statuses
+        with patch.object(state, 'save'):
+            # Event 1: immediate (should be included)
+            event1 = SimulationEvent(
+                event_id="evt_1",
+                timestamp="2023-10-07T08:00:00",
+                agent_id="Agent-A",
+                action_type="diplomatic",
+                summary="Immediate event",
+                is_public=True,
+                resolution_status="immediate"
+            )
+            state.add_event(event1)
+
+            # Event 2: resolved (should be excluded)
+            event2 = SimulationEvent(
+                event_id="evt_2",
+                timestamp="2023-10-07T08:01:00",
+                agent_id="Agent-A",
+                action_type="diplomatic",
+                summary="Resolved event",
+                is_public=True,
+                resolution_status="resolved"
+            )
+            state.add_event(event2)
+
+            # Event 3: pending (should be included)
+            event3 = SimulationEvent(
+                event_id="evt_3",
+                timestamp="2023-10-07T08:02:00",
+                agent_id="Agent-A",
+                action_type="intelligence",
+                summary="Pending event",
+                is_public=False,
+                resolution_status="pending"
+            )
+            state.add_event(event3)
+
+            # Event 4: failed (should be excluded)
+            event4 = SimulationEvent(
+                event_id="evt_4",
+                timestamp="2023-10-07T08:03:00",
+                agent_id="Agent-A",
+                action_type="military",
+                summary="Failed event",
+                is_public=True,
+                resolution_status="failed"
+            )
+            state.add_event(event4)
+
+        # Create resolver and get events to resolve
+        from simulation import ResolverProcessor, KPIManager
+        kpi_manager = KPIManager()
+        resolver = ResolverProcessor(state, kpi_manager)
+
+        events = resolver.get_events_to_resolve()
+
+        # Should only include immediate and pending
+        event_ids = [e.event_id for e in events]
+        assert "evt_1" in event_ids  # immediate
+        assert "evt_2" not in event_ids  # resolved - excluded
+        assert "evt_3" in event_ids  # pending
+        assert "evt_4" not in event_ids  # failed - excluded
+
+    def test_events_with_resolution_event_id_excluded(self):
+        """Test that events already linked to a resolution are excluded."""
+        state = SimulationState()
+
+        with patch.object(state, 'save'):
+            # Event with resolution_event_id set (already resolved)
+            event = SimulationEvent(
+                event_id="evt_linked",
+                timestamp="2023-10-07T08:00:00",
+                agent_id="Agent-A",
+                action_type="diplomatic",
+                summary="Already linked",
+                is_public=True,
+                resolution_status="immediate",  # Status says immediate but...
+                resolution_event_id="res_123"  # ...it has a resolution link
+            )
+            state.add_event(event)
+
+        from simulation import ResolverProcessor, KPIManager
+        kpi_manager = KPIManager()
+        resolver = ResolverProcessor(state, kpi_manager)
+
+        events = resolver.get_events_to_resolve()
+
+        # Should be empty - the only event has resolution_event_id
+        assert len(events) == 0
