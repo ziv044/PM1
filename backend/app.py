@@ -23,6 +23,183 @@ agents = {}
 agent_skills = {}
 agent_memory = {}
 
+# Activity log for debug console (in-memory, max 500 entries)
+_activity_log = []
+_activity_lock = threading.Lock()
+MAX_ACTIVITY_LOG = 500
+
+
+def log_activity(
+    activity_type: str,
+    agent_id: str = None,
+    action: str = "",
+    details: str = "",
+    duration_ms: int = None,
+    success: bool = True,
+    error: str = None
+) -> None:
+    """Log an activity for the debug console."""
+    import datetime
+    with _activity_lock:
+        entry = {
+            "timestamp": datetime.datetime.now().isoformat(),
+            "type": activity_type,
+            "agent_id": agent_id,
+            "action": action,
+            "details": details[:200] if details else "",  # Truncate long details
+            "duration_ms": duration_ms,
+            "success": success,
+            "error": error
+        }
+        _activity_log.append(entry)
+        # Keep only last MAX_ACTIVITY_LOG entries
+        if len(_activity_log) > MAX_ACTIVITY_LOG:
+            _activity_log.pop(0)
+
+
+def get_activity_log(
+    agent_id: str = None,
+    activity_type: str = None,
+    limit: int = 100
+) -> list:
+    """Get activity log entries with optional filters."""
+    with _activity_lock:
+        filtered = _activity_log.copy()
+
+    if agent_id:
+        filtered = [e for e in filtered if e.get("agent_id") == agent_id]
+    if activity_type:
+        filtered = [e for e in filtered if e.get("type") == activity_type]
+
+    # Return most recent first
+    return list(reversed(filtered[-limit:]))
+
+
+def get_activity_stats() -> dict:
+    """Get activity statistics for the debug console."""
+    with _activity_lock:
+        log_copy = _activity_log.copy()
+
+    total_calls = len(log_copy)
+    active_agents = len(set(e.get("agent_id") for e in log_copy if e.get("agent_id")))
+    errors = sum(1 for e in log_copy if not e.get("success"))
+
+    # Calculate average response time for successful calls with duration
+    durations = [e.get("duration_ms") for e in log_copy if e.get("duration_ms") and e.get("success")]
+    avg_time = sum(durations) / len(durations) if durations else None
+
+    return {
+        "total_calls": total_calls,
+        "active_agents": active_agents,
+        "errors": errors,
+        "avg_response_time_ms": round(avg_time, 2) if avg_time else None
+    }
+
+
+def clear_activity_log() -> dict:
+    """Clear the activity log."""
+    with _activity_lock:
+        _activity_log.clear()
+    return {"status": "success", "message": "Activity log cleared"}
+
+
+def compile_system_prompt(agent_id: str, agent_data: dict) -> str:
+    """
+    Compile the system_prompt from agent component fields.
+    The datetime context is NOT included here - it should be passed dynamically
+    in the user prompt to allow prompt caching.
+    """
+    # Build entity profile section
+    category = agent_data.get("agent_category", "")
+    is_enemy = agent_data.get("is_enemy", False)
+    is_west = agent_data.get("is_west", False)
+    is_evil_axis = agent_data.get("is_evil_axis", False)
+    is_reporting_gov = agent_data.get("is_reporting_government", False)
+
+    # Determine alignment based on flags
+    if is_reporting_gov:
+        alignment = "Israeli Government (Reports to Government: YES)"
+    elif is_west:
+        alignment = "Western Alliance"
+    elif is_evil_axis:
+        alignment = "Anti-Western Axis"
+    elif is_enemy:
+        alignment = "Adversary"
+    else:
+        alignment = "Neutral / Independent"
+
+    # Build the system prompt
+    lines = [
+        f"You are {agent_id.replace('-', ' ').upper()}.",
+        "",
+        "## ENTITY PROFILE",
+        f"- Category: {category}",
+        f"- Alignment: {alignment}",
+        f"- Is Enemy: {'YES' if is_enemy else 'NO'}",
+        f"- Is Western Ally: {'YES' if is_west else 'NO'}",
+        f"- Is Evil Axis Member: {'YES' if is_evil_axis else 'NO'}",
+        f"- Reports to Government: {'YES' if is_reporting_gov else 'NO'}",
+        "",
+        "## SIMULATION CONTEXT",
+        "This is a geopolitical simulation set after the October 7th, 2023 Hamas attack on Israel.",
+        "Key facts: ~4,000 rockets fired, 1,200 casualties (mostly civilians), 241 hostages taken to Gaza.",
+        "The current simulation date/time will be provided in each message.",
+        "",
+        "## AUTONOMOUS ENTITY BEHAVIOR",
+        "You are an autonomous entity in this simulation. You must:",
+        "",
+        "1. **ACT STRATEGICALLY**: Pursue your agenda and objectives through calculated decisions.",
+        "   Make moves that advance your interests while considering risks and consequences.",
+        "",
+        "2. **REACT TO EVENTS**: Respond realistically to unfolding situations. Events affect your",
+        "   decisions - escalations, negotiations, attacks, diplomatic moves all require responses.",
+        "",
+        "3. **USE YOUR MEMORY**: Reference your previous decisions and their outcomes. Learn from",
+        "   past plays. Maintain consistency with positions you've taken before.",
+        "",
+        "4. **OBSERVE OTHER ENTITIES**: You are aware of visible actions by other entities.",
+        "   Consider their moves when making your own. Anticipate reactions. Form alliances",
+        "   or opposition based on observed behavior.",
+        "",
+        "5. **BE REALISTIC**: Act as the real entity would. Consider political constraints,",
+        "   public opinion, institutional limitations, and historical patterns of behavior.",
+        "   Avoid unrealistic or out-of-character decisions.",
+        "",
+        "6. **THINK IN GAME TERMS**: Each interaction is a 'play' or 'move' in the simulation.",
+        "   Consider short-term tactics AND long-term strategy. Some plays are visible to all,",
+        "   others only to specific entities.",
+        "",
+    ]
+
+    # Add agenda if present
+    agenda = agent_data.get("agenda", "")
+    if agenda:
+        lines.extend([
+            "## AGENDA",
+            agenda,
+            "",
+        ])
+
+    # Add primary objectives if present
+    objectives = agent_data.get("primary_objectives", "")
+    if objectives:
+        lines.extend([
+            "## PRIMARY OBJECTIVES",
+            objectives,
+            "",
+        ])
+
+    # Add hard rules if present
+    hard_rules = agent_data.get("hard_rules", "")
+    if hard_rules:
+        lines.extend([
+            "## HARD RULES (NEVER VIOLATE)",
+            hard_rules,
+            "",
+        ])
+
+    return "\n".join(lines)
+
 
 def save_agents() -> None:
     """Save agents, skills, and memory to JSON file."""
@@ -64,25 +241,32 @@ def agent_add(
     is_enemy: bool = False,
     is_west: bool = False,
     is_evil_axis: bool = False,
+    agent_category: str = "",
+    is_reporting_government: bool = False,
     agenda: str = "",
     primary_objectives: str = "",
     hard_rules: str = ""
 ) -> dict:
     logger.info(f"agent_add called - agent_id: {agent_id}, model: {model}, entity_type: {entity_type}")
     with _state_lock:
-        agents[agent_id] = {
+        agent_data = {
             "model": model,
-            "system_prompt": system_prompt,
+            "system_prompt": "",  # Will be compiled
             "conversation": [],
             "entity_type": entity_type,
             "event_frequency": event_frequency,
             "is_enemy": is_enemy,
             "is_west": is_west,
             "is_evil_axis": is_evil_axis,
+            "agent_category": agent_category,
+            "is_reporting_government": is_reporting_government,
             "agenda": agenda,
             "primary_objectives": primary_objectives,
             "hard_rules": hard_rules
         }
+        # Auto-compile system_prompt from components (ignore passed system_prompt)
+        agent_data["system_prompt"] = compile_system_prompt(agent_id, agent_data)
+        agents[agent_id] = agent_data
         agent_skills[agent_id] = []
         agent_memory[agent_id] = []
         save_agents()
@@ -125,7 +309,24 @@ def add_memory(agent_id: str, memory_item: str) -> dict:
         agent_memory[agent_id].append(memory_item)
         save_agents()
     logger.info(f"Memory added to agent {agent_id}")
+    # Log activity for debug console
+    log_activity("memory", agent_id, "memory_add", f"Added: {memory_item[:100]}", success=True)
     return {"status": "success", "memory": agent_memory[agent_id]}
+
+
+def clear_conversation(agent_id: str) -> dict:
+    """Clear an agent's conversation history."""
+    logger.info(f"clear_conversation called - agent_id: {agent_id}")
+    with _state_lock:
+        if agent_id not in agents:
+            logger.error(f"Agent {agent_id} not found")
+            return {"status": "error", "message": f"Agent {agent_id} not found"}
+        conversation_count = len(agents[agent_id].get("conversation", []))
+        agents[agent_id]["conversation"] = []
+        save_agents()
+    logger.info(f"Conversation cleared for agent {agent_id}")
+    log_activity("function", agent_id, "clear_conversation", f"Cleared {conversation_count} messages", success=True)
+    return {"status": "success", "message": f"Conversation cleared ({conversation_count} messages removed)"}
 
 
 def get_all_agents() -> dict:
@@ -184,40 +385,84 @@ def agent_update(
     is_enemy: bool = None,
     is_west: bool = None,
     is_evil_axis: bool = None,
+    agent_category: str = None,
+    is_reporting_government: bool = None,
     agenda: str = None,
     primary_objectives: str = None,
     hard_rules: str = None
 ) -> dict:
-    """Update an existing agent's properties."""
+    """Update an existing agent's properties. Automatically recompiles system_prompt when components change."""
     logger.info(f"agent_update called - agent_id: {agent_id}")
+
+    # Fields that trigger system_prompt recompilation
+    PROMPT_COMPONENT_FIELDS = {
+        'is_enemy', 'is_west', 'is_evil_axis', 'agent_category',
+        'is_reporting_government', 'agenda', 'primary_objectives', 'hard_rules'
+    }
+
     with _state_lock:
         if agent_id not in agents:
             logger.error(f"Agent {agent_id} not found")
             return {"status": "error", "message": f"Agent {agent_id} not found"}
+
+        needs_recompile = False
+
         if model is not None:
             agents[agent_id]["model"] = model
-        if system_prompt is not None:
-            agents[agent_id]["system_prompt"] = system_prompt
         if entity_type is not None:
             agents[agent_id]["entity_type"] = entity_type
         if event_frequency is not None:
             agents[agent_id]["event_frequency"] = event_frequency
+
+        # Track if any prompt component fields are being updated
         if is_enemy is not None:
             agents[agent_id]["is_enemy"] = is_enemy
+            needs_recompile = True
         if is_west is not None:
             agents[agent_id]["is_west"] = is_west
+            needs_recompile = True
         if is_evil_axis is not None:
             agents[agent_id]["is_evil_axis"] = is_evil_axis
+            needs_recompile = True
+        if agent_category is not None:
+            agents[agent_id]["agent_category"] = agent_category
+            needs_recompile = True
+        if is_reporting_government is not None:
+            agents[agent_id]["is_reporting_government"] = is_reporting_government
+            needs_recompile = True
         if agenda is not None:
             agents[agent_id]["agenda"] = agenda
+            needs_recompile = True
         if primary_objectives is not None:
             agents[agent_id]["primary_objectives"] = primary_objectives
+            needs_recompile = True
         if hard_rules is not None:
             agents[agent_id]["hard_rules"] = hard_rules
+            needs_recompile = True
+
+        # Recompile system_prompt if any component changed (ignore direct system_prompt updates)
+        if needs_recompile:
+            agents[agent_id]["system_prompt"] = compile_system_prompt(agent_id, agents[agent_id])
+            logger.info(f"System prompt recompiled for agent {agent_id}")
+
         save_agents()
         agent_copy = dict(agents[agent_id])
+
     logger.info(f"Agent {agent_id} updated successfully")
     return {"status": "success", "agent": agent_copy}
+
+
+def regenerate_all_system_prompts() -> dict:
+    """Regenerate system_prompt for all agents from their component fields."""
+    logger.info("Regenerating all system prompts")
+    with _state_lock:
+        count = 0
+        for agent_id, agent_data in agents.items():
+            agents[agent_id]["system_prompt"] = compile_system_prompt(agent_id, agent_data)
+            count += 1
+        save_agents()
+    logger.info(f"Regenerated system prompts for {count} agents")
+    return {"status": "success", "message": f"Regenerated system prompts for {count} agents"}
 
 
 def prompt_caching(agent_id: str, cached_prompt: str) -> dict:
@@ -242,9 +487,13 @@ def interact_with_claude(
     temperature: float = 1.0,
     stream: bool = False
 ) -> dict:
+    import time
+    start_time = time.time()
     logger.info(f"interact_with_claude called - agent_id: {agent_id}, stream: {stream}")
+
     if agent_id not in agents:
         logger.error(f"Agent {agent_id} not found")
+        log_activity("chat", agent_id, "chat_request", "Agent not found", success=False, error="Agent not found")
         return {"status": "error", "message": f"Agent {agent_id} not found"}
 
     agent = agents[agent_id]
@@ -285,11 +534,25 @@ def interact_with_claude(
             response = api_response.content[0].text
 
         agent["conversation"].append({"role": "assistant", "content": response})
+        duration_ms = int((time.time() - start_time) * 1000)
         logger.info(f"Response received for agent {agent_id}")
-        return {"status": "success", "response": response}
+
+        # Log activity for debug console
+        log_activity(
+            "chat",
+            agent_id,
+            "chat_response",
+            f"User: {user_message[:50]}... -> Response: {response[:50]}...",
+            duration_ms=duration_ms,
+            success=True
+        )
+
+        return {"status": "success", "response": response, "duration_ms": duration_ms}
 
     except Exception as e:
+        duration_ms = int((time.time() - start_time) * 1000)
         logger.error(f"Error interacting with Claude: {str(e)}")
+        log_activity("chat", agent_id, "chat_error", str(e), duration_ms=duration_ms, success=False, error=str(e))
         return {"status": "error", "message": str(e)}
 
 

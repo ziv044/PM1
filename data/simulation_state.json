@@ -1,7 +1,390 @@
 {
   "is_running": false,
-  "clock_speed": 5.0,
-  "game_clock": "2023-10-07T06:29:00",
-  "events": [],
-  "agent_last_action": {}
+  "clock_speed": 60.0,
+  "game_clock": "2023-10-07T08:02:06.951107",
+  "events": [
+    {
+      "event_id": "evt_69f4d880",
+      "timestamp": "2023-10-07T07:29:00.086174",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Launch comprehensive review of Oct 7 intelligence failures and security gaps",
+      "is_public": false,
+      "affected_agents": [
+        "Israel",
+        "Hamas"
+      ],
+      "reasoning": "Must immediately assess what went wrong on October 7th to prevent future catastrophic failures and rebuild credible early warning systems"
+    },
+    {
+      "event_id": "evt_97a872ed",
+      "timestamp": "2023-10-07T07:32:27.539786",
+      "agent_id": "Treasury-Minister",
+      "action_type": "internal",
+      "summary": "Review national budget and economic indicators to establish baseline metrics",
+      "is_public": false,
+      "affected_agents": [],
+      "reasoning": "As Treasury Minister with no defined objectives or recent context, I need to first assess the current economic situation and establish baseline financial metrics before taking any meaningful action."
+    },
+    {
+      "event_id": "evt_06a42cde",
+      "timestamp": "2023-10-07T07:34:59.182943",
+      "agent_id": "USA-President",
+      "action_type": "internal",
+      "summary": "Convene National Security Council meeting to assess current global threats",
+      "is_public": false,
+      "affected_agents": [
+        "USA"
+      ],
+      "reasoning": "With no current context or events, need to establish situational awareness and gather intelligence on global developments before taking any external actions"
+    },
+    {
+      "event_id": "evt_44f527db",
+      "timestamp": "2023-10-07T07:37:45.144900",
+      "agent_id": "UK-Prime-Minister",
+      "action_type": "internal",
+      "summary": "Convene emergency cabinet meeting to assess current domestic and international priorities",
+      "is_public": false,
+      "affected_agents": [
+        "UK"
+      ],
+      "reasoning": "Without clear objectives or context, I need to establish immediate priorities through consultation with key ministers before taking any external actions"
+    },
+    {
+      "event_id": "evt_4249d5ff",
+      "timestamp": "2023-10-07T07:52:46.553844",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy emergency intelligence teams to reassess Gaza border security vulnerabilities",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas",
+        "IDF"
+      ],
+      "reasoning": "Critical first step to prevent further infiltrations while Oct 7 review continues. Need immediate tactical intelligence on remaining breach points and Hamas positioning near border before any rescue operations can begin."
+    },
+    {
+      "event_id": "evt_f20b90c9",
+      "timestamp": "2023-10-07T07:52:51.562055",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Initiate surveillance networks across Gaza to locate hostages and map Hamas infrastructure",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas",
+        "Gaza"
+      ],
+      "reasoning": "First priority is establishing intelligence capabilities to locate hostages and identify high-value targets following October 7th attack. Need comprehensive surveillance network before conducting operations."
+    },
+    {
+      "event_id": "evt_961c4816",
+      "timestamp": "2023-10-07T07:52:56.565648",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy reserve units to southern command and initiate air reconnaissance over Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "Gaza",
+        "Hamas"
+      ],
+      "reasoning": "First priority is intelligence gathering on Hamas positions and tunnel networks while mobilizing forces for systematic operations. Air reconnaissance provides initial assessment without ground force commitment."
+    },
+    {
+      "event_id": "evt_9b0a3def",
+      "timestamp": "2023-10-07T07:53:01.571131",
+      "agent_id": "Defense-Minister",
+      "action_type": "military",
+      "summary": "Authorize immediate mobilization of additional reserve brigades for Gaza operations",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "Must coordinate with IDF Commander's southern deployment by providing additional forces while ensuring proper military-political alignment from the outset"
+    },
+    {
+      "event_id": "evt_07a7a4c9",
+      "timestamp": "2023-10-07T07:53:06.562899",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Activate emergency war budget protocol and freeze non-essential spending",
+      "is_public": true,
+      "affected_agents": [
+        "Bank-of-Israel",
+        "Defense-Minister"
+      ],
+      "reasoning": "With reserve mobilization authorized, I must immediately secure funding for military operations while protecting fiscal stability. Emergency protocols will free up resources for Iron Dome replenishment and soldier payments."
+    },
+    {
+      "event_id": "evt_9133b125",
+      "timestamp": "2023-10-07T07:53:11.572983",
+      "agent_id": "Media-Channel-12",
+      "action_type": "internal",
+      "summary": "Breaking: Major military mobilization underway as IDF deploys reserves to Gaza border",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Defense-Minister",
+        "Treasury-Minister"
+      ],
+      "reasoning": "Critical to report immediate military developments while respecting operational security. This mobilization indicates significant escalation that public needs to know about."
+    },
+    {
+      "event_id": "evt_b64996d2",
+      "timestamp": "2023-10-07T07:53:16.566940",
+      "agent_id": "Media-Channel-14",
+      "action_type": "internal",
+      "summary": "Breaking: IDF launches massive counter-offensive following unprecedented Hamas terror attack",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Defense-Minister",
+        "Hamas-Gaza"
+      ],
+      "reasoning": "Must immediately frame military mobilization as justified response to terror attack, emphasizing Hamas aggression to build public support for extended military campaign"
+    },
+    {
+      "event_id": "evt_ea0a9b63",
+      "timestamp": "2023-10-07T07:53:21.573225",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Issue statement affirming Israel's right to self-defense and US support",
+      "is_public": true,
+      "affected_agents": [
+        "Israel",
+        "Hamas"
+      ],
+      "reasoning": "Need immediate public support for Israel following major attack while establishing US position early in crisis"
+    },
+    {
+      "event_id": "evt_12581fdb",
+      "timestamp": "2023-10-07T07:53:26.568199",
+      "agent_id": "Russia-President",
+      "action_type": "diplomatic",
+      "summary": "Call for immediate ceasefire and offer Russian mediation in Gaza crisis",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas",
+        "IDF-Commander",
+        "USA-President"
+      ],
+      "reasoning": "Early positioning as alternative mediator while crisis develops, undermines US diplomatic monopoly and projects Russia as responsible global power despite Ukraine sanctions"
+    },
+    {
+      "event_id": "evt_cb7533b3",
+      "timestamp": "2023-10-07T07:53:31.576113",
+      "agent_id": "North-Korea-Supreme-Leader",
+      "action_type": "intelligence",
+      "summary": "Assess Middle East situation for weapons export opportunities",
+      "is_public": false,
+      "affected_agents": [
+        "Iran",
+        "Russia"
+      ],
+      "reasoning": "Major conflict brewing provides opportunity to profit from weapons sales while US is distracted. Need intelligence assessment to identify specific needs and coordinate with Iran/Russia contacts discreetly."
+    },
+    {
+      "event_id": "evt_625d454b",
+      "timestamp": "2023-10-07T07:53:36.567389",
+      "agent_id": "UK-Prime-Minister",
+      "action_type": "diplomatic",
+      "summary": "Issue statement condemning Hamas attack and affirming UK support for Israel's right to self-defense",
+      "is_public": true,
+      "affected_agents": [
+        "Israel",
+        "Hamas",
+        "USA-President"
+      ],
+      "reasoning": "Must align with US position immediately, demonstrate solidarity with Israel while establishing UK's independent voice in crisis response"
+    },
+    {
+      "event_id": "evt_1bd95a48",
+      "timestamp": "2023-10-07T07:53:41.574891",
+      "agent_id": "Egypt-President",
+      "action_type": "diplomatic",
+      "summary": "Issue statement calling for de-escalation and offer Egyptian mediation services",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-Prime-Minister",
+        "Hamas-Leader",
+        "USA-President"
+      ],
+      "reasoning": "Must establish Egypt as essential mediator early in crisis to secure leverage and international support while avoiding taking sides publicly"
+    },
+    {
+      "event_id": "evt_62bd8844",
+      "timestamp": "2023-10-07T07:53:46.563046",
+      "agent_id": "PLO-Prime-Minister",
+      "action_type": "diplomatic",
+      "summary": "Issue statement condemning violence against civilians and calling for international intervention",
+      "is_public": true,
+      "affected_agents": [
+        "USA-President",
+        "Egypt-President",
+        "Russia-President",
+        "UN-Secretary-General"
+      ],
+      "reasoning": "Must quickly position PA as responsible voice condemning October 7th attacks while calling for international engagement - this creates opening to insert PA into post-conflict discussions before Hamas narrative dominates"
+    },
+    {
+      "event_id": "evt_c854b778",
+      "timestamp": "2023-10-07T07:53:56.564028",
+      "agent_id": "Iran-Ayatollah",
+      "action_type": "diplomatic",
+      "summary": "Issue statement praising Palestinian resistance and condemning Zionist aggression",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas",
+        "PLO-Prime-Minister",
+        "USA-President"
+      ],
+      "reasoning": "Must publicly support Hamas while maintaining plausible deniability. Frame as anti-Zionist resistance to rally Axis of Resistance and counter US/Israeli narrative."
+    },
+    {
+      "event_id": "evt_6377874a",
+      "timestamp": "2023-10-07T08:01:16.721985",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Launch emergency intelligence review of October 7th security failures",
+      "is_public": false,
+      "affected_agents": [
+        "IDF",
+        "Mossad"
+      ],
+      "reasoning": "Must immediately assess what went wrong in our intelligence gathering and early warning systems to prevent future catastrophic failures while beginning coordination with other agencies"
+    },
+    {
+      "event_id": "evt_d1036c95",
+      "timestamp": "2023-10-07T08:01:21.725344",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Activate deep cover assets in Gaza to locate hostages and map Hamas tunnel networks",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas",
+        "Gaza"
+      ],
+      "reasoning": "First priority is gathering actionable intelligence on hostage locations for rescue operations while mapping enemy infrastructure for future targeted operations"
+    },
+    {
+      "event_id": "evt_6c6a5dd1",
+      "timestamp": "2023-10-07T08:01:26.728864",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Order immediate air strikes on confirmed Hamas military targets in Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas",
+        "Gaza-Civilians"
+      ],
+      "reasoning": "Must begin immediate degradation of Hamas military capabilities while they are still regrouping from their attack. Air strikes can target known military infrastructure with precision."
+    },
+    {
+      "event_id": "evt_b57bfa58",
+      "timestamp": "2023-10-07T08:01:31.740087",
+      "agent_id": "Defense-Minister",
+      "action_type": "diplomatic",
+      "summary": "Contact US Secretary of Defense to request immediate ammunition resupply and air defense systems",
+      "is_public": false,
+      "affected_agents": [
+        "US-Secretary-of-Defense"
+      ],
+      "reasoning": "Critical to secure US military pipeline immediately as operations intensify. Private channel maintains operational security while ensuring supply continuity."
+    },
+    {
+      "event_id": "evt_c211002a",
+      "timestamp": "2023-10-07T08:01:36.733033",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Activating emergency war budget protocols and requesting immediate US aid package",
+      "is_public": true,
+      "affected_agents": [
+        "US-Treasury",
+        "Bank-of-Israel",
+        "Prime-Minister"
+      ],
+      "reasoning": "Major mobilization requires immediate funding. Must secure emergency resources before markets open and ensure monetary coordination to prevent shekel collapse."
+    },
+    {
+      "event_id": "evt_9a5132d4",
+      "timestamp": "2023-10-07T08:01:41.732175",
+      "agent_id": "Media-Channel-12",
+      "action_type": "internal",
+      "summary": "Deploy news crews to Gaza border and prepare live coverage of military operations",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "Need immediate on-ground reporting of military response while respecting operational security. This establishes our presence for accountability journalism while supporting national response."
+    },
+    {
+      "event_id": "evt_510a9964",
+      "timestamp": "2023-10-07T08:01:46.736688",
+      "agent_id": "Media-Channel-14",
+      "action_type": "internal",
+      "summary": "Launch 24/7 war coverage emphasizing Hamas atrocities and IDF precision operations",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Media-Channel-12"
+      ],
+      "reasoning": "Must immediately establish dominant narrative supporting military response and countering potential criticism of civilian casualties by emphasizing Hamas responsibility"
+    },
+    {
+      "event_id": "evt_b80fb704",
+      "timestamp": "2023-10-07T08:01:51.734009",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Issue statement condemning Hamas terror attack and affirming ironclad US support for Israel",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-Prime-Minister",
+        "Hamas-Leader",
+        "Iran-Ayatollah"
+      ],
+      "reasoning": "Must immediately show strong public support for Israel after major terror attack while establishing clear US position before escalation continues"
+    },
+    {
+      "event_id": "evt_ac9dedfe",
+      "timestamp": "2023-10-07T08:01:56.728518",
+      "agent_id": "Russia-President",
+      "action_type": "diplomatic",
+      "summary": "Call for immediate ceasefire and offer Moscow as neutral venue for peace talks",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Leadership",
+        "Israel-Prime-Minister",
+        "USA-President",
+        "Iran-President"
+      ],
+      "reasoning": "Position Russia as alternative mediator while Western powers take sides, potentially drawing their focus and resources away from Ukraine support"
+    },
+    {
+      "event_id": "evt_1c15db80",
+      "timestamp": "2023-10-07T08:02:01.728837",
+      "agent_id": "North-Korea-Supreme-Leader",
+      "action_type": "intelligence",
+      "summary": "Secretly contact Iranian proxies to assess weapons supply needs",
+      "is_public": false,
+      "affected_agents": [
+        "Iran-President"
+      ],
+      "reasoning": "US distraction with Israel crisis creates opportunity to expand weapons sales. Need to assess proxy requirements while maintaining plausible deniability through covert channels."
+    }
+  ],
+  "agent_last_action": {
+    "Head-Of-Shabak": "2023-10-07T08:01:16.721985",
+    "Treasury-Minister": "2023-10-07T08:01:36.733033",
+    "USA-President": "2023-10-07T08:01:51.734009",
+    "UK-Prime-Minister": "2023-10-07T07:53:36.567389",
+    "Head-Of-Mossad": "2023-10-07T08:01:21.725344",
+    "IDF-Commander": "2023-10-07T08:01:26.728864",
+    "Defense-Minister": "2023-10-07T08:01:31.740087",
+    "Media-Channel-12": "2023-10-07T08:01:41.732175",
+    "Media-Channel-14": "2023-10-07T08:01:46.736688",
+    "Russia-President": "2023-10-07T08:01:56.728518",
+    "North-Korea-Supreme-Leader": "2023-10-07T08:02:01.728837",
+    "Egypt-President": "2023-10-07T07:53:41.574891",
+    "PLO-Prime-Minister": "2023-10-07T07:53:46.563046",
+    "Iran-Ayatollah": "2023-10-07T07:53:56.564028"
+  }
 }

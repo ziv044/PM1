@@ -49,6 +49,7 @@
                     <button class="tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="chat">Chat</button>
                     <button class="tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="simulation">Simulation</button>
                     <button class="tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="logs">Logs</button>
+                    <button class="tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="debug">Debug Console</button>
                 </nav>
             </div>
 
@@ -95,7 +96,12 @@
                                 </div>
                             </div>
 
-                            <div class="flex gap-4 mb-4">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Agent Category</label>
+                                <p id="detailAgentCategory" class="text-gray-900 bg-gray-100 p-2 rounded"></p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-4 mb-4">
                                 <label class="flex items-center">
                                     <input type="checkbox" id="detailIsEnemy" disabled class="mr-2">
                                     <span class="text-sm text-gray-700">Is Enemy</span>
@@ -107,6 +113,10 @@
                                 <label class="flex items-center">
                                     <input type="checkbox" id="detailIsEvilAxis" disabled class="mr-2">
                                     <span class="text-sm text-gray-700">Is Evil Axis</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="detailIsReportingGovernment" disabled class="mr-2">
+                                    <span class="text-sm text-gray-700">Reports to Government</span>
                                 </label>
                             </div>
 
@@ -187,7 +197,7 @@
 
                         <!-- Status Panel -->
                         <div class="bg-gray-100 p-4 rounded mb-6">
-                            <div class="grid grid-cols-4 gap-4">
+                            <div class="grid grid-cols-4 gap-4 mb-4">
                                 <div>
                                     <span class="text-sm text-gray-500">Status</span>
                                     <p id="simStatus" class="font-medium text-red-600">Stopped</p>
@@ -207,6 +217,25 @@
                                             class="w-16 border rounded px-2 py-1 text-sm">
                                         <span class="text-xs text-gray-600">sec/min</span>
                                         <button id="updateClockSpeedBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">Set</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Game Time Controls -->
+                            <div class="border-t pt-4 mt-2">
+                                <div class="flex items-center gap-4">
+                                    <div>
+                                        <span class="text-sm text-gray-500 block mb-1">Set Game Time</span>
+                                        <div class="flex items-center gap-2">
+                                            <input type="datetime-local" id="gameTimeInput"
+                                                class="border rounded px-2 py-1 text-sm"
+                                                value="2023-10-07T06:29">
+                                            <button id="setGameTimeBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-xs">Set Time</button>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <button id="saveSimStateBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm">
+                                            Save State
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -238,6 +267,156 @@
                             <button id="refreshLogsBtn" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm">Refresh</button>
                         </div>
                         <pre id="logsContent" class="bg-gray-900 text-green-400 p-4 rounded font-mono text-xs overflow-x-auto max-h-96 overflow-y-auto"></pre>
+                    </div>
+                </div>
+
+                <!-- Debug Console Tab -->
+                <div id="debugTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow">
+                        <!-- Debug Sub-tabs -->
+                        <div class="border-b px-4">
+                            <nav class="flex space-x-4">
+                                <button class="debug-subtab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-blue-600 text-blue-600" data-subtab="gameflow">Game Flow</button>
+                                <button class="debug-subtab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-subtab="agenttest">Agents Test</button>
+                            </nav>
+                        </div>
+
+                        <!-- Game Flow Sub-tab -->
+                        <div id="gameflowSubtab" class="debug-subtab-content p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium">Game Flow - Agent Activity</h3>
+                                <div class="flex gap-2">
+                                    <select id="gameflowAgentFilter" class="border border-gray-300 rounded px-3 py-1 text-sm">
+                                        <option value="">All Agents</option>
+                                    </select>
+                                    <select id="gameflowTypeFilter" class="border border-gray-300 rounded px-3 py-1 text-sm">
+                                        <option value="">All Types</option>
+                                        <option value="chat">Chat</option>
+                                        <option value="simulation">Simulation</option>
+                                        <option value="memory">Memory</option>
+                                        <option value="function">Function</option>
+                                    </select>
+                                    <button id="clearGameflowBtn" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm">Clear</button>
+                                    <button id="refreshGameflowBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">Refresh</button>
+                                </div>
+                            </div>
+
+                            <!-- Activity Timeline -->
+                            <div id="gameflowTimeline" class="bg-gray-900 text-gray-100 p-4 rounded font-mono text-xs max-h-[600px] overflow-y-auto">
+                                <p class="text-gray-500">No activity recorded yet. Interact with agents to see the flow.</p>
+                            </div>
+
+                            <!-- Stats Panel -->
+                            <div class="mt-4 grid grid-cols-4 gap-4">
+                                <div class="bg-gray-100 p-3 rounded">
+                                    <span class="text-sm text-gray-500">Total Calls</span>
+                                    <p id="statsTotalCalls" class="text-xl font-medium">0</p>
+                                </div>
+                                <div class="bg-gray-100 p-3 rounded">
+                                    <span class="text-sm text-gray-500">Active Agents</span>
+                                    <p id="statsActiveAgents" class="text-xl font-medium">0</p>
+                                </div>
+                                <div class="bg-gray-100 p-3 rounded">
+                                    <span class="text-sm text-gray-500">Avg Response Time</span>
+                                    <p id="statsAvgTime" class="text-xl font-medium">--</p>
+                                </div>
+                                <div class="bg-gray-100 p-3 rounded">
+                                    <span class="text-sm text-gray-500">Errors</span>
+                                    <p id="statsErrors" class="text-xl font-medium text-red-600">0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agents Test Sub-tab -->
+                        <div id="agenttestSubtab" class="debug-subtab-content hidden p-6">
+                            <div class="grid grid-cols-3 gap-6">
+                                <!-- Agent Selection & Info -->
+                                <div class="col-span-1">
+                                    <h3 class="text-lg font-medium mb-4">Select Agent</h3>
+                                    <select id="testAgentSelect" class="w-full border border-gray-300 rounded px-3 py-2 mb-4">
+                                        <option value="">-- Select an agent --</option>
+                                    </select>
+
+                                    <!-- Agent Info Panel -->
+                                    <div id="testAgentInfo" class="bg-gray-100 p-4 rounded hidden">
+                                        <h4 class="font-medium mb-2">Agent Info</h4>
+                                        <div class="text-sm space-y-1">
+                                            <p><span class="text-gray-500">Model:</span> <span id="testAgentModel">--</span></p>
+                                            <p><span class="text-gray-500">Entity Type:</span> <span id="testAgentEntityType">--</span></p>
+                                            <p><span class="text-gray-500">Category:</span> <span id="testAgentCategory">--</span></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Memory Injection -->
+                                    <div class="mt-4">
+                                        <h4 class="font-medium mb-2">Inject Memory</h4>
+                                        <textarea id="testMemoryInput" rows="3" placeholder="Enter memory to inject..."
+                                            class="w-full border border-gray-300 rounded px-3 py-2 text-sm mb-2"></textarea>
+                                        <button id="injectMemoryBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded text-sm" disabled>
+                                            Inject Memory
+                                        </button>
+                                    </div>
+
+                                    <!-- Current Memory Display -->
+                                    <div class="mt-4">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h4 class="font-medium">Current Memory</h4>
+                                            <button id="refreshTestMemoryBtn" class="text-blue-600 hover:text-blue-700 text-xs">Refresh</button>
+                                        </div>
+                                        <div id="testMemoryList" class="bg-gray-50 p-2 rounded text-xs max-h-40 overflow-y-auto">
+                                            <p class="text-gray-400">Select an agent to view memory</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clear Conversation -->
+                                    <div class="mt-4">
+                                        <button id="clearTestConversationBtn" class="w-full bg-red-100 hover:bg-red-200 text-red-700 py-2 rounded text-sm" disabled>
+                                            Clear Conversation History
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Test Chat Interface -->
+                                <div class="col-span-2 flex flex-col">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-lg font-medium">Test Chat</h3>
+                                        <div class="flex items-center gap-4 text-sm">
+                                            <label class="flex items-center gap-2">
+                                                <span class="text-gray-500">Max Tokens:</span>
+                                                <input type="number" id="testMaxTokens" value="1024" min="1" max="4096"
+                                                    class="w-20 border border-gray-300 rounded px-2 py-1">
+                                            </label>
+                                            <label class="flex items-center gap-2">
+                                                <span class="text-gray-500">Temp:</span>
+                                                <input type="number" id="testTemperature" value="1.0" min="0" max="2" step="0.1"
+                                                    class="w-16 border border-gray-300 rounded px-2 py-1">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chat Display -->
+                                    <div id="testChatMessages" class="flex-1 bg-gray-50 border rounded p-4 overflow-y-auto max-h-[400px] mb-4">
+                                        <p class="text-gray-400 text-center">Select an agent and start testing</p>
+                                    </div>
+
+                                    <!-- Chat Input -->
+                                    <div class="flex gap-2">
+                                        <input type="text" id="testChatInput" placeholder="Type a test message..."
+                                            class="flex-1 border border-gray-300 rounded-lg px-4 py-2" disabled>
+                                        <button id="sendTestChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg" disabled>
+                                            Send
+                                        </button>
+                                    </div>
+
+                                    <!-- Response Info -->
+                                    <div id="testResponseInfo" class="mt-2 text-xs text-gray-500 hidden">
+                                        <span>Last response: </span>
+                                        <span id="testResponseTime">--</span>ms |
+                                        <span id="testResponseTokens">--</span> tokens
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -290,7 +469,19 @@
                             </div>
                         </div>
 
-                        <div class="flex gap-4 mb-4">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Agent Category</label>
+                            <select id="formAgentCategory" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">-- Select Category --</option>
+                                <option value="Security Services">Security Services</option>
+                                <option value="Government Services">Government Services</option>
+                                <option value="Media">Media</option>
+                                <option value="International Affairs">International Affairs</option>
+                                <option value="Enemies">Enemies</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4 mb-4">
                             <label class="flex items-center">
                                 <input type="checkbox" id="formIsEnemy" class="mr-2">
                                 <span class="text-sm text-gray-700">Is Enemy</span>
@@ -302,6 +493,10 @@
                             <label class="flex items-center">
                                 <input type="checkbox" id="formIsEvilAxis" class="mr-2">
                                 <span class="text-sm text-gray-700">Is Evil Axis</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="formIsReportingGovernment" class="mr-2">
+                                <span class="text-sm text-gray-700">Reports to Government</span>
                             </label>
                         </div>
 

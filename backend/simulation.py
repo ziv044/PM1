@@ -10,6 +10,7 @@ import threading
 import json
 import uuid
 import re
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -75,7 +76,7 @@ class GameClock:
                 self.game_time = initial_time
             elif self.game_time is None:
                 self.game_time = DEFAULT_START_TIME
-            self._start_real_time = asyncio.get_event_loop().time() if asyncio.get_event_loop().is_running() else 0
+            self._start_real_time = time.time()
             self._start_game_time = self.game_time
             self.is_running = True
             logger.info(f"Game clock started at {self.game_time.isoformat()}")
@@ -93,10 +94,7 @@ class GameClock:
         if not self._start_real_time or not self._start_game_time:
             return self.game_time or DEFAULT_START_TIME
 
-        try:
-            elapsed_real = asyncio.get_event_loop().time() - self._start_real_time
-        except RuntimeError:
-            elapsed_real = 0
+        elapsed_real = time.time() - self._start_real_time
 
         # Convert real seconds to game minutes
         elapsed_game_minutes = elapsed_real / self.speed
@@ -120,12 +118,18 @@ class GameClock:
                 # Capture current time before changing speed
                 self.game_time = self._calculate_current_time()
                 self._start_game_time = self.game_time
-                try:
-                    self._start_real_time = asyncio.get_event_loop().time()
-                except RuntimeError:
-                    pass
+                self._start_real_time = time.time()
             self.speed = speed
             logger.info(f"Clock speed set to {speed} seconds per game minute")
+
+    def set_game_time(self, new_time: datetime):
+        """Set the game clock to a specific time."""
+        with self._lock:
+            self.game_time = new_time
+            if self.is_running:
+                self._start_game_time = new_time
+                self._start_real_time = time.time()
+            logger.info(f"Game clock set to {new_time.isoformat()}")
 
 
 class SimulationState:
@@ -204,13 +208,9 @@ PRIMARY OBJECTIVES:
 HARD RULES (You MUST follow these):
 {hard_rules}
 
-=== YOUR MEMORY ===
-Recent actions you have taken:
-{recent_own_actions}
-
-=== WORLD CONTEXT ===
-Recent public events:
-{recent_public_events}
+=== MEMORY ===
+Recent events (YOUR actions marked with "YOU:"):
+{memory}
 
 === INSTRUCTIONS ===
 Based on your agenda, objectives, and the current situation, decide on your next action.
@@ -238,17 +238,9 @@ class EventProcessor:
 
     def build_prompt(self, agent_id: str, agent: dict, game_time: str) -> str:
         """Build the LLM prompt for an entity action."""
-        # Get agent's recent actions
-        own_actions = self.state.get_agent_events(agent_id, limit=5)
-        own_actions_str = "\n".join([
-            f"[{e.timestamp}] {e.summary}" for e in own_actions
-        ]) or "No recent actions."
-
-        # Get public events
-        public_events = self.state.get_recent_events(limit=10, public_only=True)
-        public_events_str = "\n".join([
-            f"[{e.timestamp}] {e.agent_id}: {e.summary}" for e in public_events
-        ]) or "No recent public events."
+        # Get agent's memory (last 20 entries) - contains both own actions and world events
+        memory = app.agent_memory.get(agent_id, [])
+        memory_str = "\n".join(memory[-20:]) or "No events yet."
 
         return ENTITY_ACTION_PROMPT.format(
             agent_id=agent_id,
@@ -256,8 +248,7 @@ class EventProcessor:
             agenda=agent.get("agenda", "Not specified"),
             primary_objectives=agent.get("primary_objectives", "Not specified"),
             hard_rules=agent.get("hard_rules", "None"),
-            recent_own_actions=own_actions_str,
-            recent_public_events=public_events_str
+            memory=memory_str
         )
 
     def parse_llm_response(self, agent_id: str, response: str, game_time: str) -> Optional[SimulationEvent]:
@@ -292,17 +283,20 @@ class EventProcessor:
             logger.error(f"Error parsing LLM response for {agent_id}: {e}")
             return None
 
-    def update_affected_memories(self, event: SimulationEvent):
-        """Update affected entities' memories with the event (if public)."""
-        if not event.is_public:
-            return
+    def broadcast_event_to_memories(self, event: SimulationEvent):
+        """Add event to relevant agents' memories."""
+        # 1. Actor ALWAYS remembers their own action
+        own_memory = f"[{event.timestamp}] YOU: {event.summary}"
+        app.add_memory(event.agent_id, own_memory)
+        logger.info(f"Memory added to {event.agent_id}: '{own_memory}'")
 
-        memory_entry = f"[{event.timestamp}] {event.agent_id}: {event.summary}"
-
-        for affected_id in event.affected_agents:
-            if affected_id in app.agents:
-                app.add_memory(affected_id, memory_entry)
-                logger.debug(f"Added memory to {affected_id}: {memory_entry}")
+        # 2. If public, ALL other agents learn about it
+        if event.is_public:
+            memory_entry = f"[{event.timestamp}] {event.agent_id}: {event.summary}"
+            for other_id in app.agents:
+                if other_id != event.agent_id:
+                    app.add_memory(other_id, memory_entry)
+            logger.info(f"Public event broadcast to all agents: '{memory_entry}'")
 
 
 class EntityScheduler:
@@ -320,7 +314,7 @@ class EntityScheduler:
                 entities[agent_id] = agent
         return entities
 
-    async def schedule_entity(self, agent_id: str, agent: dict):
+    async def schedule_entity(self, agent_id: str, agent: dict, initial_delay: float = 0):
         """Schedule an entity to act at intervals."""
         frequency_minutes = agent.get("event_frequency", 60)
         # Convert game minutes to real seconds
@@ -328,12 +322,19 @@ class EntityScheduler:
 
         logger.info(f"Scheduling {agent_id} to act every {frequency_minutes} game minutes ({interval_seconds}s real)")
 
+        # Staggered initial delay so entities don't all fire at once
+        if initial_delay > 0:
+            await asyncio.sleep(initial_delay)
+
         while self.manager.state.is_running:
             try:
-                await asyncio.sleep(interval_seconds)
+                # Trigger action first, then wait
+                await self.trigger_action(agent_id)
                 if not self.manager.state.is_running:
                     break
-                await self.trigger_action(agent_id)
+                # Recalculate interval in case clock speed changed
+                interval_seconds = frequency_minutes * self.manager.clock.speed
+                await asyncio.sleep(interval_seconds)
             except asyncio.CancelledError:
                 break
             except Exception as e:
@@ -353,8 +354,10 @@ class EntityScheduler:
         # Build prompt
         prompt = self.manager.event_processor.build_prompt(agent_id, agent, game_time)
 
-        # Call LLM
-        result = app.interact_simple(prompt, model=agent.get("model", "claude-sonnet-4-20250514"))
+        # Call LLM in thread pool to avoid blocking the event loop
+        result = await asyncio.to_thread(
+            app.interact_simple, prompt, model=agent.get("model", "claude-sonnet-4-20250514")
+        )
 
         if result.get("status") == "error":
             logger.error(f"LLM error for {agent_id}: {result.get('message')}")
@@ -370,8 +373,8 @@ class EntityScheduler:
             if event.action_type != "none":
                 # Store event
                 self.manager.state.add_event(event)
-                # Update affected entities' memories
-                self.manager.event_processor.update_affected_memories(event)
+                # Broadcast event to all agents' memories
+                self.manager.event_processor.broadcast_event_to_memories(event)
                 logger.info(f"Event created: [{event.agent_id}] {event.summary} (public={event.is_public})")
             else:
                 logger.debug(f"{agent_id} chose to take no action")
@@ -381,9 +384,12 @@ class EntityScheduler:
         entities = self.get_entity_agents()
         logger.info(f"Starting scheduler for {len(entities)} entities")
 
+        # Stagger entity starts by 5 seconds each to avoid LLM rate limits
+        delay = 0
         for agent_id, agent in entities.items():
-            task = asyncio.create_task(self.schedule_entity(agent_id, agent))
+            task = asyncio.create_task(self.schedule_entity(agent_id, agent, initial_delay=delay))
             self._tasks[agent_id] = task
+            delay += 5  # 5 second stagger between entity first actions
 
     async def stop_all(self):
         """Stop all entity schedulers."""
@@ -525,8 +531,26 @@ class SimulationManager:
             return {"status": "error", "message": "Speed must be positive"}
         self.clock.set_speed(speed)
         self.state.clock_speed = speed
+        self.state.game_clock = self.clock.get_game_time_str()
         self.state.save()
-        return {"status": "success", "clock_speed": speed}
+        return {"status": "success", "clock_speed": speed, "game_time": self.state.game_clock}
+
+    def set_game_time(self, game_time_str: str) -> dict:
+        """Set the game clock to a specific time."""
+        try:
+            new_time = datetime.fromisoformat(game_time_str)
+            self.clock.set_game_time(new_time)
+            self.state.game_clock = self.clock.get_game_time_str()
+            self.state.save()
+            return {"status": "success", "game_time": self.state.game_clock}
+        except ValueError as e:
+            return {"status": "error", "message": f"Invalid datetime format: {e}"}
+
+    def save_state(self) -> dict:
+        """Manually save the current simulation state."""
+        self.state.game_clock = self.clock.get_game_time_str()
+        self.state.save()
+        return {"status": "success", "message": "State saved", "game_time": self.state.game_clock}
 
 
 # Module-level functions for API access
@@ -559,3 +583,15 @@ def set_clock_speed(speed: float) -> dict:
     """Set the clock speed."""
     manager = SimulationManager.get_instance()
     return manager.set_clock_speed(speed)
+
+
+def set_game_time(game_time_str: str) -> dict:
+    """Set the game clock to a specific time."""
+    manager = SimulationManager.get_instance()
+    return manager.set_game_time(game_time_str)
+
+
+def save_state() -> dict:
+    """Manually save the current simulation state."""
+    manager = SimulationManager.get_instance()
+    return manager.save_state()

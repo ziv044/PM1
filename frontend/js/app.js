@@ -9,7 +9,11 @@ const state = {
     currentTab: 'details',
     isEditing: false,
     simulationPollingInterval: null,
-    simulationStatus: null
+    simulationStatus: null,
+    // Debug console state
+    debugSubtab: 'gameflow',
+    testAgentId: null,
+    debugPollingInterval: null
 };
 
 /**
@@ -58,12 +62,16 @@ async function selectAgent(agentId) {
 }
 
 /**
- * Load agent data for all tabs
+ * Load agent data for all tabs (fetches fresh data from API)
  */
 async function loadAgentData(agentId) {
     try {
-        const agent = state.agents[agentId];
-        if (agent) {
+        // Fetch fresh agent data from API to get current memory/skills/conversation
+        const result = await api.getAgent(agentId);
+        if (result.status === 'success' && result.agent) {
+            const agent = result.agent;
+            // Update cache with fresh data
+            state.agents[agentId] = agent;
             components.renderAgentDetails(agent, agentId);
             components.renderSkillsList(agent.skills);
             components.renderMemoryList(agent.memory);
@@ -100,8 +108,22 @@ function setupEventListeners() {
             }
             // Load simulation status on demand
             if (tab === 'simulation') {
-                loadSimulationStatus();
+                loadSimulationStatus().then(() => {
+                    // Start polling if simulation is already running
+                    if (state.simulationStatus && state.simulationStatus.is_running) {
+                        startSimulationPolling();
+                    }
+                });
                 loadSimulationEvents();
+            } else {
+                // Stop polling when leaving simulation tab
+                stopSimulationPolling();
+            }
+            // Load debug console on demand
+            if (tab === 'debug') {
+                populateDebugAgentSelects();
+                loadGameFlow();
+                loadDebugStats();
             }
         });
     });
@@ -117,9 +139,11 @@ function setupEventListeners() {
         // Reset simulation fields
         document.getElementById('formEntityType').value = 'System';
         document.getElementById('formEventFrequency').value = '60';
+        document.getElementById('formAgentCategory').value = '';
         document.getElementById('formIsEnemy').checked = false;
         document.getElementById('formIsWest').checked = false;
         document.getElementById('formIsEvilAxis').checked = false;
+        document.getElementById('formIsReportingGovernment').checked = false;
         document.getElementById('formAgenda').value = '';
         document.getElementById('formPrimaryObjectives').value = '';
         document.getElementById('formHardRules').value = '';
@@ -141,9 +165,11 @@ function setupEventListeners() {
         // Populate simulation fields
         document.getElementById('formEntityType').value = agent.entity_type || 'System';
         document.getElementById('formEventFrequency').value = agent.event_frequency || 60;
+        document.getElementById('formAgentCategory').value = agent.agent_category || '';
         document.getElementById('formIsEnemy').checked = agent.is_enemy || false;
         document.getElementById('formIsWest').checked = agent.is_west || false;
         document.getElementById('formIsEvilAxis').checked = agent.is_evil_axis || false;
+        document.getElementById('formIsReportingGovernment').checked = agent.is_reporting_government || false;
         document.getElementById('formAgenda').value = agent.agenda || '';
         document.getElementById('formPrimaryObjectives').value = agent.primary_objectives || '';
         document.getElementById('formHardRules').value = agent.hard_rules || '';
@@ -192,9 +218,11 @@ function setupEventListeners() {
             system_prompt: document.getElementById('formSystemPrompt').value,
             entity_type: document.getElementById('formEntityType').value,
             event_frequency: parseInt(document.getElementById('formEventFrequency').value) || 60,
+            agent_category: document.getElementById('formAgentCategory').value,
             is_enemy: document.getElementById('formIsEnemy').checked,
             is_west: document.getElementById('formIsWest').checked,
             is_evil_axis: document.getElementById('formIsEvilAxis').checked,
+            is_reporting_government: document.getElementById('formIsReportingGovernment').checked,
             agenda: document.getElementById('formAgenda').value,
             primary_objectives: document.getElementById('formPrimaryObjectives').value,
             hard_rules: document.getElementById('formHardRules').value
@@ -317,6 +345,44 @@ function setupEventListeners() {
     document.getElementById('stopSimBtn').addEventListener('click', stopSimulation);
     document.getElementById('updateClockSpeedBtn').addEventListener('click', updateClockSpeed);
     document.getElementById('refreshEventsBtn').addEventListener('click', loadSimulationEvents);
+    document.getElementById('setGameTimeBtn').addEventListener('click', setGameTime);
+    document.getElementById('saveSimStateBtn').addEventListener('click', saveSimulationState);
+
+    // Debug Console controls
+    setupDebugConsoleListeners();
+}
+
+/**
+ * Set up debug console event listeners
+ */
+function setupDebugConsoleListeners() {
+    // Debug sub-tab clicks
+    document.querySelectorAll('.debug-subtab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const subtab = btn.dataset.subtab;
+            state.debugSubtab = subtab;
+            showDebugSubtab(subtab);
+        });
+    });
+
+    // Game Flow controls
+    document.getElementById('refreshGameflowBtn').addEventListener('click', loadGameFlow);
+    document.getElementById('clearGameflowBtn').addEventListener('click', clearGameFlow);
+    document.getElementById('gameflowAgentFilter').addEventListener('change', loadGameFlow);
+    document.getElementById('gameflowTypeFilter').addEventListener('change', loadGameFlow);
+
+    // Agents Test controls
+    document.getElementById('testAgentSelect').addEventListener('change', onTestAgentChange);
+    document.getElementById('injectMemoryBtn').addEventListener('click', injectTestMemory);
+    document.getElementById('refreshTestMemoryBtn').addEventListener('click', loadTestAgentMemory);
+    document.getElementById('clearTestConversationBtn').addEventListener('click', clearTestConversation);
+    document.getElementById('sendTestChatBtn').addEventListener('click', sendTestChat);
+    document.getElementById('testChatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendTestChat();
+        }
+    });
 }
 
 /**
@@ -456,6 +522,7 @@ async function updateClockSpeed() {
         const result = await api.setClockSpeed(speed);
         if (result.status === 'success') {
             components.showToast(`Clock speed set to ${speed} sec/min`, 'success');
+            await loadSimulationStatus();
         }
     } catch (error) {
         console.error('Failed to update clock speed:', error);
@@ -464,9 +531,58 @@ async function updateClockSpeed() {
 }
 
 /**
+ * Set game time
+ */
+async function setGameTime() {
+    try {
+        const gameTimeInput = document.getElementById('gameTimeInput').value;
+        if (!gameTimeInput) {
+            components.showToast('Please select a date and time', 'error');
+            return;
+        }
+
+        // Convert to ISO format
+        const gameTime = new Date(gameTimeInput).toISOString();
+        const result = await api.setGameTime(gameTime);
+
+        if (result.status === 'success') {
+            components.showToast('Game time updated', 'success');
+            await loadSimulationStatus();
+        } else {
+            components.showToast(result.message || 'Failed to set game time', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to set game time:', error);
+        components.showToast('Failed to set game time', 'error');
+    }
+}
+
+/**
+ * Save simulation state
+ */
+async function saveSimulationState() {
+    try {
+        const result = await api.saveSimulationState();
+
+        if (result.status === 'success') {
+            components.showToast('Simulation state saved', 'success');
+        } else {
+            components.showToast(result.message || 'Failed to save state', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to save simulation state:', error);
+        components.showToast('Failed to save state', 'error');
+    }
+}
+
+/**
  * Start polling for simulation updates
  */
 function startSimulationPolling() {
+    // Don't start if already polling
+    if (state.simulationPollingInterval) {
+        return;
+    }
     // Poll every 2 seconds for status updates
     state.simulationPollingInterval = setInterval(async () => {
         await loadSimulationStatus();
@@ -494,6 +610,7 @@ function renderSimulationStatus(status) {
     const startBtn = document.getElementById('startSimBtn');
     const stopBtn = document.getElementById('stopSimBtn');
     const clockSpeedInput = document.getElementById('clockSpeedInput');
+    const gameTimeInput = document.getElementById('gameTimeInput');
 
     if (status.is_running) {
         statusEl.textContent = 'Running';
@@ -517,6 +634,9 @@ function renderSimulationStatus(status) {
             hour: '2-digit',
             minute: '2-digit'
         });
+        // Update datetime-local input with current game time
+        const localIso = dt.toISOString().slice(0, 16);
+        gameTimeInput.value = localIso;
     } else {
         clockEl.textContent = '--';
     }
@@ -578,6 +698,363 @@ function getActionTypeColor(actionType) {
         'none': 'text-gray-500'
     };
     return colors[actionType] || 'text-gray-300';
+}
+
+// ========== Debug Console Functions ==========
+
+/**
+ * Show a debug sub-tab
+ */
+function showDebugSubtab(subtab) {
+    // Update button styles
+    document.querySelectorAll('.debug-subtab-btn').forEach(btn => {
+        if (btn.dataset.subtab === subtab) {
+            btn.classList.add('border-blue-600', 'text-blue-600');
+            btn.classList.remove('border-transparent');
+        } else {
+            btn.classList.remove('border-blue-600', 'text-blue-600');
+            btn.classList.add('border-transparent');
+        }
+    });
+
+    // Show/hide content
+    document.querySelectorAll('.debug-subtab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    document.getElementById(`${subtab}Subtab`).classList.remove('hidden');
+}
+
+/**
+ * Populate agent select dropdowns in debug console
+ */
+function populateDebugAgentSelects() {
+    const agentIds = Object.keys(state.agents);
+
+    // Populate Game Flow filter
+    const gameflowSelect = document.getElementById('gameflowAgentFilter');
+    const currentGameflowValue = gameflowSelect.value;
+    gameflowSelect.innerHTML = '<option value="">All Agents</option>';
+    agentIds.forEach(id => {
+        gameflowSelect.innerHTML += `<option value="${id}">${id}</option>`;
+    });
+    gameflowSelect.value = currentGameflowValue;
+
+    // Populate Agents Test select
+    const testSelect = document.getElementById('testAgentSelect');
+    const currentTestValue = testSelect.value;
+    testSelect.innerHTML = '<option value="">-- Select an agent --</option>';
+    agentIds.forEach(id => {
+        testSelect.innerHTML += `<option value="${id}">${id}</option>`;
+    });
+    testSelect.value = currentTestValue;
+}
+
+/**
+ * Load game flow activity log
+ */
+async function loadGameFlow() {
+    try {
+        const agentFilter = document.getElementById('gameflowAgentFilter').value;
+        const typeFilter = document.getElementById('gameflowTypeFilter').value;
+
+        const result = await api.getActivityLog(agentFilter || null, typeFilter || null, 100);
+        renderGameFlow(result.activities || []);
+    } catch (error) {
+        console.error('Failed to load game flow:', error);
+    }
+}
+
+/**
+ * Render game flow timeline
+ */
+function renderGameFlow(activities) {
+    const timeline = document.getElementById('gameflowTimeline');
+
+    if (activities.length === 0) {
+        timeline.innerHTML = '<p class="text-gray-500">No activity recorded yet. Interact with agents to see the flow.</p>';
+        return;
+    }
+
+    timeline.innerHTML = activities.map(activity => {
+        const dt = new Date(activity.timestamp);
+        const timeStr = dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = dt.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
+
+        const typeColors = {
+            'chat': 'text-blue-400',
+            'simulation': 'text-green-400',
+            'memory': 'text-purple-400',
+            'function': 'text-yellow-400'
+        };
+        const typeColor = typeColors[activity.type] || 'text-gray-400';
+
+        const statusIcon = activity.success ?
+            '<span class="text-green-400">✓</span>' :
+            '<span class="text-red-400">✗</span>';
+
+        const durationStr = activity.duration_ms ?
+            `<span class="text-gray-500">${activity.duration_ms}ms</span>` : '';
+
+        return `<div class="mb-2 pb-2 border-b border-gray-700 flex items-start gap-2">
+            <span class="text-gray-500 whitespace-nowrap">[${dateStr} ${timeStr}]</span>
+            ${statusIcon}
+            <span class="${typeColor}">[${activity.type.toUpperCase()}]</span>
+            <span class="text-cyan-400">${activity.agent_id || 'system'}:</span>
+            <span class="text-white flex-1">${activity.action}</span>
+            ${durationStr}
+            ${activity.error ? `<span class="text-red-400 text-xs">${activity.error}</span>` : ''}
+        </div>
+        <div class="text-gray-400 text-xs mb-3 ml-4">${activity.details || ''}</div>`;
+    }).join('');
+}
+
+/**
+ * Load debug statistics
+ */
+async function loadDebugStats() {
+    try {
+        const result = await api.getActivityStats();
+        const stats = result.stats || {};
+
+        document.getElementById('statsTotalCalls').textContent = stats.total_calls || 0;
+        document.getElementById('statsActiveAgents').textContent = stats.active_agents || 0;
+        document.getElementById('statsAvgTime').textContent = stats.avg_response_time_ms ?
+            `${stats.avg_response_time_ms}ms` : '--';
+        document.getElementById('statsErrors').textContent = stats.errors || 0;
+    } catch (error) {
+        console.error('Failed to load debug stats:', error);
+    }
+}
+
+/**
+ * Clear game flow activity log
+ */
+async function clearGameFlow() {
+    try {
+        await api.clearActivityLog();
+        components.showToast('Activity log cleared', 'success');
+        await loadGameFlow();
+        await loadDebugStats();
+    } catch (error) {
+        console.error('Failed to clear activity log:', error);
+        components.showToast('Failed to clear activity log', 'error');
+    }
+}
+
+/**
+ * Handle test agent selection change
+ */
+async function onTestAgentChange() {
+    const agentId = document.getElementById('testAgentSelect').value;
+    state.testAgentId = agentId;
+
+    const infoPanel = document.getElementById('testAgentInfo');
+    const chatInput = document.getElementById('testChatInput');
+    const sendBtn = document.getElementById('sendTestChatBtn');
+    const memoryBtn = document.getElementById('injectMemoryBtn');
+    const clearBtn = document.getElementById('clearTestConversationBtn');
+
+    if (!agentId) {
+        infoPanel.classList.add('hidden');
+        chatInput.disabled = true;
+        sendBtn.disabled = true;
+        memoryBtn.disabled = true;
+        clearBtn.disabled = true;
+        document.getElementById('testChatMessages').innerHTML =
+            '<p class="text-gray-400 text-center">Select an agent and start testing</p>';
+        document.getElementById('testMemoryList').innerHTML =
+            '<p class="text-gray-400">Select an agent to view memory</p>';
+        return;
+    }
+
+    // Enable controls
+    chatInput.disabled = false;
+    sendBtn.disabled = false;
+    memoryBtn.disabled = false;
+    clearBtn.disabled = false;
+
+    // Load agent info
+    const agent = state.agents[agentId];
+    if (agent) {
+        infoPanel.classList.remove('hidden');
+        document.getElementById('testAgentModel').textContent = agent.model || '--';
+        document.getElementById('testAgentEntityType').textContent = agent.entity_type || '--';
+        document.getElementById('testAgentCategory').textContent = agent.agent_category || '--';
+    }
+
+    // Load memory and conversation
+    await loadTestAgentMemory();
+    await loadTestConversation();
+}
+
+/**
+ * Load test agent memory
+ */
+async function loadTestAgentMemory() {
+    if (!state.testAgentId) return;
+
+    try {
+        const result = await api.getMemory(state.testAgentId);
+        const memoryList = document.getElementById('testMemoryList');
+
+        if (!result.memory || result.memory.length === 0) {
+            memoryList.innerHTML = '<p class="text-gray-400">No memory items</p>';
+            return;
+        }
+
+        memoryList.innerHTML = result.memory.map((item, index) =>
+            `<div class="p-1 bg-white rounded mb-1 border-l-2 border-purple-400">
+                <span class="text-gray-500">${index + 1}.</span> ${item}
+            </div>`
+        ).join('');
+    } catch (error) {
+        console.error('Failed to load memory:', error);
+    }
+}
+
+/**
+ * Load test agent conversation
+ */
+async function loadTestConversation() {
+    if (!state.testAgentId) return;
+
+    try {
+        const result = await api.getConversation(state.testAgentId);
+        const chatMessages = document.getElementById('testChatMessages');
+
+        if (!result.conversation || result.conversation.length === 0) {
+            chatMessages.innerHTML = '<p class="text-gray-400 text-center">No conversation history. Start chatting!</p>';
+            return;
+        }
+
+        chatMessages.innerHTML = result.conversation.map(msg => {
+            const isUser = msg.role === 'user';
+            return `<div class="mb-3 ${isUser ? 'text-right' : ''}">
+                <span class="text-xs text-gray-500">${msg.role}</span>
+                <div class="inline-block max-w-[80%] p-2 rounded ${isUser ? 'bg-blue-100' : 'bg-gray-200'} text-left">
+                    ${msg.content}
+                </div>
+            </div>`;
+        }).join('');
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    } catch (error) {
+        console.error('Failed to load conversation:', error);
+    }
+}
+
+/**
+ * Inject memory into test agent
+ */
+async function injectTestMemory() {
+    if (!state.testAgentId) return;
+
+    const memoryInput = document.getElementById('testMemoryInput');
+    const memory = memoryInput.value.trim();
+    if (!memory) return;
+
+    try {
+        await api.addMemory(state.testAgentId, memory);
+        memoryInput.value = '';
+        components.showToast('Memory injected successfully', 'success');
+        await loadTestAgentMemory();
+        // Also refresh the main agent data if this is the selected agent
+        if (state.testAgentId === state.selectedAgentId) {
+            await loadAgents();
+            await loadAgentData(state.selectedAgentId);
+        }
+    } catch (error) {
+        console.error('Failed to inject memory:', error);
+        components.showToast('Failed to inject memory', 'error');
+    }
+}
+
+/**
+ * Clear test agent conversation
+ */
+async function clearTestConversation() {
+    if (!state.testAgentId) return;
+
+    if (!confirm('Are you sure you want to clear the conversation history?')) return;
+
+    try {
+        await api.clearConversation(state.testAgentId);
+        components.showToast('Conversation cleared', 'success');
+        await loadTestConversation();
+        // Also refresh the main agent data if this is the selected agent
+        if (state.testAgentId === state.selectedAgentId) {
+            await loadAgents();
+            await loadAgentData(state.selectedAgentId);
+        }
+    } catch (error) {
+        console.error('Failed to clear conversation:', error);
+        components.showToast('Failed to clear conversation', 'error');
+    }
+}
+
+/**
+ * Send test chat message
+ */
+async function sendTestChat() {
+    if (!state.testAgentId) return;
+
+    const input = document.getElementById('testChatInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    input.value = '';
+
+    // Add user message to UI
+    const chatMessages = document.getElementById('testChatMessages');
+    // Clear placeholder if present
+    if (chatMessages.querySelector('.text-gray-400')) {
+        chatMessages.innerHTML = '';
+    }
+
+    chatMessages.innerHTML += `<div class="mb-3 text-right">
+        <span class="text-xs text-gray-500">user</span>
+        <div class="inline-block max-w-[80%] p-2 rounded bg-blue-100 text-left">${message}</div>
+    </div>`;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    // Disable controls
+    const sendBtn = document.getElementById('sendTestChatBtn');
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending...';
+
+    const startTime = Date.now();
+
+    try {
+        const maxTokens = parseInt(document.getElementById('testMaxTokens').value) || 1024;
+        const temperature = parseFloat(document.getElementById('testTemperature').value) || 1.0;
+
+        const result = await api.sendMessage(state.testAgentId, message, maxTokens, temperature);
+        const duration = Date.now() - startTime;
+
+        if (result.status === 'success') {
+            chatMessages.innerHTML += `<div class="mb-3">
+                <span class="text-xs text-gray-500">assistant</span>
+                <div class="inline-block max-w-[80%] p-2 rounded bg-gray-200 text-left">${result.response}</div>
+            </div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Show response info
+            document.getElementById('testResponseInfo').classList.remove('hidden');
+            document.getElementById('testResponseTime').textContent = result.duration_ms || duration;
+            document.getElementById('testResponseTokens').textContent = '--';
+        }
+
+        // Refresh game flow to show the new activity
+        await loadGameFlow();
+        await loadDebugStats();
+
+    } catch (error) {
+        console.error('Failed to send test message:', error);
+        components.showToast('Failed to send message', 'error');
+    } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Send';
+    }
 }
 
 // Initialize when DOM is ready

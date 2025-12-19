@@ -34,9 +34,11 @@ const components = {
         // Simulation properties
         document.getElementById('detailEntityType').textContent = agent.entity_type || 'System';
         document.getElementById('detailEventFrequency').textContent = agent.event_frequency || 60;
+        document.getElementById('detailAgentCategory').textContent = agent.agent_category || '(Not set)';
         document.getElementById('detailIsEnemy').checked = agent.is_enemy || false;
         document.getElementById('detailIsWest').checked = agent.is_west || false;
         document.getElementById('detailIsEvilAxis').checked = agent.is_evil_axis || false;
+        document.getElementById('detailIsReportingGovernment').checked = agent.is_reporting_government || false;
         document.getElementById('detailAgenda').textContent = agent.agenda || '(Not set)';
         document.getElementById('detailPrimaryObjectives').textContent = agent.primary_objectives || '(Not set)';
         document.getElementById('detailHardRules').textContent = agent.hard_rules || '(Not set)';

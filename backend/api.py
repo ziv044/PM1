@@ -90,6 +90,8 @@ class AgentCreate(BaseModel):
     is_enemy: bool = False
     is_west: bool = False
     is_evil_axis: bool = False
+    agent_category: str = ""
+    is_reporting_government: bool = False
     agenda: str = ""
     primary_objectives: str = ""
     hard_rules: str = ""
@@ -110,6 +112,8 @@ class AgentUpdate(BaseModel):
     is_enemy: Optional[bool] = None
     is_west: Optional[bool] = None
     is_evil_axis: Optional[bool] = None
+    agent_category: Optional[str] = None
+    is_reporting_government: Optional[bool] = None
     agenda: Optional[str] = None
     primary_objectives: Optional[str] = None
     hard_rules: Optional[str] = None
@@ -179,6 +183,8 @@ def create_agent(agent: AgentCreate):
         is_enemy=agent.is_enemy,
         is_west=agent.is_west,
         is_evil_axis=agent.is_evil_axis,
+        agent_category=agent.agent_category,
+        is_reporting_government=agent.is_reporting_government,
         agenda=agent.agenda,
         primary_objectives=agent.primary_objectives,
         hard_rules=agent.hard_rules
@@ -199,6 +205,8 @@ def update_agent(agent_id: str, agent: AgentUpdate):
         is_enemy=agent.is_enemy,
         is_west=agent.is_west,
         is_evil_axis=agent.is_evil_axis,
+        agent_category=agent.agent_category,
+        is_reporting_government=agent.is_reporting_government,
         agenda=agent.agenda,
         primary_objectives=agent.primary_objectives,
         hard_rules=agent.hard_rules
@@ -313,6 +321,10 @@ class ClockSpeedUpdate(BaseModel):
     clock_speed: float
 
 
+class GameTimeUpdate(BaseModel):
+    game_time: str  # ISO format datetime string
+
+
 # Simulation endpoints
 @api.post("/simulation/start")
 async def start_simulation(config: SimulationConfig = None):
@@ -356,6 +368,63 @@ def update_clock_speed(update: ClockSpeedUpdate):
     """Update the simulation clock speed."""
     import simulation
     return simulation.set_clock_speed(update.clock_speed)
+
+
+@api.put("/simulation/game-time")
+def update_game_time(update: GameTimeUpdate):
+    """Set the simulation game clock to a specific time."""
+    import simulation
+    return simulation.set_game_time(update.game_time)
+
+
+@api.post("/simulation/save")
+def save_simulation_state():
+    """Manually save the current simulation state."""
+    import simulation
+    return simulation.save_state()
+
+
+# Debug Console endpoints
+
+@api.get("/debug/activity")
+def get_debug_activity(
+    agent_id: Optional[str] = None,
+    activity_type: Optional[str] = None,
+    limit: int = 100
+):
+    """Get activity log for the debug console."""
+    activities = app.get_activity_log(agent_id, activity_type, limit)
+    return {"status": "success", "activities": activities}
+
+
+@api.get("/debug/stats")
+def get_debug_stats():
+    """Get activity statistics for the debug console."""
+    stats = app.get_activity_stats()
+    return {"status": "success", "stats": stats}
+
+
+@api.delete("/debug/activity")
+def clear_debug_activity():
+    """Clear the activity log."""
+    return app.clear_activity_log()
+
+
+@api.delete("/agents/{agent_id}/conversation")
+def clear_agent_conversation(agent_id: str):
+    """Clear an agent's conversation history."""
+    validate_agent_id(agent_id)
+    result = app.clear_conversation(agent_id)
+    if result.get("status") == "error":
+        raise NotFoundError(result["message"])
+    return result
+
+
+@api.post("/agents/regenerate-prompts")
+def regenerate_all_prompts():
+    """Regenerate system_prompt for all agents from their component fields."""
+    result = app.regenerate_all_system_prompts()
+    return result
 
 
 # Mount static files for frontend (CSS, JS)

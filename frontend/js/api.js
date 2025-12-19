@@ -217,5 +217,72 @@ const api = {
             body: JSON.stringify({ clock_speed: speed })
         });
         return response.json();
+    },
+
+    /**
+     * Set game clock time
+     */
+    async setGameTime(gameTime) {
+        const response = await fetch(`${API_BASE}/simulation/game-time`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ game_time: gameTime })
+        });
+        return response.json();
+    },
+
+    /**
+     * Save simulation state
+     */
+    async saveSimulationState() {
+        const response = await fetch(`${API_BASE}/simulation/save`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    // Debug Console API methods
+
+    /**
+     * Get activity log for debug console
+     */
+    async getActivityLog(agentId = null, activityType = null, limit = 100) {
+        let url = `${API_BASE}/debug/activity?limit=${limit}`;
+        if (agentId) url += `&agent_id=${encodeURIComponent(agentId)}`;
+        if (activityType) url += `&activity_type=${encodeURIComponent(activityType)}`;
+        const response = await fetch(url);
+        return response.json();
+    },
+
+    /**
+     * Get activity statistics
+     */
+    async getActivityStats() {
+        const response = await fetch(`${API_BASE}/debug/stats`);
+        return response.json();
+    },
+
+    /**
+     * Clear activity log
+     */
+    async clearActivityLog() {
+        const response = await fetch(`${API_BASE}/debug/activity`, {
+            method: 'DELETE'
+        });
+        return response.json();
+    },
+
+    /**
+     * Clear agent conversation history
+     */
+    async clearConversation(agentId) {
+        const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}/conversation`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to clear conversation');
+        }
+        return response.json();
     }
 };
