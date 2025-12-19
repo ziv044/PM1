@@ -1,3 +1,7 @@
 anthropic
 python-dotenv
 pytest
+pytest-asyncio
+httpx
+fastapi
+uvicorn[standard]

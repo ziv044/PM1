@@ -1,0 +1,23 @@
+{
+  "agents": {
+    "test-agent": {
+      "model": "claude-sonnet-4-20250514",
+      "system_prompt": "",
+      "conversation": [],
+      "entity_type": "System",
+      "event_frequency": 60,
+      "is_enemy": false,
+      "is_west": false,
+      "is_evil_axis": false,
+      "agenda": "",
+      "primary_objectives": "",
+      "hard_rules": ""
+    }
+  },
+  "skills": {
+    "test-agent": []
+  },
+  "memory": {
+    "test-agent": []
+  }
+}

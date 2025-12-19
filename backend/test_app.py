@@ -9,8 +9,14 @@ with patch('anthropic.Anthropic'):
     from app import (
         agent_add,
         agent_remove,
+        agent_update,
         add_skills,
         add_memory,
+        get_all_agents,
+        get_agent,
+        get_skills,
+        get_memory,
+        get_conversation,
         prompt_caching,
         interact_with_claude,
         interact_simple,
@@ -134,4 +140,102 @@ class TestInteractSimple:
     def test_interact_simple_error(self, mock_client):
         mock_client.messages.create.side_effect = Exception("Error")
         result = interact_simple("Hello")
+        assert result["status"] == "error"
+
+
+class TestAgentUpdate:
+    def test_agent_update_success(self):
+        agent_add("test_agent")
+        result = agent_update("test_agent", model="claude-opus-4-20250514")
+        assert result["status"] == "success"
+        assert result["agent"]["model"] == "claude-opus-4-20250514"
+
+    def test_agent_update_multiple_fields(self):
+        agent_add("test_agent")
+        result = agent_update(
+            "test_agent",
+            model="claude-opus-4-20250514",
+            system_prompt="Updated prompt",
+            entity_type="Entity",
+            event_frequency=30
+        )
+        assert result["status"] == "success"
+        assert result["agent"]["model"] == "claude-opus-4-20250514"
+        assert result["agent"]["system_prompt"] == "Updated prompt"
+        assert result["agent"]["entity_type"] == "Entity"
+        assert result["agent"]["event_frequency"] == 30
+
+    def test_agent_update_not_found(self):
+        result = agent_update("nonexistent", model="claude-opus-4-20250514")
+        assert result["status"] == "error"
+        assert "not found" in result["message"]
+
+
+class TestGetAllAgents:
+    def test_get_all_agents_empty(self):
+        result = get_all_agents()
+        assert result == {}
+
+    def test_get_all_agents_with_data(self):
+        agent_add("agent1")
+        agent_add("agent2")
+        add_skills("agent1", ["skill1"])
+        add_memory("agent2", "memory1")
+
+        result = get_all_agents()
+        assert "agent1" in result
+        assert "agent2" in result
+        assert result["agent1"]["skills"] == ["skill1"]
+        assert result["agent2"]["memory"] == ["memory1"]
+
+
+class TestGetAgent:
+    def test_get_agent_success(self):
+        agent_add("test_agent", system_prompt="Test prompt")
+        result = get_agent("test_agent")
+        assert result["status"] == "success"
+        assert result["agent"]["system_prompt"] == "Test prompt"
+
+    def test_get_agent_not_found(self):
+        result = get_agent("nonexistent")
+        assert result["status"] == "error"
+        assert "not found" in result["message"]
+
+
+class TestGetSkills:
+    def test_get_skills_success(self):
+        agent_add("test_agent")
+        add_skills("test_agent", ["skill1", "skill2"])
+        result = get_skills("test_agent")
+        assert result["status"] == "success"
+        assert "skill1" in result["skills"]
+        assert "skill2" in result["skills"]
+
+    def test_get_skills_not_found(self):
+        result = get_skills("nonexistent")
+        assert result["status"] == "error"
+
+
+class TestGetMemory:
+    def test_get_memory_success(self):
+        agent_add("test_agent")
+        add_memory("test_agent", "memory item")
+        result = get_memory("test_agent")
+        assert result["status"] == "success"
+        assert "memory item" in result["memory"]
+
+    def test_get_memory_not_found(self):
+        result = get_memory("nonexistent")
+        assert result["status"] == "error"
+
+
+class TestGetConversation:
+    def test_get_conversation_empty(self):
+        agent_add("test_agent")
+        result = get_conversation("test_agent")
+        assert result["status"] == "success"
+        assert result["conversation"] == []
+
+    def test_get_conversation_not_found(self):
+        result = get_conversation("nonexistent")
         assert result["status"] == "error"
