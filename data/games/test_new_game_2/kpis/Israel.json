@@ -1,6 +1,6 @@
 {
   "entity_id": "Israel",
-  "last_updated": "2025-12-20T15:41:00.685078",
+  "last_updated": "2025-12-20T17:29:04.725269",
   "const_metrics": {
     "gdp_billions_usd": 520,
     "population_millions": 9.3,
@@ -9,19 +9,19 @@
     "nuclear_capability": true
   },
   "dynamic_metrics": {
-    "casualties_military": 54,
-    "casualties_civilian": 1223,
-    "hostages_held_by_enemy": 235,
+    "casualties_military": 108,
+    "casualties_civilian": 1246,
+    "hostages_held_by_enemy": 212,
     "hostages_rescued": 8,
-    "ammunition_iron_dome_pct": 96,
+    "ammunition_iron_dome_pct": 91,
     "ammunition_precision_pct": 100,
-    "ammunition_artillery_pct": 100,
+    "ammunition_artillery_pct": 95,
     "tunnel_km_destroyed": 0,
     "enemy_fighters_eliminated": 0,
     "infrastructure_damage_pct": 5,
     "morale_military": 70,
-    "morale_civilian": 48,
-    "international_standing": 67
+    "morale_civilian": 44,
+    "international_standing": 30
   },
   "pending_operations": []
 }

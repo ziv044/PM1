@@ -150,6 +150,12 @@ def admin():
     return FileResponse(FRONTEND_DIR / "index.html")
 
 
+@api.get("/play")
+def play():
+    """Serve the player game interface."""
+    return FileResponse(FRONTEND_DIR / "play.html")
+
+
 @api.get("/api/health")
 def health():
     """API health check."""
@@ -1313,6 +1319,11 @@ def migrate_to_multi_game():
 if FRONTEND_DIR.exists():
     api.mount("/css", StaticFiles(directory=str(FRONTEND_DIR / "css")), name="css")
     api.mount("/js", StaticFiles(directory=str(FRONTEND_DIR / "js")), name="js")
+    # Mount play mode static files
+    play_dir = FRONTEND_DIR / "play"
+    if play_dir.exists():
+        api.mount("/play/js", StaticFiles(directory=str(play_dir / "js")), name="play_js")
+        api.mount("/play/css", StaticFiles(directory=str(play_dir / "css")), name="play_css")
 
 
 if __name__ == "__main__":

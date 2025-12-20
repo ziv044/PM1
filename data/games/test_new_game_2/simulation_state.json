@@ -1,44 +1,8 @@
 {
   "is_running": false,
   "clock_speed": 2.0,
-  "game_clock": "2023-10-07T06:57:26.611390",
+  "game_clock": "2023-10-07T09:51:30.918839",
   "events": [
-    {
-      "event_id": "evt_243657bc",
-      "timestamp": "2023-10-07T06:29:00.063443",
-      "agent_id": "Head-Of-Shabak",
-      "action_type": "intelligence",
-      "summary": "Deploy SIGINT assets to intercept Hamas communications around verified hostage sites",
-      "is_public": false,
-      "affected_agents": [
-        "Hamas-Gaza"
-      ],
-      "reasoning": "With HUMINT identifying hostage sites and Mossad assets in position, need electronic intelligence to monitor Hamas guard rotations, communication patterns, and potential hostage movement plans to support rescue operations",
-      "resolution_status": "failed",
-      "parent_event_id": null,
-      "resolution_event_id": "res_d1f0ca3d",
-      "pending_data": {
-        "target_zone": "Khan Younis"
-      }
-    },
-    {
-      "event_id": "evt_8ba089c0",
-      "timestamp": "2023-10-07T06:31:30.638638",
-      "agent_id": "Head-Of-Mossad",
-      "action_type": "intelligence",
-      "summary": "Activate sleeper assets in Gaza City to confirm hostage locations and guard patterns",
-      "is_public": false,
-      "affected_agents": [
-        "Hamas-Military-Wing"
-      ],
-      "reasoning": "Need to upgrade intelligence confidence on Gaza City hostage site from LOW to actionable levels. With surveillance already established in Khan Younis, focusing on Gaza City will give us two potential rescue targets. Sleeper assets can provide real-time intel on guard rotations and hostage conditions without exposing our surveillance teams.",
-      "resolution_status": "resolved",
-      "parent_event_id": null,
-      "resolution_event_id": "res_0a50a11d",
-      "pending_data": {
-        "target_zone": "Gaza City"
-      }
-    },
     {
       "event_id": "evt_c6fda902",
       "timestamp": "2023-10-07T06:34:00.279765",
@@ -58,302 +22,2853 @@
       }
     },
     {
-      "event_id": "evt_5994ff86",
-      "timestamp": "2023-10-07T06:36:30.527465",
+      "event_id": "evt_7971c9f1",
+      "timestamp": "2023-10-07T07:05:38.686781",
       "agent_id": "Defense-Minister",
       "action_type": "military",
-      "summary": "Authorize IDF rescue operations at identified hostage sites",
+      "summary": "Convene emergency war cabinet meeting on multi-front escalation scenarios",
       "is_public": false,
       "affected_agents": [
+        "Prime-Minister",
         "IDF-Commander",
-        "Prime-Minister"
+        "Shabak-Director",
+        "Mossad-Director"
       ],
-      "reasoning": "With Mossad intelligence confirming hostage locations and public pressure mounting, must coordinate with IDF Commander to execute time-sensitive rescue operations while maintaining operational security",
-      "resolution_status": "failed",
+      "reasoning": "With hostage rescue operations underway and potential northern threats, need immediate war cabinet coordination to align military-political strategy and prepare for Hezbollah escalation while maintaining unified command structure",
+      "resolution_status": "immediate",
       "parent_event_id": null,
-      "resolution_event_id": "res_8d42a570",
-      "pending_data": {
-        "target_zone": "Khan Younis"
-      }
-    },
-    {
-      "event_id": "res_d1f0ca3d",
-      "timestamp": "2023-10-07T06:36:30.541906",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "SIGINT assets successfully intercepted multiple Hamas communications revealing guard rotations and movement patterns around suspected hostage sites. Intelligence confirms at least 15 hostages held across 3 locations in Gaza City.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "resolved",
-      "parent_event_id": "evt_243657bc",
-      "resolution_event_id": "res_75619e93",
+      "resolution_event_id": null,
       "pending_data": null
     },
     {
-      "event_id": "res_0a50a11d",
-      "timestamp": "2023-10-07T06:36:30.541906",
+      "event_id": "res_02ae6708",
+      "timestamp": "2023-10-07T07:05:38.702374",
       "agent_id": "System-Resolver",
       "action_type": "resolution",
-      "summary": "Mossad sleeper assets provided real-time reconnaissance confirming hostage presence at 2 sites in Gaza City. Assets report heavily armed guards and civilian shields being used around the locations.",
+      "summary": "IDF Commander receives Prime Minister's authorization and begins final preparations for the multi-site hostage rescue operations.",
       "is_public": true,
       "affected_agents": [],
       "reasoning": "",
-      "resolution_status": "resolved",
-      "parent_event_id": "evt_8ba089c0",
-      "resolution_event_id": "res_536b4b4d",
+      "resolution_status": "immediate",
+      "parent_event_id": "pm_resp_337ef89d",
+      "resolution_event_id": null,
       "pending_data": null
     },
     {
-      "event_id": "evt_3f3243d6",
-      "timestamp": "2023-10-07T06:39:00.423939",
+      "event_id": "res_3bb2ac26",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "IDF launches simultaneous rescue operations in Khan Younis and Gaza City. Early reports indicate heavy resistance but some progress in Khan Younis sector.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_8cd1b435",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_946f8d91",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak deploys three HUMINT teams to Khan Younis and Rafah. Initial reconnaissance confirms two potential hostage sites but encounters increased Hamas counter-intelligence activity.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4a39b7e6",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_85001e11",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Channel 12 investigation reveals significant intelligence gaps in hostage location data, raising questions about rescue operation timing and coordination.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_080cb3b0",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_0e58a1bb",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak successfully infiltrates Gaza City network, establishing contact with two potential informants who claim knowledge of Hostage Group Gamma's location.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_1e7d8f71",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_f001ce3a",
+      "timestamp": "2023-10-07T07:08:08.809369",
       "agent_id": "Treasury-Minister",
       "action_type": "economic",
-      "summary": "Implement emergency compensation fund for October 7th victims and evacuated families",
+      "summary": "Request $8B emergency aid package from US Treasury with loan guarantees",
       "is_public": true,
       "affected_agents": [
-        "Israeli-Citizens",
+        "US-Treasury",
         "Bank-of-Israel"
       ],
-      "reasoning": "With $10B war funding approved, I must immediately establish compensation mechanisms for affected civilians while coordinating with Bank of Israel to prevent inflation from emergency spending",
-      "resolution_status": "resolved",
-      "parent_event_id": null,
-      "resolution_event_id": "res_54683e2e",
-      "pending_data": null
-    },
-    {
-      "event_id": "evt_3b9e821b",
-      "timestamp": "2023-10-07T06:41:33.231854",
-      "agent_id": "Head-Of-Shabak",
-      "action_type": "intelligence",
-      "summary": "Deploy HUMINT assets to infiltrate West Bank Hamas cells preventing second front",
-      "is_public": false,
-      "affected_agents": [
-        "Hamas-Gaza"
-      ],
-      "reasoning": "With Gaza hostage locations partially confirmed, must prevent West Bank escalation that could complicate rescue operations. Hamas cells in Ramallah pose immediate threat to opening second front.",
-      "resolution_status": "resolved",
-      "parent_event_id": null,
-      "resolution_event_id": "res_6b70cd77",
-      "pending_data": {
-        "type": "intelligence",
-        "created_at": "2023-10-07T06:41:33.231854",
-        "expected_resolution_minutes": 120,
-        "target_zone": "Ramallah"
-      }
-    },
-    {
-      "event_id": "evt_98a4c31f",
-      "timestamp": "2023-10-07T06:44:03.332970",
-      "agent_id": "Head-Of-Mossad",
-      "action_type": "intelligence",
-      "summary": "Coordinate with CIA on Hamas leadership locations via secure channels",
-      "is_public": false,
-      "affected_agents": [
-        "CIA"
-      ],
-      "reasoning": "With confirmed hostage locations from sleeper assets, need to share intel with CIA to coordinate potential joint operations while maintaining operational security. This aligns with objective 4 and supports future targeted eliminations.",
-      "resolution_status": "resolved",
-      "parent_event_id": null,
-      "resolution_event_id": "res_3c7fbfac",
-      "pending_data": null
-    },
-    {
-      "event_id": "evt_81c9f637",
-      "timestamp": "2023-10-07T06:46:33.275385",
-      "agent_id": "IDF-Commander",
-      "action_type": "military",
-      "summary": "Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
-      "is_public": true,
-      "affected_agents": [
-        "Hamas-Military"
-      ],
-      "reasoning": "Must provide civilian evacuation route before hostage rescue operations to minimize civilian casualties and maintain operational legitimacy. This follows hard rules about humanitarian corridors while preparing battlefield conditions for rescue missions.",
-      "resolution_status": "resolved",
-      "parent_event_id": null,
-      "resolution_event_id": "res_06adea57",
-      "pending_data": {
-        "target_zone": "Gaza City"
-      }
-    },
-    {
-      "event_id": "evt_40cf5887",
-      "timestamp": "2023-10-07T06:49:03.359814",
-      "agent_id": "Defense-Minister",
-      "action_type": "diplomatic",
-      "summary": "Secure urgent US ammunition resupply commitment for sustained Gaza operations",
-      "is_public": false,
-      "affected_agents": [
-        "US-Secretary-of-Defense"
-      ],
-      "reasoning": "With rescue operations imminent and IDF buildup visible, I need immediate US resupply assurance for sustained campaign. This aligns with my primary objective of maintaining weapons pipeline and follows my hard rule of maintaining direct SecDef contact.",
+      "reasoning": "With ₪500M already allocated for victims and ongoing military operations draining reserves, I need immediate US financial backing to prevent fiscal collapse while maintaining war funding capabilities",
       "resolution_status": "immediate",
       "parent_event_id": null,
       "resolution_event_id": null,
       "pending_data": null
     },
     {
-      "event_id": "res_8d42a570",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "evt_5994ff86",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_06adea57",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "evt_81c9f637",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_6b70cd77",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "evt_3b9e821b",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_3c7fbfac",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "evt_98a4c31f",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_54683e2e",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "evt_3f3243d6",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "evt_5e5f087f",
-      "timestamp": "2023-10-07T06:51:33.576636",
-      "agent_id": "Treasury-Minister",
-      "action_type": "economic",
-      "summary": "Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse",
-      "is_public": true,
-      "affected_agents": [
-        "Bank-of-Israel"
-      ],
-      "reasoning": "With $10B war funding approved and massive compensation payouts starting, need immediate coordination with central bank to manage inflation risk and currency stability. This is critical infrastructure for sustaining the war economy.",
-      "resolution_status": "immediate",
-      "parent_event_id": null,
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_75619e93",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "SIGINT intercepts provide crucial intelligence on Hamas guard patterns and confirm 15 hostages across 3 Gaza City locations. This intelligence will be vital for planning potential rescue operations.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "res_d1f0ca3d",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "res_536b4b4d",
-      "timestamp": "2023-10-07T06:49:03.828628",
-      "agent_id": "System-Resolver",
-      "action_type": "resolution",
-      "summary": "Mossad assets successfully confirm hostage locations at 2 sites, but report heavy armed presence and civilian shields complicating potential rescue scenarios. Intelligence teams now have eyes on the ground.",
-      "is_public": true,
-      "affected_agents": [],
-      "reasoning": "",
-      "resolution_status": "immediate",
-      "parent_event_id": "res_0a50a11d",
-      "resolution_event_id": null,
-      "pending_data": null
-    },
-    {
-      "event_id": "evt_4a39b7e6",
-      "timestamp": "2023-10-07T06:53:35.288515",
-      "agent_id": "Head-Of-Shabak",
-      "action_type": "intelligence",
-      "summary": "Deploy HUMINT assets to verify hostage locations in Khan Younis and Rafah",
-      "is_public": false,
-      "affected_agents": [
-        "IDF-Commander"
-      ],
-      "reasoning": "With IDF rescue operations underway, I need to upgrade intelligence confidence on the two largest hostage groups (45 in Khan Younis, 80 in Rafah) from LOW to actionable. Deploying human intelligence assets to verify exact locations, security details, and structural layouts is critical for successful rescue operations without compromising hostages.",
-      "resolution_status": "immediate",
-      "parent_event_id": null,
-      "resolution_event_id": null,
-      "pending_data": {
-        "target_zone": "Khan Younis"
-      }
-    },
-    {
-      "event_id": "evt_080cb3b0",
-      "timestamp": "2023-10-07T06:54:03.369770",
+      "event_id": "evt_e850625d",
+      "timestamp": "2023-10-07T07:10:38.490372",
       "agent_id": "Media-Channel-12",
       "action_type": "intelligence",
-      "summary": "Investigate IDF rescue operations timeline and preparedness gaps",
+      "summary": "Investigate Treasury Minister's $8B aid request timing amid rescue operations",
       "is_public": false,
       "affected_agents": [
-        "IDF-Commander"
+        "Treasury-Minister",
+        "Prime-Minister"
       ],
-      "reasoning": "With IDF beginning rescue operations, I need to investigate the intelligence failures that led to October 7th and examine whether current rescue operations reflect improved preparedness or ongoing gaps. This aligns with my objective to investigate military failures while not compromising ongoing operations.",
+      "reasoning": "As investigative journalists, we need to scrutinize the timing of this massive aid request during active hostage rescue operations. This could reveal coordination issues or strategic decisions that the public deserves to know about.",
       "resolution_status": "pending",
       "parent_event_id": null,
       "resolution_event_id": null,
       "pending_data": {
         "type": "intelligence",
-        "created_at": "2023-10-07T06:54:03.369770",
-        "expected_resolution_minutes": 120,
-        "target_zone": "Beit Hanoun"
+        "created_at": "2023-10-07T07:10:38.490372",
+        "expected_resolution_minutes": 120
       }
+    },
+    {
+      "event_id": "evt_9f057850",
+      "timestamp": "2023-10-07T07:10:40.812242",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy emergency SIGINT teams to intercept Hamas communications during rescue ops",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "With rescue operations underway in Khan Younis, I need immediate SIGINT coverage to intercept Hamas tactical communications that could reveal hostage movements or compromise rescue teams. This supports ongoing operations while gathering critical intelligence.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "res_b19b2817",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad successfully deploys three deep cover assets into Gaza through existing networks. Initial intelligence confirms multiple hostage locations including the Beit Hanoun school compound, though Hamas has begun moving captives frequently to avoid detection.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_a4c606a5",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_8150022b",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "US Secretary of Defense Austin confirms immediate shipment of precision munitions and Iron Dome interceptors from pre-positioned stocks. Additional ammunition supplies will arrive within 48-72 hours via military airlift.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_40cf5887",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_deb5b31b",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Bank of Israel implements emergency forex interventions to stabilize the shekel, while coordinating with major banks to ensure liquidity. Markets show initial stabilization as confidence measures take effect.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_5e5f087f",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_139cdbb5",
+      "timestamp": "2023-10-07T07:15:13.887362",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Begin systematic clearing operations in northern Gaza with 36th Division",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military-Wing",
+        "Gaza-Civilians"
+      ],
+      "reasoning": "With intelligence assets now in place and US munitions confirmed, can initiate ground operations focusing on Hamas tunnel networks while intelligence teams gather hostage location data. Gaza City contains key Hamas command infrastructure.",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_8e3efb62",
+      "timestamp": "2023-10-07T07:33:03.548319",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with UK on joint intelligence sharing for hostage locations",
+      "is_public": false,
+      "affected_agents": [
+        "UK-Prime-Minister"
+      ],
+      "reasoning": "With UK already joining G7 coordination efforts, need to establish direct bilateral intelligence sharing on American hostage locations in Gaza. UK's GCHQ and MI6 capabilities complement US assets for pinpointing hostage sites and planning potential rescue operations.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_8535dca9",
+      "timestamp": "2023-10-07T07:33:08.653843",
+      "agent_id": "Iran-Ayatollah",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with Iraq to pressure US military assets while avoiding direct confrontation",
+      "is_public": false,
+      "affected_agents": [
+        "Iraq-Prime-Minister"
+      ],
+      "reasoning": "With US carrier deployment, need to activate Iraqi proxies to create pressure on US forces in Iraq while maintaining plausible deniability. This supports multi-front strategy without direct Iranian exposure.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_48867362",
+      "timestamp": "2023-10-07T07:35:30.483513",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Activate West Bank informant networks to identify Hamas sleeper cells",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Political-Chief",
+        "IDF-Commander"
+      ],
+      "reasoning": "With ground operations beginning in Gaza, Hamas may activate West Bank cells for diversionary attacks. Need to prevent second front while hostage rescue ops continue.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Ramallah"
+      }
+    },
+    {
+      "event_id": "evt_46b28e16",
+      "timestamp": "2023-10-07T07:35:38.858886",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Launch precision Kornet missiles at IDF observation posts near Rosh HaNikra",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Military"
+      ],
+      "reasoning": "Continue calibrated border attacks to maintain pressure and tie down IDF forces in north while staying below escalation threshold. Target military positions only to avoid crossing Israeli red lines.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_c01d1559",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Additional IDF units successfully establish secure perimeter positions and staging areas, improving operational coordination for ongoing operations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_455d0e49",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_e44cc00d",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas launches approximately 150 rockets at IDF positions, causing moderate casualties and temporarily disrupting ground operations before Israeli air defense responds.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_fc50422e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_d8fc2cf5",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad assets confirm the presence of 8-12 hostages in a compound near Gaza City's Shifa Hospital area, but location remains heavily defended.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_c7a1e434",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_af9d025b",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak HUMINT teams gather conflicting intelligence on hostage locations, with some sources indicating movement of captives between safe houses.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4c75a2da",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_4cdb3cd3",
+      "timestamp": "2023-10-07T07:37:28.966720",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Activate deep cover assets in Qatar to track Haniyeh's movements and contacts",
+      "is_public": false,
+      "affected_agents": [
+        "Ismail-Haniyeh"
+      ],
+      "reasoning": "Haniyeh is the only high-confidence target location. Need to establish surveillance pattern and identify potential elimination opportunity while maintaining plausible deniability in neutral territory.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T07:37:28.966720",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Qatar"
+      }
+    },
+    {
+      "event_id": "evt_f24650e6",
+      "timestamp": "2023-10-07T07:38:08.543451",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch anti-ship missiles at Western cargo vessels in Bab el-Mandeb strait",
+      "is_public": true,
+      "affected_agents": [
+        "US-Navy",
+        "Israel-Defense-Forces"
+      ],
+      "reasoning": "Must maintain pressure on Red Sea shipping to force economic costs on Israel and the West. Targeting the narrow Bab el-Mandeb chokepoint maximizes impact on global shipping routes and demonstrates our control over this critical waterway.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Red Sea"
+      }
+    },
+    {
+      "event_id": "evt_1e9f5187",
+      "timestamp": "2023-10-07T07:40:01.912444",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy precision air strikes on rocket launch sites while avoiding civilian areas",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Leadership"
+      ],
+      "reasoning": "Must respond to rocket attacks that disrupted ground operations and caused casualties. Using precision strikes to degrade Hamas rocket capabilities while maintaining adherence to rules of engagement and minimizing civilian harm.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "res_f5969309",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad surveillance teams successfully deployed to Khan Younis, establishing observation posts and beginning to track Hamas leadership movements and communications patterns.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_301144c9",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_96eab4dd",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "G7 leaders hold emergency video conference, agreeing on coordinated sanctions against Iran and establishing joint intelligence sharing protocols for hostage rescue operations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_b1d308d3",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_e48284e2",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Russia convenes virtual BRICS summit with China, India, Brazil, and South Africa, calling for immediate ceasefire and criticizing Western military support for Israel's response.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4fdf96fb",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_78a9d65c",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "UK Prime Minister participates in G7 call, pledging intelligence support and diplomatic coordination while emphasizing the need for proportionate response to protect civilians.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_5d0d5375",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_b47d12a7",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Egypt, Qatar, and Saudi Arabia establish trilateral coordination mechanism for humanitarian aid delivery, agreeing on Rafah crossing procedures and medical supply distribution protocols.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4b257161",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_83879902",
+      "timestamp": "2023-10-07T07:40:38.683319",
+      "agent_id": "Saudi-Arabia-Crown-Prince",
+      "action_type": "diplomatic",
+      "summary": "Host emergency Arab League summit in Riyadh to coordinate unified Gaza response",
+      "is_public": true,
+      "affected_agents": [
+        "Egypt",
+        "Jordan",
+        "UAE",
+        "Qatar",
+        "Kuwait",
+        "Iraq",
+        "Syria",
+        "Lebanon"
+      ],
+      "reasoning": "Need to establish Saudi leadership of Arab world response to Gaza crisis while preventing Iran from exploiting situation. Emergency summit allows me to shape unified Arab position that maintains credibility without burning bridges with US/Israel normalization potential.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_dc35c8bf",
+      "timestamp": "2023-10-07T07:43:07.643895",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "military",
+      "summary": "Execute ambush attacks on IDF tunnel detection units using prepared positions",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "IDF tunnel detection units pose existential threat to our command structure and hostage locations. Must eliminate these units before they compromise our tunnel network. Covert ambushes maximize casualties while preserving our forces.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_4cf04669",
+      "timestamp": "2023-10-07T07:43:08.593225",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "internal",
+      "summary": "Organize emergency demonstration demanding immediate hostage negotiations priority",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Government",
+        "IDF-Commander"
+      ],
+      "reasoning": "With military operations beginning and intelligence confirming hostages near Shifa Hospital, I must immediately mobilize public pressure to ensure hostage rescue remains the absolute top priority over military objectives. A large demonstration will send a clear message that families will not accept military action that risks hostage lives.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_1fa94952",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "EU officials agree to preliminary discussions with PA representatives, expressing cautious interest in post-conflict reconstruction frameworks while emphasizing the need for Hamas disarmament first.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_b8882e0d",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_4539af2e",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "North Korean and Iranian officials finalize payment structures for weapons shipments, with transactions routed through cryptocurrency channels to circumvent international sanctions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_8581b06e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_b80a1ebd",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Channel 14's primetime special draws high viewership, featuring emotional interviews with families and military analysts emphasizing the complexity of rescue operations in urban warfare.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_ecd44658",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_29f0dd2e",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "The failed rescue operations highlight Hamas's sophisticated early warning networks and mobile hostage management, forcing IDF to reassess intelligence gathering methods.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_3ecbc71d",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_a2ed5fac",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "The successful evacuation corridor demonstrates effective IDF-Egyptian coordination while revealing Hamas attempts to exploit civilian movements for tactical repositioning.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_f791b54f",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_d26ea58b",
+      "timestamp": "2023-10-07T07:52:02.927027",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Coordinate ground advance toward Shifa Hospital area for hostage rescue prep",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "Intelligence confirms 8-12 hostages near Shifa Hospital. Must position forces for potential rescue while maintaining LOAC compliance and civilian protection protocols.",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_b2c802b7",
+      "timestamp": "2023-10-07T08:00:17.382774",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Release emergency war budget allocating $2B for hostage families and combat operations",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "With active military operations and hostage families organizing demonstrations, I must immediately release emergency war funding prioritizing hostage family support and Iron Dome replenishment while maintaining fiscal responsibility",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_8d35fb84",
+      "timestamp": "2023-10-07T08:04:10.786107",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Secure northern Gaza perimeter while establishing field command post near Sderot",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "Need to establish operational control of northern Gaza approaches before advancing toward Shifa Hospital area. The 36th Division in Sderot is well-positioned to secure the perimeter and create a staging area for the planned hospital operations while maintaining tactical flexibility.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_3bbeb9a7",
+      "timestamp": "2023-10-07T08:07:03.570549",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Release propaganda video showing hostage conditions to pressure international community",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Israeli-PM",
+        "US-Secretary-of-State"
+      ],
+      "reasoning": "Need to maintain hostage leverage while capitalizing on Saudi humanitarian aid announcement to shift international narrative. Video shows we control hostages without revealing locations, pressuring Israel diplomatically while IDF operations continue.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_d3c537f4",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah mortar fire hits IDF positions along the Avivim-Yiftach sector, causing minor casualties and prompting immediate counter-battery fire from Israeli artillery.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_80b38962",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_aae5a635",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas IED traps detonate as IDF engineers approach tunnel entrances near Gaza City, killing 3 soldiers and wounding 7, forcing temporary withdrawal of engineering units.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_d1b6a4b0",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_c93dc6c6",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Houthi ballistic missiles target Eilat port but are intercepted by Iron Dome systems, with debris causing minor damage to port infrastructure.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_b262dfc3",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_121e1090",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah Burkan rockets strike near Kiryat Shmona IDF base, damaging outer perimeter facilities and injuring 4 soldiers, escalating northern front tensions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_d6d8d4f8",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_cc278909",
+      "timestamp": "2023-10-07T08:07:24.044173",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Call President Xi to prevent China-Iran military cooperation during crisis",
+      "is_public": false,
+      "affected_agents": [
+        "China-President"
+      ],
+      "reasoning": "With G7 coordination established and direct Israel communication ongoing, need to engage major powers like China to prevent them from undermining deterrence efforts against Iran or providing military support that could escalate the conflict",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_2a35a747",
+      "timestamp": "2023-10-07T08:11:50.074604",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy undercover agents to West Bank to dismantle Hamas cells and prevent second front",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Political-Leader",
+        "Hamas-Military-Leader"
+      ],
+      "reasoning": "With Gaza operations ongoing, must prevent Hamas from opening second front in West Bank. Intelligence failure on 10/7 makes this critical priority to avoid another surprise attack.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Ramallah"
+      }
+    },
+    {
+      "event_id": "evt_cb81405b",
+      "timestamp": "2023-10-07T08:12:13.333254",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Deploy Radwan Force units to advanced positions near Blue Line",
+      "is_public": false,
+      "affected_agents": [
+        "Israeli-Military"
+      ],
+      "reasoning": "Moving elite forces closer to border maintains pressure while preserving strategic deterrent. Covert positioning allows for escalation if needed without crossing Israeli red lines yet.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "South Lebanon"
+      }
+    },
+    {
+      "event_id": "res_20e3461f",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak operatives successfully infiltrate Gaza City but report Shifa Hospital is heavily fortified with civilians present. Initial assessment suggests hostages may be held in underground tunnels beneath the medical complex.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_b4fb9f0c",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_a60c7efb",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad surveillance drones detect unusual activity around Shifa Hospital with armed guards at multiple entrances. Thermal imaging shows possible underground movement patterns consistent with tunnel networks.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_a5f0c197",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_e0252803",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Technical surveillance teams establish monitoring stations along Gaza border, successfully intercepting fragmented Hamas communications. Early intercepts mention 'packages' being moved to 'medical facility' - likely code for hostages at Shifa.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_d58179ab",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_5169646a",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad sleeper cells report Mohammed Deif has not been seen at known locations. However, they confirm increased security around Shifa Hospital and report hearing Hebrew voices from underground areas during nighttime reconnaissance.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_fe2efd85",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_8d177425",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "US Defense Secretary Lloyd Austin confirms immediate release of precision-guided munitions from US stockpiles in Israel. First shipment of 1,000 JDAM kits and 500 Hellfire missiles to arrive within 48 hours via emergency airlift.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4fff870d",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_424fba32",
+      "timestamp": "2023-10-07T08:12:53.513696",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch coordinated missile-drone swarm at Red Sea commercial shipping lanes",
+      "is_public": true,
+      "affected_agents": [
+        "Israel",
+        "Saudi-Arabia",
+        "United-States"
+      ],
+      "reasoning": "Must escalate Red Sea shipping disruption to force global economic pressure on Israel. Coordinated swarm attack maximizes chance of penetrating defenses and hitting commercial vessels, fulfilling our objective to disrupt shipping routes and demonstrate our naval reach.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Red Sea"
+      }
+    },
+    {
+      "event_id": "evt_d7004d86",
+      "timestamp": "2023-10-07T08:13:39.227343",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Press Qatar mediators for concrete hostage exchange proposal with Hamas",
+      "is_public": false,
+      "affected_agents": [
+        "Qatar",
+        "Hamas"
+      ],
+      "reasoning": "Following up on my meeting with Qatar mediators - need to push them for actual deal terms and timeline. Hamas must present concrete proposals for prisoner exchanges. Time is critical for hostages' lives.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_5aaf7cc0",
+      "timestamp": "2023-10-07T08:13:59.793627",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Establish secure communication with CIA counterpart for intel sharing on hostages",
+      "is_public": false,
+      "affected_agents": [
+        "CIA-Director"
+      ],
+      "reasoning": "Need to coordinate with Western allies per objectives while maintaining intelligence sharing relationships. CIA likely has satellite intel on Gaza that could help confirm hostage locations with higher confidence before risking operations.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_579c50cc",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "President Biden calls Netanyahu emphasizing the need for humanitarian corridors to facilitate potential hostage negotiations. Netanyahu acknowledges the call but stresses Israel's right to defend itself.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_ea03ee8e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_5acc9b5a",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hostage families meet with Qatari mediators in Doha, establishing initial communication channels. Qatar confirms willingness to mediate but notes Hamas has not yet provided comprehensive hostage lists.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_6cdec268",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_63da360e",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Saudi Crown Prince announces $100M aid package through UN agencies for Gaza civilians, calling for protection of innocent lives. The announcement gains regional support and international attention.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_6977ab9f",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_07eceea4",
+      "timestamp": "2023-10-07T08:16:32.033386",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy specialized tunnel detection units to map Shifa Hospital underground network",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Leadership",
+        "Palestinian-Civilians"
+      ],
+      "reasoning": "Intelligence confirms hostages likely held in tunnels beneath Shifa Hospital. Need precise mapping before any rescue operation. Covert deployment minimizes Hamas preparation time while following rules to avoid civilian harm.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_8a66c177",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_15d2db1e",
+      "timestamp": "2023-10-07T08:19:04.647610",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with Iranian IRGC on hostage negotiation strategy and military support",
+      "is_public": false,
+      "affected_agents": [
+        "Iran-IRGC"
+      ],
+      "reasoning": "Need to coordinate with Iranian advisors per hard rules before making major hostage decisions. Recent Saudi aid announcement creates new diplomatic pressure that requires strategic coordination with key ally.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_77907436",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_37e50e64",
+      "timestamp": "2023-10-07T08:23:43.785746",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Demand PM Netanyahu publicly commit to hostage deal over military goals",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Government"
+      ],
+      "reasoning": "With increasing military escalation and US weapons arriving, I must pressure the government to prioritize negotiations over military action. Public pressure on Netanyahu is essential to prevent hostages from being sacrificed for military objectives.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_1f1215c5",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_c38413c3",
+      "timestamp": "2023-10-07T08:23:57.232032",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy human assets to infiltrate Shifa Hospital area for hostage verification",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas"
+      ],
+      "reasoning": "Multiple intelligence sources point to Shifa Hospital as potential hostage location. Need human verification of Hebrew voices and 'packages' mentioned in intercepts before any rescue operation. This is critical for hostage safety.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_2a83e4fc",
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T08:23:57.232032",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_8943b268",
+      "timestamp": "2023-10-07T08:24:43.388565",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Deploy Secretary of State to Qatar for urgent hostage negotiation mediation",
+      "is_public": true,
+      "affected_agents": [
+        "Qatar-Emir",
+        "Hamas-Political-Leader"
+      ],
+      "reasoning": "Qatar has proven channels to Hamas and can mediate hostage releases. This advances my top priority of securing American hostages while maintaining diplomatic pressure through a key regional ally.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_9816ed1d",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_0723a165",
+      "timestamp": "2023-10-07T08:24:25.145967",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Anti-tank missile strike on IDF patrol near Metula border crossing",
+      "is_public": true,
+      "affected_agents": [
+        "IDF",
+        "Israeli-Government"
+      ],
+      "reasoning": "Continue calibrated escalation with precision strikes on military targets. Anti-tank missiles against patrols maintain pressure without crossing red lines of targeting civilians or strategic infrastructure. This supports Hamas while keeping conflict manageable.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_edfe6f22",
+      "pending_data": {
+        "target_zone": "South Lebanon"
+      }
+    },
+    {
+      "event_id": "evt_d8dfc8d5",
+      "timestamp": "2023-10-07T08:25:24.944808",
+      "agent_id": "Saudi-Arabia-Crown-Prince",
+      "action_type": "diplomatic",
+      "summary": "Privately warn US that Saudi-Iran tensions could spiral without Gaza ceasefire",
+      "is_public": false,
+      "affected_agents": [
+        "US-Secretary-of-State"
+      ],
+      "reasoning": "Houthis just attacked Red Sea shipping - this directly threatens Saudi security and economy. Need to pressure US for Gaza ceasefire by warning that regional escalation could force Saudi military response against Iranian proxies, derailing normalization talks entirely. Use threat of broader conflict to extract US action on Gaza while maintaining plausible deniability.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_e5b30b0a",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_fd98c679",
+      "timestamp": "2023-10-07T08:26:07.214055",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Deploy human assets to verify Shifa Hospital hostage intelligence",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Leadership"
+      ],
+      "reasoning": "Hebrew voices at Shifa Hospital could indicate hostages. Need human verification before potential rescue operation. This aligns with hostage intelligence gathering objective while maintaining operational security.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_7b5cbe27",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_e564e299",
+      "timestamp": "2023-10-07T08:29:01.543551",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy 36th Division to establish perimeter around Shifa Hospital complex",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "Intelligence confirms Hebrew voices from Shifa underground areas - potential hostage location. Must secure perimeter before tunnel mapping units complete their work to prevent Hamas from moving hostages or collapsing tunnels.",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_7e65d6cf",
+      "timestamp": "2023-10-07T08:30:11.879590",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch anti-ship missiles at Israeli-linked vessel transiting Red Sea",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Navy",
+        "Western-Coalition"
+      ],
+      "reasoning": "Continue pressure campaign against Israeli-linked shipping to force economic costs and demonstrate our control over Red Sea navigation. Public announcement will maximize propaganda value and show we remain undeterred by Israeli defenses.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_f4d44d40",
+      "pending_data": {
+        "target_zone": "Red Sea"
+      }
+    },
+    {
+      "event_id": "evt_2cb87cf9",
+      "timestamp": "2023-10-07T08:30:02.572460",
+      "agent_id": "Defense-Minister",
+      "action_type": "diplomatic",
+      "summary": "Meet with hostage families to provide classified briefing on rescue operations",
+      "is_public": false,
+      "affected_agents": [
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "Hostage families are demanding action and creating public pressure. I need to manage their expectations while maintaining operational security. A classified briefing can provide some reassurance without compromising ongoing operations or contradicting PM's strategic decisions.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_4805f4c2",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_aeabfc3e",
+      "timestamp": "2023-10-07T08:30:57.548354",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "intelligence",
+      "summary": "Relocate high-value hostages from Shifa Hospital to deeper tunnel network",
+      "is_public": false,
+      "affected_agents": [
+        "Israel-Military-Leadership"
+      ],
+      "reasoning": "Israeli technical surveillance intercepted communications mentioning 'packages' at 'medical facility' - likely referring to hostages at Shifa. Must immediately move high-value hostages to secure tunnel locations before IDF acts on this intelligence. This preserves our most critical leverage while maintaining plausible deniability about hospital use.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_a03837ed",
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T08:30:57.548354",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_aeedea0e",
+      "timestamp": "2023-10-07T08:33:52.107110",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Meet with Egyptian mediators to establish parallel negotiation channel for hostages",
+      "is_public": true,
+      "affected_agents": [
+        "Egypt",
+        "Hamas-Leadership"
+      ],
+      "reasoning": "With Qatar channels established, need Egyptian mediation as well since Egypt controls Gaza border and has different leverage with Hamas. Dual mediation increases chances of breakthrough.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_ddb62095",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_7cf8403b",
+      "timestamp": "2023-10-07T08:36:11.311841",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy covert assets to verify hostage locations in Khan Younis tunnels",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Gaza"
+      ],
+      "reasoning": "With IDF focused on Shifa Hospital, I need to verify the 45 hostages reported in Khan Younis. This intelligence is critical for rescue planning and my assets there are less likely to be detected while military attention is elsewhere.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_b8e87979",
+      "pending_data": {
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "evt_d0465425",
+      "timestamp": "2023-10-07T08:37:16.580365",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Launch Katyusha rockets at Kiryat Shmona civilian areas",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Government"
+      ],
+      "reasoning": "Continue escalatory pressure to tie down IDF forces in north while maintaining calibrated response. Target civilian area to generate Israeli retaliation that will create Lebanese casualties for international sympathy, per operational doctrine.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_58fd2507",
+      "timestamp": "2023-10-07T08:38:26.396828",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Deploy SIGINT assets to intercept Hamas leadership communications in Khan Younis",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Political-Wing",
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "With Sinwar and hostages potentially in Khan Younis, intercepting communications could reveal exact locations and enable coordinated hostage rescue while identifying high-value targets. SIGINT operations maintain plausible deniability while gathering critical intelligence.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "res_8a66c177",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "IDF tunnel detection units begin systematic scanning around Shifa Hospital perimeter, identifying multiple underground entry points and potential tunnel networks beneath the medical complex.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_07eceea4",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_edfe6f22",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah anti-tank missile strikes IDF patrol vehicle near Metula, killing 2 soldiers and wounding 4, marking another escalation on the northern front.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_0723a165",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_f4d44d40",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Houthi missiles target cargo vessel with Israeli connections in Red Sea shipping lane, forcing the ship to alter course and triggering international shipping concerns.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_7e65d6cf",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_2a83e4fc",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak human intelligence assets successfully infiltrate civilian areas near Shifa Hospital, gathering preliminary intelligence on potential hostage locations and Hamas defensive positions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_c38413c3",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_59a984ef",
+      "timestamp": "2023-10-07T08:41:25.094261",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Begin systematic clearing operations of Shifa Hospital tunnel network",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "With perimeter established and tunnel detection units deployed, now executing methodical clearing of critical Hamas command infrastructure beneath Shifa while following rules of engagement to protect any civilians present.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_a4c700db",
+      "timestamp": "2023-10-07T08:42:02.866302",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Convene emergency UN Security Council session to authorize humanitarian aid corridors",
+      "is_public": true,
+      "affected_agents": [
+        "UN-Secretary-General",
+        "Russia-President",
+        "China-President",
+        "UK-Prime-Minister",
+        "France-President"
+      ],
+      "reasoning": "Need to establish legitimate humanitarian access while blocking any resolutions that would delegitimize Israel's self-defense. This shows US leadership on humanitarian concerns while maintaining strategic position.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_f90965a1",
+      "timestamp": "2023-10-07T08:43:29.313369",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Release propaganda video with hostages demanding Israeli withdrawal from Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-Government",
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "Need to counter Israeli intelligence operations around Shifa and maintain hostage leverage. Public video serves multiple objectives: demonstrates we still control hostages, applies pressure on Israeli public through families, and reinforces our negotiating position while keeping hostage locations secret.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_199f864a",
+      "timestamp": "2023-10-07T08:43:59.706373",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Urgently contact Qatar mediators about IDF operations threatening hostage safety",
+      "is_public": false,
+      "affected_agents": [
+        "Qatar-Mediator"
+      ],
+      "reasoning": "IDF is beginning tunnel clearing operations at Shifa Hospital where hostages may be held. Must immediately engage mediators to prevent military action from endangering hostages - only deals save lives, not military operations.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "diplomatic",
+        "created_at": "2023-10-07T08:43:59.706373",
+        "expected_resolution_minutes": 60
+      }
+    },
+    {
+      "event_id": "res_7b5cbe27",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad successfully inserts two human assets into Gaza City posing as medical volunteers. Initial reconnaissance confirms heightened Hamas security around Shifa Hospital but no visual confirmation of hostages yet.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_fd98c679",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_a03837ed",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas operatives quietly move 8 high-value hostages through underground passages from Shifa Hospital to a deeper tunnel complex near Khan Younis, using medical transport cover during night hours.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_aeabfc3e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_b8e87979",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak deploys signals intelligence assets and local contacts in Khan Younis area. Early intercepts suggest increased Hamas communications traffic in southern Gaza tunnel networks.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_7cf8403b",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_77907436",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas leadership establishes secure communication channel with IRGC Quds Force commanders. Iran agrees to provide additional weapons shipments and advises maintaining hostages as primary leverage against Israeli ground operations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_15d2db1e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_1f1215c5",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hostages Families Forum stages emergency press conference outside Kirya military headquarters, with families of 15 hostages demanding immediate prisoner exchange negotiations take priority over military objectives.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_37e50e64",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_11434f78",
+      "timestamp": "2023-10-07T08:47:21.679544",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch drone attack on Western naval vessels escorting Red Sea shipping",
+      "is_public": true,
+      "affected_agents": [
+        "US-Military"
+      ],
+      "reasoning": "Continuing pressure campaign against Western naval presence in Red Sea. US Navy escorts make tempting targets to prove their vulnerability and humiliate Western naval power as per objectives.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Red Sea"
+      }
+    },
+    {
+      "event_id": "evt_4e084d4e",
+      "timestamp": "2023-10-07T08:48:11.584110",
+      "agent_id": "Saudi-Arabia-Crown-Prince",
+      "action_type": "diplomatic",
+      "summary": "Deploy intelligence back-channel to Israel proposing Gaza humanitarian corridor",
+      "is_public": false,
+      "affected_agents": [
+        "Israel-Prime-Minister",
+        "Palestinian-Authority"
+      ],
+      "reasoning": "Need to maintain credibility as Arab leader while keeping normalization pathway alive. Secret proposal for humanitarian corridor shows leadership without public support for Israeli operations, and creates potential breakthrough that could restart talks later.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_6fd5f1fb",
+      "timestamp": "2023-10-07T08:48:21.853759",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy SIGINT assets to intercept Hamas tunnel communications in Khan Younis",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "With 45 hostages potentially in Khan Younis and increased Hamas communications traffic detected, focused SIGINT operations could provide actionable intelligence for rescue operations while supporting IDF clearing efforts",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "evt_274be3f6",
+      "timestamp": "2023-10-07T08:49:32.803988",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Mortar barrage on IDF outposts along Shebaa Farms disputed territory",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Defense-Forces"
+      ],
+      "reasoning": "Continue pressure campaign with measured escalation targeting military positions in disputed area to maintain solidarity with Hamas while avoiding crossing red lines that would trigger full invasion",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_9816ed1d",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Secretary of State Blinken departs for Doha within hours, coordinating with Qatari officials who maintain communication channels with Hamas leadership. Initial discussions focus on establishing framework for potential hostage negotiations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_8943b268",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_e5b30b0a",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Crown Prince Mohammed bin Salman conveys through secure diplomatic channels that regional stability depends on preventing Gaza escalation, warning that prolonged conflict could derail Saudi-Iran normalization efforts and complicate Abraham Accords expansion.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_d8dfc8d5",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_4805f4c2",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Defense Minister Gallant holds closed-door meeting with representative hostage families, sharing operational constraints and confirming military preparations for potential rescue missions while emphasizing complexity of Gaza tunnel networks.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_2cb87cf9",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_ddb62095",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hostage families establish direct contact with Egyptian intelligence officials in Cairo, creating secondary diplomatic track separate from official government negotiations. Egypt agrees to facilitate communication while maintaining neutrality.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_aeedea0e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_734e88ac",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Tensions escalate as families demand transparency about rescue timeline and government strategy. Security briefing reveals operational challenges but families express frustration with pace of response, increasing public pressure on government.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_f62c8c3e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_57240547",
+      "timestamp": "2023-10-07T08:50:47.808208",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Establish back-channel negotiations with Qatar for Haniyeh hostage talks",
+      "is_public": false,
+      "affected_agents": [
+        "Qatar-PM",
+        "Ismail-Haniyeh"
+      ],
+      "reasoning": "With high confidence intel on Haniyeh in Qatar and family pressure for negotiations, prioritizing hostage safety through diplomatic channels while maintaining cover for ongoing ops",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Qatar"
+      }
+    },
+    {
+      "event_id": "evt_c92910d0",
+      "timestamp": "2023-10-07T08:52:26.651795",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Emergency budget reallocation for IDF Shifa operations and hostage family support",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "With ongoing Shifa Hospital operations and family pressure mounting, I need to ensure immediate funding for this critical military operation while fulfilling my obligation to support hostage families. This demonstrates fiscal responsibility during active combat operations.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_cc5a164d",
+      "timestamp": "2023-10-07T08:52:45.825148",
+      "agent_id": "Media-Channel-12",
+      "action_type": "intelligence",
+      "summary": "Investigate intel failures behind October 7th attack through government sources",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander",
+        "Defense-Minister-Gallant",
+        "Shabak"
+      ],
+      "reasoning": "With military operations underway, now is critical time to investigate how October 7th intelligence failures occurred. Need to gather information from multiple security sources while respecting operational security constraints.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_cc7e9037",
+      "timestamp": "2023-10-07T08:53:44.284058",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy specialized tunnel warfare units to begin systematic clearing of Shifa complex",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Gaza"
+      ],
+      "reasoning": "With intelligence assets in position around Shifa Hospital, it's time to deploy specialized tunnel warfare units to begin the systematic clearing operation I initiated. This follows the primary objective of dismantling Hamas tunnel networks while maintaining operational momentum.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_b7c6cfae",
+      "timestamp": "2023-10-07T08:54:13.679209",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Meet with Qatari Ambassador demanding immediate ceasefire for hostage negotiations",
+      "is_public": true,
+      "affected_agents": [
+        "Qatar",
+        "Israeli-Government"
+      ],
+      "reasoning": "With Hamas releasing propaganda videos and military operations escalating, I need to urgently push Qatar as the key mediator to facilitate immediate talks. Public pressure on Qatar while bypassing Israeli government delays is crucial for hostage lives.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_ce70418a",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak's counterterrorism operation successfully disrupts Hamas terror network in the West Bank, capturing key operatives and preventing imminent attacks on Israeli settlements. The intelligence gathered reveals deeper coordination between Gaza and West Bank cells than previously understood.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "failed",
+      "parent_event_id": "res_e14621e6",
+      "resolution_event_id": "res_7e7e7ab6",
+      "pending_data": null
+    },
+    {
+      "event_id": "res_2931fbf6",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "The enhanced CIA-Mossad intelligence sharing creates a comprehensive underground map of Gaza's tunnel system, providing IDF with unprecedented targeting data. Three senior Hamas commanders are now under constant surveillance as they move through the tunnel network.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "failed",
+      "parent_event_id": "res_44ebf40c",
+      "resolution_event_id": "res_800a6f5e",
+      "pending_data": null
+    },
+    {
+      "event_id": "res_86104f3e",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Treasury's emergency response successfully provides immediate relief to displaced families, establishing temporary housing facilities and distributing emergency funds. The rapid deployment helps maintain public confidence in the government's crisis management capabilities.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "resolved",
+      "parent_event_id": "res_5477e441",
+      "resolution_event_id": "res_5a00e8ac",
+      "pending_data": null
+    },
+    {
+      "event_id": "res_70f5c58d",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "SIGINT breakthrough locates 15 Israeli hostages across multiple Gaza facilities, revealing Hamas's strategy of dispersing captives to complicate rescue operations. The intelligence confirms hostages are alive but being moved regularly between underground locations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "failed",
+      "parent_event_id": "res_cbbb0c20",
+      "resolution_event_id": "res_118137d5",
+      "pending_data": null
+    },
+    {
+      "event_id": "res_41311330",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad reconnaissance confirms hostage location near Al-Shifa Hospital but reveals the extreme complexity of extraction due to civilian presence and extensive tunnel fortifications. The mission highlights the challenging trade-offs between hostage rescue and civilian casualty prevention.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "resolved",
+      "parent_event_id": "res_34d1f5b5",
+      "resolution_event_id": "res_d729bf5d",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_ef8bb604",
+      "timestamp": "2023-10-07T08:55:16.043615",
+      "agent_id": "Media-Channel-14",
+      "action_type": "internal",
+      "summary": "Launch 24/7 coverage emphasizing IDF precision ops and Hamas hospital tactics",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "Must counter narrative around hospital operations by highlighting Hamas use of medical facilities while supporting IDF clearing operations. Frame hostage families' demands within security-first context.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_d4dd8a5c",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_1ca41af5",
+      "timestamp": "2023-10-07T08:56:03.018408",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Negotiate prisoner exchange terms with Egyptian mediators in Qatar",
+      "is_public": false,
+      "affected_agents": [
+        "Egypt",
+        "Israel"
+      ],
+      "reasoning": "With Israeli intelligence closing in on Gaza positions and hostages safely moved, need to accelerate diplomatic leverage through Egyptian channels while maintaining maximum bargaining position for prisoner releases",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_762ec434",
+      "pending_data": {
+        "type": "diplomatic",
+        "created_at": "2023-10-07T08:56:03.018408",
+        "expected_resolution_minutes": 60,
+        "target_zone": "Qatar"
+      }
+    },
+    {
+      "event_id": "evt_4614d90d",
+      "timestamp": "2023-10-07T08:59:23.417916",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Call President Sisi to coordinate Egypt border security and Gaza aid access",
+      "is_public": true,
+      "affected_agents": [
+        "Egypt-President"
+      ],
+      "reasoning": "Egypt controls Gaza's southern border through Rafah crossing. Need Egyptian cooperation for humanitarian aid corridors and to prevent weapons smuggling while maintaining pressure on Hamas for hostage release.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_e86a4068",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_87085378",
+      "timestamp": "2023-10-07T09:00:30.431664",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy human intelligence assets to identify hostage guard patterns in Gaza City",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "With 35 hostages in Gaza City per intelligence briefing, need HUMINT to complement SIGINT operations. Gaza City offers better infiltration opportunities than Khan Younis tunnels. This intelligence directly supports rescue operations without compromising ongoing ops.",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_0ef56969",
+      "timestamp": "2023-10-07T09:00:28.558931",
+      "agent_id": "Russia-President",
+      "action_type": "diplomatic",
+      "summary": "Propose BRICS+ Gaza reconstruction fund as alternative to Western aid mechanisms",
+      "is_public": true,
+      "affected_agents": [
+        "China-President",
+        "India-Prime-Minister",
+        "Brazil-President",
+        "South-Africa-President",
+        "Iran-Supreme-Leader"
+      ],
+      "reasoning": "With PLO rejecting Russia-Iran mediation and US pushing UN processes, I'll leverage BRICS momentum from emergency summit to create alternative financial mechanism. This positions Russia as humanitarian leader while bypassing Western-controlled institutions, supports Iranian partnership, and appeals to Global South by offering concrete post-conflict reconstruction alternative that doesn't rely on US/EU funding.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_6db2bad6",
+      "pending_data": {
+        "type": "diplomatic",
+        "created_at": "2023-10-07T09:00:28.558931",
+        "expected_resolution_minutes": 60
+      }
+    },
+    {
+      "event_id": "evt_620ffab5",
+      "timestamp": "2023-10-07T09:01:49.017591",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Cross-border rocket attack on IDF positions near Dovev outpost",
+      "is_public": true,
+      "affected_agents": [
+        "Israeli-Military"
+      ],
+      "reasoning": "Continuing calibrated attacks to maintain northern front pressure while staying below strategic escalation threshold. Targeting military positions maintains our solidarity narrative without crossing red lines that would trigger full-scale retaliation.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_568f299d",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_777149da",
+      "timestamp": "2023-10-07T09:02:58.075240",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Deploy deep-cover assets to verify Gaza hostage locations and tunnel networks",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "With IDF tunnel operations beginning at Shifa, I need verified intelligence on hostage locations to prevent friendly fire incidents during rescue ops. Current LOW confidence intel is insufficient for precision operations.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_1f191c3d",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_3d868837",
+      "timestamp": "2023-10-07T09:03:08.295543",
+      "agent_id": "North-Korea-Supreme-Leader",
+      "action_type": "military",
+      "summary": "Ship advanced rocket components to Iranian proxies via Syria route",
+      "is_public": false,
+      "affected_agents": [
+        "Iran",
+        "Syria"
+      ],
+      "reasoning": "Payment terms are finalized, technical assessment complete. Time to deliver advanced rocket components through established Syrian route to Gaza proxies while maintaining plausible deniability. This generates hard currency and tests weapons performance.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_0c03eb6a",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_777c16a8",
+      "timestamp": "2023-10-07T09:04:32.115254",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Organize emergency family delegation to meet PM Netanyahu demanding hostage deal priority",
+      "is_public": true,
+      "affected_agents": [
+        "PM-Netanyahu",
+        "Knesset"
+      ],
+      "reasoning": "With IDF operations intensifying at Shifa, families must pressure PM directly to prioritize negotiations over military action. Public pressure on highest level needed to prevent hostages being sacrificed for military objectives.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_79c1aec4",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_340656b0",
+      "timestamp": "2023-10-07T09:04:31.184335",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch ballistic missile barrage at Eilat port and naval facilities",
+      "is_public": true,
+      "affected_agents": [
+        "Israel"
+      ],
+      "reasoning": "Continue pressure on Israel with sustained missile attacks on strategic port. Previous attack was intercepted but caused some damage - escalating with barrage increases chance of success and demonstrates our capability despite Israeli defenses.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_0fdd73a4",
+      "pending_data": {
+        "target_zone": "Eilat"
+      }
+    },
+    {
+      "event_id": "evt_bccfef84",
+      "timestamp": "2023-10-07T09:05:17.456596",
+      "agent_id": "UK-Prime-Minister",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with EU partners on unified Gaza humanitarian aid response",
+      "is_public": true,
+      "affected_agents": [
+        "France-President",
+        "Germany-Chancellor",
+        "EU-Commission"
+      ],
+      "reasoning": "Following hard rule to coordinate with EU partners despite Brexit, while supporting humanitarian aid access to Gaza as per objectives. This maintains independent voice while aligning with US policy.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_c90196dc",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_e8710b97",
+      "timestamp": "2023-10-07T09:05:46.945217",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Advance 36th Division from Sderot toward Gaza City outskirts for tunnel reconnaissance",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Gaza"
+      ],
+      "reasoning": "With tunnel warfare units already deployed at Shifa, need to position main forces for systematic Gaza clearing. 36th Division can establish perimeter and begin identifying tunnel network entry points while maintaining safe distance from civilian areas.",
+      "resolution_status": "awaiting_pm",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_24951cc6",
+      "timestamp": "2023-10-07T09:07:40.802321",
+      "agent_id": "Egypt-President",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with Biden on Gaza aid corridor through Egypt while securing US commitments",
+      "is_public": false,
+      "affected_agents": [
+        "USA-President"
+      ],
+      "reasoning": "US President called to coordinate border security and aid access. This is perfect opportunity to position Egypt as indispensable mediator while securing continued military aid and support. Must emphasize Egypt's critical role in preventing refugee crisis and facilitating humanitarian assistance.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_972a991c",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_344c4b27",
+      "timestamp": "2023-10-07T09:08:34.022634",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Release video proof-of-life for 3 high-value hostages demanding immediate ceasefire",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-Government",
+        "Egypt",
+        "International-Community"
+      ],
+      "reasoning": "Need to maintain hostage leverage while demonstrating they are alive to pressure Israel and international community for ceasefire. Selective proof-of-life maintains negotiating position while avoiding revealing all hostages.",
+      "resolution_status": "failed",
+      "parent_event_id": null,
+      "resolution_event_id": "res_b3ad286e",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_96aef5b3",
+      "timestamp": "2023-10-07T09:10:22.181561",
+      "agent_id": "Saudi-Arabia-Crown-Prince",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with UAE and Egypt on unified Gaza diplomatic position",
+      "is_public": false,
+      "affected_agents": [
+        "UAE-Leadership",
+        "Egypt-Leadership"
+      ],
+      "reasoning": "Need to align key Arab partners on Gaza response before Arab League summit. UAE and Egypt are critical for maintaining regional balance while managing Gaza crisis without empowering Iran.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_81465d05",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_fb7a7239",
+      "timestamp": "2023-10-07T09:10:17.510190",
+      "agent_id": "PLO-Prime-Minister",
+      "action_type": "diplomatic",
+      "summary": "Launch international campaign for immediate UN General Assembly emergency session on Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "UN",
+        "Arab-League",
+        "EU",
+        "US"
+      ],
+      "reasoning": "With EU showing interest and Arab League unified, need to escalate to UN General Assembly where we have more support than Security Council. This positions PA as leading diplomatic voice for Palestinians while pressuring international community for ceasefire and reconstruction framework.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_2c81215b",
+      "timestamp": "2023-10-07T09:12:41.749263",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy surveillance network to monitor tunnel exits around Khan Younis for hostage intel",
+      "is_public": false,
+      "affected_agents": [
+        "IDF-Commander"
+      ],
+      "reasoning": "Khan Younis shows highest concentration of hostages (45) and Sinwar's presence. Need to establish surveillance of tunnel networks to support rescue operations and provide tactical intelligence to IDF ground forces advancing in Gaza.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T09:12:41.749263",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "evt_75354014",
+      "timestamp": "2023-10-07T09:12:24.452891",
+      "agent_id": "Defense-Minister",
+      "action_type": "diplomatic",
+      "summary": "Urgent call with US SecDef requesting enhanced Iron Dome interceptors for multi-front escalation",
+      "is_public": false,
+      "affected_agents": [
+        "US-SecDef"
+      ],
+      "reasoning": "With Houthis now actively attacking Israeli infrastructure at Eilat, this confirms multi-front escalation fears. Must immediately secure US commitment for enhanced air defense systems before situation deteriorates further. Private diplomatic channel maintains strategic ambiguity while ensuring critical resupply pipeline.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "diplomatic",
+        "created_at": "2023-10-07T09:12:24.452891",
+        "expected_resolution_minutes": 60
+      }
+    },
+    {
+      "event_id": "evt_868b3135",
+      "timestamp": "2023-10-07T09:14:00.483170",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Anti-tank guided missile strike on IDF armored patrol near Zarit outpost",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-Defense-Forces"
+      ],
+      "reasoning": "Continue calibrated escalation pattern with precision strikes on military targets. ATGM attacks are our signature capability and tie down IDF forces without crossing red lines. Maintain pressure while preserving strategic assets.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_568f299d",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah fires 12 Katyusha rockets at IDF positions near Dovev outpost. Israeli Iron Dome intercepts 8 rockets, while 4 impact causing minor damage to military infrastructure. No casualties reported.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_620ffab5",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_0c03eb6a",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "North Korean vessel successfully delivers advanced rocket guidance systems and propellant components to Iranian Revolutionary Guard via Damascus airport. Shipment includes technology for precision-guided munitions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_3d868837",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_0fdd73a4",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Houthis launch 6 ballistic missiles toward Eilat from Yemen. Israeli Arrow-3 system intercepts 5 missiles, while one impacts near port facilities causing moderate infrastructure damage but no casualties.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_340656b0",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_069ae731",
+      "timestamp": "2023-10-07T09:14:47.083161",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Hold urgent press conference demanding halt to military ops until hostage negotiations progress",
+      "is_public": true,
+      "affected_agents": [
+        "PM-Netanyahu",
+        "IDF-Commander",
+        "Media-Channel-14"
+      ],
+      "reasoning": "With IDF advancing on Gaza City and tunnel operations at Shifa, I must publicly pressure for negotiations over military action. The escalating operations risk hostage lives - need immediate media pressure to prioritize deals.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_2488de7a",
+      "timestamp": "2023-10-07T09:15:02.893474",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Activate HUMINT network in Qatar to track Haniyeh's communications and movements",
+      "is_public": false,
+      "affected_agents": [
+        "Ismail-Haniyeh"
+      ],
+      "reasoning": "Haniyeh is the only high-confidence located target and key to hostage negotiations. Need intelligence on his communications for potential back-channel talks while maintaining elimination option.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T09:15:02.893474",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Qatar"
+      }
+    },
+    {
+      "event_id": "evt_696c64b4",
+      "timestamp": "2023-10-07T09:15:23.003311",
+      "agent_id": "Iran-Ayatollah",
+      "action_type": "diplomatic",
+      "summary": "Emergency consultation with Syrian allies on regional coordination",
+      "is_public": false,
+      "affected_agents": [
+        "Syria-Assad"
+      ],
+      "reasoning": "With Arab League mobilizing against Iranian influence and US carrier deployed, need to secure Syrian coordination for potential multi-front scenarios while maintaining deniability",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_cae76b70",
+      "timestamp": "2023-10-07T09:16:35.412419",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Authorize CIA-Mossad joint operation to locate American hostages in Gaza",
+      "is_public": false,
+      "affected_agents": [
+        "Israel",
+        "Hamas"
+      ],
+      "reasoning": "Need urgent intelligence on American hostage locations to enable rescue operations or targeted negotiations. Covert intel sharing with Israel maintains plausible deniability while advancing primary objective of hostage release.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_946e5626",
+      "timestamp": "2023-10-07T09:18:00.685508",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy Iron Dome batteries to Eilat following Houthi missile attack",
+      "is_public": true,
+      "affected_agents": [
+        "Houthi-Leadership"
+      ],
+      "reasoning": "Must reinforce air defenses at Eilat after Houthi attack breached defenses. One missile got through - cannot allow this vulnerability to persist while maintaining Gaza operations.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Eilat"
+      }
+    },
+    {
+      "event_id": "res_1f191c3d",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad begins deploying specialized intelligence assets into Gaza through various entry points, focusing on mapping tunnel networks and confirming hostage locations reported by initial reconnaissance.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_777149da",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_762ec434",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas representatives arrive in Doha to begin preliminary discussions with Egyptian mediators about potential prisoner exchange ratios, with Egypt proposing a phased release mechanism.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_1ca41af5",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_e86a4068",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "President Biden secures Egyptian commitment to strengthen Rafah border monitoring and establish humanitarian corridor protocols, with Egypt agreeing to coordinate aid distribution mechanisms.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4614d90d",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_6db2bad6",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Putin announces Russia's willingness to lead a BRICS+ reconstruction initiative for Gaza, positioning it as a non-Western alternative that could bypass traditional donor conditions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_0ef56969",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_79c1aec4",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Families of hostages organize an urgent meeting request with Netanyahu's office, mobilizing dozens of relatives to demand immediate prioritization of hostage negotiations over military objectives.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_777c16a8",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_1b18b2a5",
+      "timestamp": "2023-10-07T09:20:55.256996",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Demand 1000 Palestinian prisoners for first 10 civilian hostages via Egypt",
+      "is_public": false,
+      "affected_agents": [
+        "Egypt",
+        "Israel"
+      ],
+      "reasoning": "Establishing high exchange ratios early sets precedent. Egyptian mediation provides legitimacy while keeping most valuable hostages for later phases.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_cee1f053",
+      "timestamp": "2023-10-07T09:21:48.707049",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "military",
+      "summary": "Launch massive drone swarm at Red Sea shipping to overwhelm defenses",
+      "is_public": true,
+      "affected_agents": [
+        "Western-Coalition",
+        "IDF-Commander"
+      ],
+      "reasoning": "Iron Dome deployment to Eilat shows our missile attacks are forcing Israeli defensive responses. Now shift focus back to Red Sea shipping disruption with large drone swarm to overwhelm naval defenses and force more shipping diversions, maximizing economic pressure on Israel and the West.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Red Sea"
+      }
+    },
+    {
+      "event_id": "res_c90196dc",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "UK successfully coordinates with EU partners to establish a unified €500M Gaza humanitarian aid package, with delivery mechanisms to be determined pending security assessments.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_bccfef84",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_972a991c",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Egypt and Biden agree on preliminary framework for Rafah crossing humanitarian corridor, with US committing $200M in aid and security guarantees for Egyptian border operations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_24951cc6",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_b3ad286e",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hamas releases 90-second video showing three hostages (including dual nationals) alive but distressed, demanding immediate ceasefire within 48 hours and generating intense international pressure.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_344c4b27",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_81465d05",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Saudi Arabia, UAE, and Egypt establish coordinated position calling for immediate humanitarian pause and increased aid access, while maintaining diplomatic pressure on all parties.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_96aef5b3",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_d4dd8a5c",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Channel 14 launches intensive coverage highlighting IDF's precision targeting capabilities and showcasing intelligence on Hamas using civilian infrastructure, reaching 2M+ viewers.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_ef8bb604",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_969704fc",
+      "timestamp": "2023-10-07T09:24:52.904556",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy HUMINT assets to West Bank to prevent second front activation",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-West-Bank"
+      ],
+      "reasoning": "With hostage negotiations starting in Doha and Houthis escalating, I must prevent Hamas from activating West Bank cells to open a second front. Intelligence gathering in Ramallah will help identify and neutralize potential coordinated attacks while main focus remains on Gaza hostages.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_ce09473e",
+      "pending_data": {
+        "target_zone": "Ramallah"
+      }
+    },
+    {
+      "event_id": "evt_7c3336ef",
+      "timestamp": "2023-10-07T09:25:10.786164",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Fly to Doha to meet directly with Hamas negotiators and Egyptian mediators",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas",
+        "Egyptian-Mediators",
+        "Qatar"
+      ],
+      "reasoning": "Hamas representatives are in Doha for negotiations - this is our chance to speak directly to them about our children. Egyptian mediators are proposing phased releases. We must be there to ensure no hostage is forgotten and push for immediate humanitarian releases.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Doha"
+      }
+    },
+    {
+      "event_id": "evt_88c828c8",
+      "timestamp": "2023-10-07T09:26:27.712548",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Launch mortar rounds at IDF positions near Metula crossing",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-IDF"
+      ],
+      "reasoning": "Continue daily cross-border harassment to tie down IDF forces in north while maintaining calculated escalation. Mortars are less provocative than ATGMs but still effective at forcing Israeli military response and resource allocation.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_a1cc4a03",
+      "pending_data": {
+        "target_zone": "South Lebanon"
+      }
+    },
+    {
+      "event_id": "res_7e7e7ab6",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak successfully dismantles a West Bank terror cell, arresting 12 operatives and uncovering weapons caches. Intelligence reveals sophisticated coordination between Gaza and West Bank Hamas cells, providing crucial insights into the broader network's structure.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_ce70418a",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_800a6f5e",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Enhanced CIA-Mossad cooperation produces detailed tunnel maps spanning northern Gaza, identifying key command centers and weapons storage facilities. Three senior Hamas commanders are now tracked continuously, providing real-time intelligence on their movements and meetings.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_2931fbf6",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_5a00e8ac",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Treasury establishes emergency aid centers across southern Israel, housing 8,000 displaced civilians and distributing ₪50 million in immediate assistance. The swift response boosts public confidence and demonstrates government preparedness during the crisis.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_86104f3e",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_118137d5",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "SIGINT breakthrough pinpoints 15 Israeli hostages across 6 different Gaza locations, confirming they are alive but being moved every 12-24 hours. The intelligence reveals Hamas is deliberately dispersing captives to prevent coordinated rescue operations.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_70f5c58d",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_d729bf5d",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad confirms multiple hostage locations near Al-Shifa Hospital but identifies extensive civilian presence and multilayered tunnel defenses. The reconnaissance reveals that any rescue attempt would require significant planning to minimize civilian casualties while navigating complex underground fortifications.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_41311330",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_033994bf",
+      "timestamp": "2023-10-07T09:27:13.323240",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Deploy specialized surveillance teams to confirm Khan Younis hostage locations",
+      "is_public": false,
+      "affected_agents": [
+        "Hostage-Group-Alpha",
+        "Yahya-Sinwar"
+      ],
+      "reasoning": "Given LOW confidence intel on 45 hostages and Sinwar in Khan Younis, need immediate verification for potential rescue ops. Families demanding action creates pressure to confirm locations before any military strikes risk hostage safety.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_6cd5ef2f",
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T09:27:13.323240",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Khan Younis"
+      }
+    },
+    {
+      "event_id": "evt_4c1f8423",
+      "timestamp": "2023-10-07T09:30:08.262591",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy additional forces to Gaza border and begin systematic ground reconnaissance",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Leadership",
+        "Gaza-Civilians"
+      ],
+      "reasoning": "Must begin systematic military operations to map and destroy tunnel networks while families negotiate. Ground reconnaissance essential before major assault operations.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_6eb9567b",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_bc7624af",
+      "timestamp": "2023-10-07T09:32:19.106605",
+      "agent_id": "Saudi-Arabia-Crown-Prince",
+      "action_type": "diplomatic",
+      "summary": "Convene emergency Arab League meeting on Gaza humanitarian crisis",
+      "is_public": true,
+      "affected_agents": [
+        "Arab-League",
+        "Egypt",
+        "UAE",
+        "Jordan",
+        "Qatar"
+      ],
+      "reasoning": "Need to demonstrate Arab leadership while building coalition pressure for ceasefire. This maintains credibility with Arab street, creates diplomatic momentum, and positions Saudi as regional leader without directly confronting Israel or US interests.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_c739fe74",
+      "timestamp": "2023-10-07T09:33:05.241337",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Reject Israeli 1:10 ratio, demand 1500 prisoners plus fuel/aid for first hostage group",
+      "is_public": false,
+      "affected_agents": [
+        "Egypt",
+        "Hostages-Families-Forum"
+      ],
+      "reasoning": "Egyptian mediators and families are in Doha - perfect timing to escalate demands while IDF builds forces. Use families' desperation and international pressure to extract maximum concessions. Never accept first offer.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_c2537fcb",
+      "timestamp": "2023-10-07T09:33:49.392228",
+      "agent_id": "USA-President",
+      "action_type": "diplomatic",
+      "summary": "Deploy US Navy carrier strike group to Eastern Mediterranean as deterrent",
+      "is_public": true,
+      "affected_agents": [
+        "Iran",
+        "Israel",
+        "Hezbollah"
+      ],
+      "reasoning": "Need to establish clear deterrent against Iranian proxies escalating conflict while showing strong support for Israel. This fulfills hard rule of maintaining carrier presence and supports objective of preventing US-Iran confrontation through strength.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_269d7f90",
+      "timestamp": "2023-10-07T09:35:39.114089",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Meet with Egyptian mediators in Doha to discuss prisoner exchange framework",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Political-Leadership",
+        "Egyptian-Government"
+      ],
+      "reasoning": "I'm already in Doha and must capitalize on being here to engage directly with Egyptian mediators who are facilitating talks. This is my core mission - securing deals for hostage release.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "diplomatic",
+        "created_at": "2023-10-07T09:35:39.114089",
+        "expected_resolution_minutes": 60
+      }
+    },
+    {
+      "event_id": "evt_a5574143",
+      "timestamp": "2023-10-07T09:37:13.226910",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy signals intelligence assets to monitor Gaza communications for hostage locations",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Leadership"
+      ],
+      "reasoning": "With hostage families going to Doha and Hamas in negotiations, I need better intelligence on actual hostage locations. Current intel shows LOW confidence on all groups. SIGINT can intercept Hamas communications about hostage movements and conditions without compromising rescue operations.",
+      "resolution_status": "pending",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-07T09:37:13.226910",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_ccd13ee9",
+      "timestamp": "2023-10-07T09:38:32.106593",
+      "agent_id": "Hezbollah-Leadership",
+      "action_type": "military",
+      "summary": "Rocket salvo targeting IDF positions at Kiryat Shmona military installations",
+      "is_public": true,
+      "affected_agents": [
+        "Israel-IDF"
+      ],
+      "reasoning": "Continue calibrated escalation pattern to maintain northern front pressure while US carrier deployment shows need to avoid major provocation. Kiryat Shmona military targets justify response as defensive while staying below full-war threshold.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_ad2648c8",
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_046bcad3",
+      "timestamp": "2023-10-07T09:39:24.789906",
+      "agent_id": "Houthi-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Announce through Yahya Saree that attacks will continue until Gaza siege ends",
+      "is_public": true,
+      "affected_agents": [
+        "IDF-Commander",
+        "US-Navy-Commander"
+      ],
+      "reasoning": "Need to maximize propaganda value of our successful Eilat strike and establish clear conditions for ending attacks, while positioning ourselves as defenders of Palestine",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_7e6e8fda",
+      "timestamp": "2023-10-07T09:39:38.232579",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Activate human assets in Gaza to verify hostage locations and conditions",
+      "is_public": false,
+      "affected_agents": [
+        "Hamas-Leader"
+      ],
+      "reasoning": "Need to upgrade intelligence confidence on hostage locations before any rescue operations. Current LOW confidence is insufficient for operational planning. Activating dormant assets in Gaza City where largest hostage group may be located.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_1eb3aebb",
+      "timestamp": "2023-10-07T09:42:19.337540",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Launch precision airstrikes on identified Hamas tunnel entrances in northern Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military"
+      ],
+      "reasoning": "With ground reconnaissance complete, we have fresh intelligence on tunnel network entry points. Systematic degradation of Hamas infrastructure must begin immediately while maintaining operational momentum. Airstrikes allow us to begin tunnel network destruction while minimizing IDF casualties.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": {
+        "target_zone": "Gaza City"
+      }
+    },
+    {
+      "event_id": "evt_1c4c2dbc",
+      "timestamp": "2023-10-07T09:44:25.018723",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Secure emergency $10B US aid package and loan guarantees for war funding",
+      "is_public": true,
+      "affected_agents": [
+        "USA-President"
+      ],
+      "reasoning": "With ground operations beginning and hostage negotiations underway, I need immediate US financial backing to prevent fiscal collapse while funding massive military mobilization and victim compensation",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_ac45783d",
+      "timestamp": "2023-10-07T09:45:41.665056",
+      "agent_id": "Hamas-Leadership",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with Iranian IRGC advisors on negotiation strategy and military priorities",
+      "is_public": false,
+      "affected_agents": [
+        "Iranian-IRGC"
+      ],
+      "reasoning": "With Israeli ground forces massing and families arriving in Doha, I must coordinate with Iran before making major decisions. Need IRGC guidance on balancing hostage negotiations with military resistance priorities.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "evt_5f8625e5",
+      "timestamp": "2023-10-07T09:45:51.952736",
+      "agent_id": "Hostages-Families-Forum",
+      "action_type": "diplomatic",
+      "summary": "Hold urgent press conference in Doha with Egyptian mediators to announce progress on prisoner exchange framework",
+      "is_public": true,
+      "affected_agents": [
+        "Egypt-President",
+        "Qatar-Emir",
+        "Netanyahu-PM"
+      ],
+      "reasoning": "Need to create public pressure by showing concrete negotiation progress and force Israeli government to engage seriously with the deal framework we're developing with mediators",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_a1cc4a03",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah mortar rounds strike near Metula crossing, causing minor damage to border infrastructure and forcing temporary evacuation of IDF outpost personnel.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_88c828c8",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_6eb9567b",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "IDF successfully deploys reinforcement battalions to Gaza perimeter and conducts detailed reconnaissance of Hamas tunnel networks and defensive positions.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_4c1f8423",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_ad2648c8",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Hezbollah rocket barrage hits Kiryat Shmona military base, damaging equipment storage facilities and wounding three IDF personnel, prompting increased northern border alert levels.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_ccd13ee9",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_ce09473e",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak intelligence operatives successfully establish surveillance networks in West Bank cities, identifying potential Hamas cells and preventing coordinated uprising attempts.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_969704fc",
+      "resolution_event_id": null,
+      "pending_data": null
+    },
+    {
+      "event_id": "res_6cd5ef2f",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad surveillance teams confirm multiple hostage locations in Khan Younis tunnel complexes and gather critical intelligence on Hamas guard rotations and facility layouts.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_033994bf",
+      "resolution_event_id": null,
+      "pending_data": null
     }
   ],
   "agent_last_action": {
-    "Head-Of-Shabak": "2023-10-07T06:53:35.288515",
-    "Head-Of-Mossad": "2023-10-07T06:44:03.332970",
-    "IDF-Commander": "2023-10-07T06:46:33.275385",
-    "Defense-Minister": "2023-10-07T06:49:03.359814",
-    "System-Resolver": "2023-10-07T06:49:03.828628",
-    "Treasury-Minister": "2023-10-07T06:51:33.576636",
-    "Media-Channel-12": "2023-10-07T06:54:03.369770"
+    "Head-Of-Shabak": "2023-10-07T09:37:13.226910",
+    "Head-Of-Mossad": "2023-10-07T09:39:38.232579",
+    "IDF-Commander": "2023-10-07T09:42:19.337540",
+    "Defense-Minister": "2023-10-07T09:12:24.452891",
+    "System-Resolver": "2023-10-07T09:44:31.084585",
+    "Treasury-Minister": "2023-10-07T09:44:25.018723",
+    "Media-Channel-12": "2023-10-07T08:52:45.825148",
+    "Media-Channel-14": "2023-10-07T08:55:16.043615",
+    "USA-President": "2023-10-07T09:33:49.392228",
+    "Russia-President": "2023-10-07T09:00:28.558931",
+    "North-Korea-Supreme-Leader": "2023-10-07T09:03:08.295543",
+    "UK-Prime-Minister": "2023-10-07T09:05:17.456596",
+    "Egypt-President": "2023-10-07T09:07:40.802321",
+    "PLO-Prime-Minister": "2023-10-07T09:10:17.510190",
+    "Hamas-Leadership": "2023-10-07T09:45:41.665056",
+    "Iran-Ayatollah": "2023-10-07T09:15:23.003311",
+    "Hezbollah-Leadership": "2023-10-07T09:38:32.106593",
+    "Houthi-Leadership": "2023-10-07T09:39:24.789906",
+    "Saudi-Arabia-Crown-Prince": "2023-10-07T09:32:19.106605",
+    "Hostages-Families-Forum": "2023-10-07T09:45:51.952736"
   },
   "ongoing_situations": [],
   "pm_approval_queue": [
@@ -381,6 +2896,174 @@
       ],
       "context": "Execute simultaneous hostage rescue ops at identified sites in Khan Younis and Gaza City",
       "recommendation": "High-risk operation with potential for significant casualties but intelligence suggests immediate action needed to save hostages",
+      "status": "approved",
+      "pm_decision": "approve",
+      "pm_decision_time": "2023-10-07T06:57:26.611390"
+    },
+    {
+      "approval_id": "apr_bfd55ccf",
+      "event_id": "evt_139cdbb5",
+      "request_type": "military_major",
+      "summary": "Large-scale ground clearing operations in northern Gaza experiencing heavy resistance",
+      "requesting_agent": "IDF-Commander",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Begin systematic clearing operations in northern Gaza with 36th Division",
+      "recommendation": "Continue operations with reinforcements to complete Gaza perimeter security",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
+    },
+    {
+      "approval_id": "apr_50a76298",
+      "event_id": "evt_d26ea58b",
+      "request_type": "military_major",
+      "summary": "IDF requests authorization for ground advance toward Shifa Hospital area for hostage rescue preparation",
+      "requesting_agent": "IDF-Commander",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Coordinate ground advance toward Shifa Hospital area for hostage rescue prep",
+      "recommendation": "Military command recommends approval with extensive civilian evacuation protocols",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
+    },
+    {
+      "approval_id": "apr_b4b6dffe",
+      "event_id": "evt_b2c802b7",
+      "request_type": "military_major",
+      "summary": "$2B emergency war budget allocation for hostage families support and combat operations",
+      "requesting_agent": "Treasury-Minister",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Release emergency war budget allocating $2B for hostage families and combat operations",
+      "recommendation": "Treasury Minister recommends immediate approval to support families and military readiness",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
+    },
+    {
+      "approval_id": "apr_45afbfd0",
+      "event_id": "evt_e564e299",
+      "request_type": "military_major",
+      "summary": "Deploy 36th Division to establish military perimeter around Shifa Hospital - major operation near sensitive civilian medical facility",
+      "requesting_agent": "IDF-Commander",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Deploy 36th Division to establish perimeter around Shifa Hospital complex",
+      "recommendation": "IDF Commander requests approval for divisional deployment to secure hospital complex for potential hostage rescue operations",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
+    },
+    {
+      "approval_id": "apr_d3a43ea3",
+      "event_id": "evt_e8710b97",
+      "request_type": "military_major",
+      "summary": "36th Division requests to advance toward Gaza City outskirts for tunnel reconnaissance operations",
+      "requesting_agent": "IDF-Commander",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Advance 36th Division from Sderot toward Gaza City outskirts for tunnel reconnaissance",
+      "recommendation": "IDF Commander recommends approval for limited reconnaissance advance with armored support",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
+    },
+    {
+      "approval_id": "apr_f7e8cffc",
+      "event_id": "evt_87085378",
+      "request_type": "military_major",
+      "summary": "Shabak requests deployment of human intelligence assets inside Gaza City to identify hostage locations and guard patterns",
+      "requesting_agent": "Head-Of-Shabak",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "modify",
+          "label": "Modify"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Deploy human intelligence assets to identify hostage guard patterns in Gaza City",
+      "recommendation": "Head of Shabak recommends approval for high-priority intelligence operation to support potential hostage rescue",
       "status": "pending",
       "pm_decision": null,
       "pm_decision_time": null

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2023-10-07T06:49:03.828628",
+  "last_updated": "2023-10-07T09:44:31.084585",
   "static_locations": [
     {
       "location_id": "base-israel-kirya",
@@ -361,7 +361,7 @@
       "current_location": {
         "lat": 31.3462,
         "lon": 34.3058,
-        "uncertainty_km": 2.0
+        "uncertainty_km": 1.0
       },
       "current_zone": "Khan Younis",
       "is_moving": false,
@@ -370,7 +370,7 @@
       "movement_started": null,
       "movement_eta": null,
       "detection_difficulty": 0.8,
-      "last_known_update": "",
+      "last_known_update": "2023-10-07T08:38:55.262797",
       "metadata": {
         "hostage_count": 45,
         "includes_foreign_nationals": true,
@@ -409,7 +409,7 @@
       "current_location": {
         "lat": 31.5017,
         "lon": 34.4668,
-        "uncertainty_km": 0.625
+        "uncertainty_km": 0.5
       },
       "current_zone": "Gaza City",
       "is_moving": false,
@@ -418,7 +418,7 @@
       "movement_started": null,
       "movement_eta": null,
       "detection_difficulty": 0.85,
-      "last_known_update": "2023-10-07T18:52:29.046531",
+      "last_known_update": "2023-10-07T08:38:55.262797",
       "metadata": {
         "hostage_count": 35,
         "includes_elderly": true,
@@ -786,10 +786,61 @@
   ],
   "active_geo_events": [
     {
-      "geo_event_id": "geo_f63c55a8",
+      "geo_event_id": "geo_45587869",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_88c828c8",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 33.2721,
+        "lon": 35.2033,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "South Lebanon",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "active",
+      "description": "Launch mortar rounds at IDF positions near Metula crossing",
+      "actor_entity": "Hezbollah",
+      "affected_entities": [
+        "Israel-IDF"
+      ]
+    },
+    {
+      "geo_event_id": "geo_02addd8e",
+      "event_type": "force_deployment",
+      "source_event_id": "evt_4c1f8423",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "active",
+      "description": "Deploy additional forces to Gaza border and begin systematic ground reconnaissance",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership",
+        "Gaza-Civilians"
+      ]
+    },
+    {
+      "geo_event_id": "geo_3b39a337",
       "event_type": "intel_operation",
-      "source_event_id": "evt_3b9e821b",
-      "timestamp": "2023-10-07T06:49:03.828628",
+      "source_event_id": "evt_969704fc",
+      "timestamp": "2023-10-07T09:44:31.084585",
       "origin": {
         "lat": 32.0853,
         "lon": 34.7818,
@@ -806,10 +857,38 @@
       "radius_km": 0.0,
       "duration_seconds": 30,
       "status": "active",
-      "description": "Deploy HUMINT assets to infiltrate West Bank Hamas cells preventing second front",
+      "description": "Deploy HUMINT assets to West Bank to prevent second front activation",
       "actor_entity": "Israel",
       "affected_entities": [
-        "Hamas-Gaza"
+        "Hamas-West-Bank"
+      ]
+    },
+    {
+      "geo_event_id": "geo_c55f8728",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_033994bf",
+      "timestamp": "2023-10-07T09:44:31.084585",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "active",
+      "description": "Deploy specialized surveillance teams to confirm Khan Younis hostage locations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hostage-Group-Alpha",
+        "Yahya-Sinwar"
       ]
     }
   ],
@@ -1738,6 +1817,670 @@
       "actor_entity": "Israel",
       "affected_entities": [
         "Hamas-Military-Wing"
+      ]
+    },
+    {
+      "geo_event_id": "geo_f63c55a8",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_3b9e821b",
+      "timestamp": "2023-10-07T06:49:03.828628",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.9038,
+        "lon": 35.2034,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Ramallah",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT assets to infiltrate West Bank Hamas cells preventing second front",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Gaza"
+      ]
+    },
+    {
+      "geo_event_id": "geo_a97a3425",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_4a39b7e6",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT assets to verify hostage locations in Khan Younis and Rafah",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_949ea2eb",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_080cb3b0",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5453,
+        "lon": 34.5335,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Beit Hanoun",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Investigate IDF rescue operations timeline and preparedness gaps",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_2968529b",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_1e7d8f71",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Infiltrate Gaza City informant network to locate Hostage Group Gamma",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Chief-Of-Staff"
+      ]
+    },
+    {
+      "geo_event_id": "geo_261244d9",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_a4c606a5",
+      "timestamp": "2023-10-07T07:05:38.702374",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy deep cover assets to verify hostage locations and Hamas leadership positions",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership",
+        "Hostage-Group-Alpha",
+        "Hostage-Group-Beta",
+        "Hostage-Group-Gamma"
+      ]
+    },
+    {
+      "geo_event_id": "geo_20ec1285",
+      "event_type": "force_deployment",
+      "source_event_id": "evt_455d0e49",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy additional forces to secure Gaza perimeter and establish operational staging areas",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Military-Wing"
+      ]
+    },
+    {
+      "geo_event_id": "geo_e0a31aa8",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_fc50422e",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "origin": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Gaza City",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch coordinated rocket barrage at IDF ground forces in northern Gaza",
+      "actor_entity": "Hamas",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_0d95d5a0",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_c7a1e434",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy assets to verify Hostage Group Gamma intelligence from Gaza City informants",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Shabak"
+      ]
+    },
+    {
+      "geo_event_id": "geo_07e8c451",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_4c75a2da",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT teams to verify hostage locations in Khan Younis and Gaza City",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_2dd88f4b",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_301144c9",
+      "timestamp": "2023-10-07T07:34:27.038505",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy surveillance teams to monitor Hamas leadership movements in Khan Younis",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Yahya-Sinwar"
+      ]
+    },
+    {
+      "geo_event_id": "geo_f3343c14",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_b262dfc3",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 29.5577,
+        "lon": 34.9519,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eilat",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch ballistic missiles at Eilat port to maintain pressure on Israel",
+      "actor_entity": "Houthis",
+      "affected_entities": [
+        "Israeli-Defense-Forces"
+      ]
+    },
+    {
+      "geo_event_id": "geo_cedeb258",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_b4fb9f0c",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT assets to verify Shifa Hospital hostage intel and assess rescue feasibility",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander",
+        "Mossad-Director"
+      ]
+    },
+    {
+      "geo_event_id": "geo_69289c2f",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_a5f0c197",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy surveillance drones over Shifa Hospital compound to confirm hostage intel",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_92ff316b",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_d58179ab",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy technical surveillance teams to intercept Hamas communications in Gaza",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_c8bc59f8",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_fe2efd85",
+      "timestamp": "2023-10-07T08:05:42.392650",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate sleeper cells in Gaza City to locate Mohammed Deif and confirm hostage intel",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Mohammed-Deif",
+        "Hostages-Families-Forum"
+      ]
+    },
+    {
+      "geo_event_id": "geo_28434be7",
+      "event_type": "force_deployment",
+      "source_event_id": "evt_07eceea4",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy specialized tunnel detection units to map Shifa Hospital underground network",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership",
+        "Palestinian-Civilians"
+      ]
+    },
+    {
+      "geo_event_id": "geo_e2275867",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_0723a165",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 33.2721,
+        "lon": 35.2033,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "South Lebanon",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Anti-tank missile strike on IDF patrol near Metula border crossing",
+      "actor_entity": "Hezbollah",
+      "affected_entities": [
+        "IDF",
+        "Israeli-Government"
+      ]
+    },
+    {
+      "geo_event_id": "geo_12550508",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_7e65d6cf",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 27.0,
+        "lon": 35.0,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Red Sea",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch anti-ship missiles at Israeli-linked vessel transiting Red Sea",
+      "actor_entity": "Houthis",
+      "affected_entities": [
+        "Israeli-Navy",
+        "Western-Coalition"
+      ]
+    },
+    {
+      "geo_event_id": "geo_22b260c2",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_c38413c3",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy human assets to infiltrate Shifa Hospital area for hostage verification",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas"
+      ]
+    },
+    {
+      "geo_event_id": "geo_0619c735",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_fd98c679",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy human assets to verify Shifa Hospital hostage intelligence",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_645fea2f",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_aeabfc3e",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Gaza City",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Relocate high-value hostages from Shifa Hospital to deeper tunnel network",
+      "actor_entity": "Hamas",
+      "affected_entities": [
+        "Israel-Military-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_67c304dc",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_7cf8403b",
+      "timestamp": "2023-10-07T08:38:55.262797",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy covert assets to verify hostage locations in Khan Younis tunnels",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Gaza"
+      ]
+    },
+    {
+      "geo_event_id": "geo_d5773482",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_3d868837",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Ship advanced rocket components to Iranian proxies via Syria route",
+      "actor_entity": "North-Korea",
+      "affected_entities": [
+        "Iran",
+        "Syria"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ca02b5fa",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_340656b0",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 29.5577,
+        "lon": 34.9519,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eilat",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch ballistic missile barrage at Eilat port and naval facilities",
+      "actor_entity": "Houthis",
+      "affected_entities": [
+        "Israel"
+      ]
+    },
+    {
+      "geo_event_id": "geo_cce31a1c",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_777149da",
+      "timestamp": "2023-10-07T09:12:20.750234",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy deep-cover assets to verify Gaza hostage locations and tunnel networks",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
       ]
     }
   ]
