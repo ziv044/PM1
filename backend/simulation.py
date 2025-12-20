@@ -26,8 +26,39 @@ logger = setup_logger("simulation")
 
 # Constants
 DATA_DIR = Path(__file__).parent.parent / "data"
-SIMULATION_STATE_FILE = DATA_DIR / "simulation_state.json"
 DEFAULT_START_TIME = datetime(2023, 10, 7, 6, 29, 0)
+
+
+# Dynamic path getters for multi-game support
+def get_simulation_state_file() -> Path:
+    """Get the simulation state file path for current game."""
+    try:
+        from game_manager import get_game_manager
+        return get_game_manager().get_current_data_path() / "simulation_state.json"
+    except ImportError:
+        return DATA_DIR / "simulation_state.json"
+
+
+def get_kpi_dir() -> Path:
+    """Get the KPI directory path for current game."""
+    try:
+        from game_manager import get_game_manager
+        return get_game_manager().get_current_data_path() / "kpis"
+    except ImportError:
+        return DATA_DIR / "kpis"
+
+
+def get_archive_file() -> Path:
+    """Get the events archive file path for current game."""
+    try:
+        from game_manager import get_game_manager
+        return get_game_manager().get_current_data_path() / "events_archive.json"
+    except ImportError:
+        return DATA_DIR / "events_archive.json"
+
+
+# Legacy constant for backwards compatibility
+SIMULATION_STATE_FILE = DATA_DIR / "simulation_state.json"
 DEFAULT_CLOCK_SPEED = 2.0  # real seconds per game minute
 
 
@@ -69,6 +100,17 @@ AGENT_ENTITY_MAP: Dict[str, str] = {}
 for entity, agents in ENTITY_AGENT_MAP.items():
     for agent in agents:
         AGENT_ENTITY_MAP[agent] = entity
+
+# Map agents to tracked entities (for relocate actions)
+# Only agents that represent movable entities on the map are included
+AGENT_TO_TRACKED_ENTITY: Dict[str, str] = {
+    "Hamas-Leadership": "hvt-sinwar",
+    "Hezbollah-Leadership": "hvt-nasrallah",
+    "Houthi-Leadership": "hvt-abdul-malik-houthi",
+}
+
+# Default travel times for different entity types (in game minutes)
+DEFAULT_TRAVEL_TIME = 60  # 1 hour default
 
 
 def get_entity_for_agent(agent_id: str) -> Optional[str]:
@@ -313,9 +355,10 @@ class SimulationState:
 
     def load(self):
         """Load state from file."""
-        if SIMULATION_STATE_FILE.exists():
+        state_file = get_simulation_state_file()
+        if state_file.exists():
             try:
-                with open(SIMULATION_STATE_FILE, "r", encoding="utf-8") as f:
+                with open(state_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
                 self.is_running = data.get("is_running", False)
                 self.clock_speed = data.get("clock_speed", DEFAULT_CLOCK_SPEED)
@@ -345,7 +388,8 @@ class SimulationState:
 
     def save(self):
         """Save state to file."""
-        DATA_DIR.mkdir(exist_ok=True)
+        state_file = get_simulation_state_file()
+        state_file.parent.mkdir(parents=True, exist_ok=True)
         data = {
             "is_running": self.is_running,
             "clock_speed": self.clock_speed,
@@ -360,9 +404,9 @@ class SimulationState:
             "active_meeting_id": self.active_meeting_id
         }
         try:
-            with open(SIMULATION_STATE_FILE, "w", encoding="utf-8") as f:
+            with open(state_file, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
-            logger.debug("Simulation state saved")
+            logger.debug(f"Simulation state saved to {state_file}")
         except Exception as e:
             logger.error(f"Error saving simulation state: {e}")
 
@@ -604,7 +648,7 @@ class SimulationState:
         Returns:
             Number of events archived
         """
-        ARCHIVE_FILE = DATA_DIR / "events_archive.json"
+        archive_file = get_archive_file()
 
         try:
             current_time = datetime.fromisoformat(game_time)
@@ -636,9 +680,9 @@ class SimulationState:
 
         # Load existing archive
         archived_events = []
-        if ARCHIVE_FILE.exists():
+        if archive_file.exists():
             try:
-                with open(ARCHIVE_FILE, "r", encoding="utf-8") as f:
+                with open(archive_file, "r", encoding="utf-8") as f:
                     archived_events = json.load(f)
             except Exception as e:
                 logger.error(f"Error loading archive file: {e}")
@@ -648,7 +692,7 @@ class SimulationState:
 
         # Save archive
         try:
-            with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
+            with open(archive_file, "w", encoding="utf-8") as f:
                 json.dump(archived_events, f, indent=2, ensure_ascii=False)
         except Exception as e:
             logger.error(f"Error saving archive file: {e}")
@@ -665,12 +709,15 @@ class SimulationState:
 class KPIManager:
     """Manages per-entity KPI files."""
 
-    KPI_DIR = DATA_DIR / "kpis"
-
     def __init__(self):
-        self.KPI_DIR.mkdir(exist_ok=True)
         self._cache: Dict[str, dict] = {}
         self._lock = threading.Lock()
+        # Ensure KPI directory exists
+        self._get_kpi_dir().mkdir(parents=True, exist_ok=True)
+
+    def _get_kpi_dir(self) -> Path:
+        """Get the KPI directory path (dynamic for multi-game support)."""
+        return get_kpi_dir()
 
     def _get_entity_kpis_unlocked(self, entity_id: str) -> dict:
         """Load KPIs for an entity (internal, no lock)."""
@@ -678,7 +725,7 @@ class KPIManager:
         if entity_id in self._cache:
             return self._cache[entity_id]
 
-        kpi_file = self.KPI_DIR / f"{entity_id}.json"
+        kpi_file = self._get_kpi_dir() / f"{entity_id}.json"
         if kpi_file.exists():
             try:
                 with open(kpi_file, "r", encoding="utf-8") as f:
@@ -756,7 +803,9 @@ class KPIManager:
 
     def _save_kpis(self, entity_id: str, kpis: dict):
         """Save KPIs to file."""
-        kpi_file = self.KPI_DIR / f"{entity_id}.json"
+        kpi_dir = self._get_kpi_dir()
+        kpi_dir.mkdir(parents=True, exist_ok=True)
+        kpi_file = kpi_dir / f"{entity_id}.json"
         try:
             with open(kpi_file, "w", encoding="utf-8") as f:
                 json.dump(kpis, f, indent=2, ensure_ascii=False)
@@ -768,10 +817,17 @@ class KPIManager:
         """Get KPIs for all entities."""
         with self._lock:
             all_kpis = {}
-            for kpi_file in self.KPI_DIR.glob("*.json"):
-                entity_id = kpi_file.stem
-                all_kpis[entity_id] = self._get_entity_kpis_unlocked(entity_id)
+            kpi_dir = self._get_kpi_dir()
+            if kpi_dir.exists():
+                for kpi_file in kpi_dir.glob("*.json"):
+                    entity_id = kpi_file.stem
+                    all_kpis[entity_id] = self._get_entity_kpis_unlocked(entity_id)
             return all_kpis
+
+    def clear_cache(self):
+        """Clear the KPI cache (used when switching games)."""
+        with self._lock:
+            self._cache.clear()
 
     def get_kpis_summary(self) -> str:
         """Get a text summary of key KPIs for the resolver prompt."""
@@ -789,7 +845,63 @@ class KPIManager:
         return "\n".join(summary_lines)
 
 
-# LLM Prompt Template
+# LLM Prompt Templates - Split for caching efficiency
+# Static system prompt is cached, dynamic user prompt changes per call
+
+ENTITY_ACTION_SYSTEM_PROMPT = """You are an autonomous entity in a geopolitical simulation.
+Your task is to decide on your next action based on your profile, current context, and objectives.
+
+=== OUTPUT FORMAT ===
+Respond ONLY with valid JSON in this EXACT format (no other text):
+{
+    "action_type": "diplomatic|military|economic|intelligence|internal|relocate|none",
+    "summary": "ONE sentence describing your action (max 100 characters)",
+    "is_public": true,
+    "affected_entities": ["entity_id1", "entity_id2"],
+    "target_zone": "zone name if action targets a specific location (optional)",
+    "relocate_to": "zone name if action_type is relocate (required for relocate)",
+    "reasoning": "Brief internal reasoning (not visible to others)"
+}
+
+=== RULES ===
+- If action_type is "relocate", you MUST specify "relocate_to" with a valid zone name.
+- If your action targets a specific location (military strike, intel op), specify "target_zone".
+- Keep summaries VERY SHORT - they are headlines, not articles.
+- is_public should be true for public actions, false for covert actions.
+- If you choose action_type "none", it means you are waiting/observing.
+- Consider your skill levels when choosing actions. Actions aligned with your strengths are more likely to succeed.
+"""
+
+ENTITY_ACTION_USER_PROMPT = """You are {agent_id}.
+
+CURRENT GAME TIME: {game_time}
+
+=== YOUR PROFILE ===
+AGENDA: {agenda}
+
+PRIMARY OBJECTIVES:
+{primary_objectives}
+
+HARD RULES (You MUST follow these):
+{hard_rules}
+
+=== YOUR CAPABILITIES ===
+{skills}
+
+=== SPATIAL CONTEXT ===
+{location_context}
+{known_locations}
+
+VALID ZONES: {valid_zones}
+
+=== MEMORY ===
+Recent events (YOUR actions marked with "YOU:"):
+{memory}
+
+Based on your agenda, objectives, and the current situation, decide on your next action.
+"""
+
+# Legacy combined prompt for backwards compatibility
 ENTITY_ACTION_PROMPT = """You are {agent_id}, acting as an autonomous entity in a geopolitical simulation.
 
 CURRENT GAME TIME: {game_time}
@@ -802,6 +914,10 @@ PRIMARY OBJECTIVES:
 
 HARD RULES (You MUST follow these):
 {hard_rules}
+
+=== YOUR CAPABILITIES ===
+{skills}
+Consider your skill levels when choosing actions. Actions aligned with your strengths are more likely to succeed.
 
 === SPATIAL CONTEXT ===
 {location_context}
@@ -835,6 +951,56 @@ NOTES:
 - is_public should be true for public actions, false for covert actions.
 - If you choose action_type "none", it means you are waiting/observing.
 """
+
+
+# Role-based zone relevance for token optimization
+ROLE_ZONE_FILTERS = {
+    # Military agents - combat zones, strategic sites
+    "IDF-Commander": ["Gaza City", "Khan Younis", "Rafah", "Jabalia", "South Lebanon", "Sderot", "Ashkelon", "Nevatim", "Dimona"],
+    "Defense-Minister": ["Gaza City", "Khan Younis", "Rafah", "Tel Aviv", "Jerusalem", "South Lebanon", "Beirut", "Nevatim"],
+
+    # Intelligence agents - all major zones (they need full picture)
+    "Head-Of-Mossad": None,  # None = all zones
+    "Head-Of-Shabak": ["Gaza City", "Khan Younis", "Rafah", "Ramallah", "Hebron", "Jenin", "Nablus", "Jerusalem", "Tel Aviv"],
+
+    # Diplomatic agents - capitals and major cities
+    "Foreign-Minister": ["Tel Aviv", "Jerusalem", "Cairo", "Tehran", "Beirut", "Washington DC", "London", "Moscow", "New York"],
+    "PM-Netanyahu": ["Tel Aviv", "Jerusalem", "Cairo", "Washington DC", "London", "Gaza City", "Beirut"],
+
+    # Economic agents - financial centers
+    "Treasury-Minister": ["Tel Aviv", "Jerusalem", "Haifa", "Washington DC"],
+
+    # Adversary agents - their territories + targets
+    "Hamas-Leadership": ["Gaza City", "Khan Younis", "Rafah", "Jabalia", "Tel Aviv", "Jerusalem", "Sderot", "Ashkelon"],
+    "Hezbollah-Leadership": ["Beirut", "South Lebanon", "Tyre", "Tehran", "Haifa", "Tel Aviv", "Jerusalem"],
+    "Houthi-Leadership": ["Sanaa", "Red Sea", "Eilat", "Suez Canal"],
+
+    # Regional actors - their capitals + conflict zones
+    "Iran-Supreme-Leader": ["Tehran", "Natanz", "Qom", "Beirut", "Gaza City", "Sanaa"],
+    "Egypt-President": ["Cairo", "Sinai", "El-Arish", "Rafah", "Gaza City", "Jerusalem"],
+    "US-President": ["Washington DC", "Tel Aviv", "Jerusalem", "Cairo", "Beirut"],
+}
+
+# Default zones for agents not in the filter list
+DEFAULT_ZONES = ["Gaza City", "Tel Aviv", "Jerusalem", "Cairo", "Washington DC"]
+
+
+def get_role_relevant_zones(agent_id: str, all_zones: list, max_zones: int = 8) -> str:
+    """Get zones relevant to an agent's role for token efficiency."""
+    role_zones = ROLE_ZONE_FILTERS.get(agent_id)
+
+    if role_zones is None:
+        # Full access (intelligence agents)
+        return ", ".join(all_zones[:12]) + "..."
+
+    if role_zones:
+        # Filter to role-relevant zones that actually exist
+        relevant = [z for z in role_zones if z in all_zones][:max_zones]
+        if relevant:
+            return ", ".join(relevant) + " (and others)"
+
+    # Fallback to defaults
+    return ", ".join(DEFAULT_ZONES)
 
 
 def build_location_context(agent_id: str, map_manager) -> str:
@@ -940,33 +1106,50 @@ class EventProcessor:
         self.state = state
         self.map_manager = map_manager
 
-    def build_prompt(self, agent_id: str, agent: dict, game_time: str) -> str:
-        """Build the LLM prompt for an entity action."""
-        # Get agent's memory (last 20 entries) - contains both own actions and world events
+    def build_prompt(self, agent_id: str, agent: dict, game_time: str) -> tuple:
+        """Build the LLM prompts for an entity action.
+
+        Returns:
+            tuple: (system_prompt, user_prompt) for cached LLM interaction
+        """
+        # Get agent's memory (last 10 entries) - reduced from 20 for token optimization
+        # Memory contains both own actions and world events relevant to this agent
         memory = app.agent_memory.get(agent_id, [])
-        memory_str = "\n".join(memory[-20:]) or "No events yet."
+        memory_str = "\n".join(memory[-10:]) or "No events yet."
 
         # Build location context
         location_context = build_location_context(agent_id, self.map_manager)
         known_locations = build_known_locations_context(agent_id, self.map_manager)
 
-        # Get valid zones for reference
+        # Get valid zones for reference - filtered by agent role for token efficiency
         if self.map_manager:
-            valid_zones = ", ".join(self.map_manager.get_all_zones()[:15]) + "..."
+            all_zones = self.map_manager.get_all_zones()
+            valid_zones = get_role_relevant_zones(agent_id, all_zones)
         else:
             valid_zones = "Gaza City, Khan Younis, Rafah, Tel Aviv, Jerusalem, Tehran..."
 
-        return ENTITY_ACTION_PROMPT.format(
+        # Get agent's skills and format them
+        skills_list = app.agent_skills.get(agent_id, [])
+        if skills_list:
+            skills_str = "Your capabilities: " + ", ".join(skills_list)
+        else:
+            skills_str = "General operational capabilities."
+
+        # Return split prompts for caching - system prompt is cached, user prompt is dynamic
+        user_prompt = ENTITY_ACTION_USER_PROMPT.format(
             agent_id=agent_id,
             game_time=game_time,
             agenda=agent.get("agenda", "Not specified"),
             primary_objectives=agent.get("primary_objectives", "Not specified"),
             hard_rules=agent.get("hard_rules", "None"),
+            skills=skills_str,
             memory=memory_str,
             location_context=location_context,
             known_locations=known_locations,
             valid_zones=valid_zones
         )
+
+        return (ENTITY_ACTION_SYSTEM_PROMPT, user_prompt)
 
     def parse_llm_response(self, agent_id: str, response: str, game_time: str) -> Optional[SimulationEvent]:
         """Parse LLM response into a SimulationEvent."""
@@ -1003,6 +1186,23 @@ class EventProcessor:
                     logger.warning(f"Relocate action without valid relocate_to for {agent_id}, converting to 'none'")
                     action_type = "none"
                     summary = "Attempted relocation but no valid destination"
+                else:
+                    # Initiate movement on the map if agent has a tracked entity
+                    tracked_entity_id = AGENT_TO_TRACKED_ENTITY.get(agent_id)
+                    if tracked_entity_id and self.map_manager:
+                        movement_started = self.map_manager.start_entity_movement(
+                            entity_id=tracked_entity_id,
+                            destination_zone=relocate_to,
+                            travel_time_minutes=DEFAULT_TRAVEL_TIME,
+                            game_time=game_time
+                        )
+                        if movement_started:
+                            logger.info(f"Started movement for {tracked_entity_id} to {relocate_to}")
+                        else:
+                            logger.warning(f"Failed to start movement for {tracked_entity_id} to {relocate_to}")
+                    elif not tracked_entity_id:
+                        # Agent doesn't have a tracked entity - just log the intent
+                        logger.info(f"Agent {agent_id} relocating to {relocate_to} (no tracked entity)")
 
             event = SimulationEvent(
                 event_id=f"evt_{uuid.uuid4().hex[:8]}",
@@ -1096,6 +1296,52 @@ class EventProcessor:
 # =============================================================================
 # SIMPLIFIED RESOLVER - LLM only generates narrative, code handles KPIs
 # =============================================================================
+# Resolver prompts - split for caching efficiency
+RESOLVER_SYSTEM_PROMPT = """You are the GAME MASTER for a geopolitical simulation (Israel-Hamas conflict, October 7 2023).
+
+=== YOUR JOB ===
+For each event, provide a brief narrative outcome. KPI calculations are handled automatically.
+
+**PM APPROVAL REQUIRED** for Israeli government agents proposing:
+- Ground invasions, large-scale assaults, assassinations
+- Ceasefires, hostage deals, prisoner exchanges
+- Major budget items (billions)
+- Foreign troop involvement
+
+=== OUTPUT FORMAT ===
+{
+  "resolutions": [
+    {
+      "event_id": "evt_xxx",
+      "outcome": "Brief description of what happened (1-2 sentences)",
+      "requires_pm": false
+    }
+  ],
+  "pm_requests": [
+    {
+      "event_id": "evt_xxx",
+      "summary": "What needs PM approval",
+      "options": ["Approve", "Modify", "Reject"],
+      "recommendation": "What the agent recommends"
+    }
+  ]
+}
+
+Return ONLY valid JSON.
+"""
+
+RESOLVER_USER_PROMPT = """GAME TIME: {game_time}
+
+=== EVENTS TO RESOLVE ===
+{events_json}
+
+=== ONGOING SITUATIONS ===
+{ongoing_situations}
+
+Resolve each event above with a brief narrative outcome.
+"""
+
+# Legacy combined prompt for backwards compatibility
 RESOLVER_PROMPT_SIMPLE = """You are the GAME MASTER for a geopolitical simulation (Israel-Hamas conflict, October 7 2023).
 
 GAME TIME: {game_time}
@@ -1166,7 +1412,9 @@ PENDING_KEYWORDS = {
 import random
 
 def roll_range(min_val: int, max_val: int) -> int:
-    """Roll a random value in range."""
+    """Roll a random value in range, auto-correcting order if needed."""
+    if min_val > max_val:
+        min_val, max_val = max_val, min_val
     return random.randint(min_val, max_val)
 
 # KPI impact rules by action type and keywords
@@ -1212,19 +1460,27 @@ KPI_IMPACT_RULES = {
             "on_success": {
                 "Israel.dynamic_metrics.international_standing": (2, 5),
             },
-            "on_failure": {}
+            "on_failure": {
+                "Israel.dynamic_metrics.international_standing": (-2, -1),
+            }
         },
         "perimeter|border|secure": {
             "success_rate": 0.90,
             "on_success": {
                 "Israel.dynamic_metrics.morale_civilian": (1, 3),
             },
-            "on_failure": {}
+            "on_failure": {
+                "Israel.dynamic_metrics.morale_civilian": (-2, -1),
+            }
         },
         "reserve|mobiliz": {
             "success_rate": 0.95,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.morale_military": (2, 4),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.morale_military": (-2, -1),
+            }
         },
         "rocket|missile|launch|barrage": {
             "success_rate": 0.75,
@@ -1272,61 +1528,105 @@ KPI_IMPACT_RULES = {
     "intelligence": {
         "surveillance|monitor": {
             "success_rate": 0.70,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.intel_accuracy": (2, 5),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.intel_accuracy": (-2, -1),
+            }
         },
         "hostage|locate": {
             "success_rate": 0.40,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.intel_accuracy": (5, 10),
+                "Israel.dynamic_metrics.morale_civilian": (1, 3),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.intel_accuracy": (-5, -2),
+            }
         },
         "infiltrat|asset|channel": {
             "success_rate": 0.50,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.intel_accuracy": (3, 7),
+                "Hamas.dynamic_metrics.leadership_cohesion": (-3, -1),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.intel_accuracy": (-4, -2),
+            }
         },
         "counter-intelligence|collaborator": {
             "success_rate": 0.60,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Hamas.dynamic_metrics.intel_capability": (-6, -3),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.intel_accuracy": (-3, -1),
+            }
         },
     },
     "diplomatic": {
         "statement|affirm|condemn|support": {
             "success_rate": 0.95,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.international_standing": (1, 3),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.international_standing": (-2, -1),
+            }
         },
         "negotiat|mediat|hostage": {
             "success_rate": 0.30,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.hostages_released": (1, 5),
+                "Israel.dynamic_metrics.morale_civilian": (5, 10),
+                "Israel.dynamic_metrics.international_standing": (3, 7),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.morale_civilian": (-5, -2),
+            }
         },
         "carrier|deploy|military aid": {
             "success_rate": 0.95,
             "on_success": {
                 "Israel.dynamic_metrics.morale_military": (2, 5),
+                "Israel.dynamic_metrics.ammunition_precision_pct": (3, 8),
             },
-            "on_failure": {}
+            "on_failure": {
+                "Israel.dynamic_metrics.morale_military": (-3, -1),
+            }
         },
     },
     "economic": {
         "budget|fund|emergency": {
             "success_rate": 0.90,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.economic_stability": (2, 5),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.economic_stability": (-3, -1),
+            }
         },
         "aid|package": {
             "success_rate": 0.80,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.economic_stability": (3, 6),
+                "Israel.dynamic_metrics.morale_civilian": (1, 3),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.international_standing": (-2, -1),
+            }
         },
     },
     "internal": {
         "default": {
             "success_rate": 0.95,
-            "on_success": {},
-            "on_failure": {}
+            "on_success": {
+                "Israel.dynamic_metrics.morale_civilian": (1, 2),
+            },
+            "on_failure": {
+                "Israel.dynamic_metrics.morale_civilian": (-2, -1),
+            }
         }
     }
 }
@@ -1412,7 +1712,7 @@ SPATIAL_CLASH_RULES = {
                 "Israel.dynamic_metrics.international_standing": (-3, -1),
             },
             "on_failure": {
-                "Israel.dynamic_metrics.hostages_held_by_enemy": (-1, -5),  # Casualties
+                "Israel.dynamic_metrics.hostages_held_by_enemy": (-5, -1),  # Casualties
                 "Israel.dynamic_metrics.international_standing": (-8, -3),
             }
         },
@@ -1754,8 +2054,12 @@ class ResolverProcessor:
 
         return None
 
-    def build_resolver_prompt(self, events: List[SimulationEvent], game_time: str) -> str:
-        """Build the SIMPLIFIED LLM prompt - no KPI data needed."""
+    def build_resolver_prompt(self, events: List[SimulationEvent], game_time: str) -> tuple:
+        """Build the SIMPLIFIED LLM prompts for event resolution.
+
+        Returns:
+            tuple: (system_prompt, user_prompt) for cached LLM interaction
+        """
         events_data = []
         for event in events:
             # Only include essential info for narrative generation
@@ -1772,11 +2076,13 @@ class ResolverProcessor:
 
             events_data.append(event_dict)
 
-        return RESOLVER_PROMPT_SIMPLE.format(
+        user_prompt = RESOLVER_USER_PROMPT.format(
             game_time=game_time,
             events_json=json.dumps(events_data, indent=2),
             ongoing_situations=self.get_ongoing_situations_context()
         )
+
+        return (RESOLVER_SYSTEM_PROMPT, user_prompt)
 
     def parse_resolver_response(self, response: str) -> dict:
         """Parse the SIMPLIFIED resolver LLM response."""
@@ -1928,22 +2234,42 @@ class ResolverProcessor:
         total_processed = 0
         batch_num = 0
 
-        logger.info(f"Resolver: {len(all_events)} events to resolve, processing in batches of {BATCH_SIZE}")
+        # Group events by action_type for more coherent resolution
+        events_by_type = {}
+        for event in all_events:
+            action_type = event.action_type or "none"
+            if action_type not in events_by_type:
+                events_by_type[action_type] = []
+            events_by_type[action_type].append(event)
 
-        # Process ALL events in batches
-        while all_events:
+        # Flatten back into ordered list (grouped by type)
+        grouped_events = []
+        for action_type in ["military", "intelligence", "diplomatic", "economic", "internal", "relocate", "none"]:
+            if action_type in events_by_type:
+                grouped_events.extend(events_by_type[action_type])
+        # Add any types we missed
+        for action_type, events_list in events_by_type.items():
+            if action_type not in ["military", "intelligence", "diplomatic", "economic", "internal", "relocate", "none"]:
+                grouped_events.extend(events_list)
+
+        logger.info(f"Resolver: {len(grouped_events)} events to resolve, grouped by action_type, batches of {BATCH_SIZE}")
+
+        # Process ALL events in batches (now grouped by type)
+        while grouped_events:
             batch_num += 1
-            events = all_events[:BATCH_SIZE]
-            all_events = all_events[BATCH_SIZE:]  # Remove processed events
+            events = grouped_events[:BATCH_SIZE]
+            grouped_events = grouped_events[BATCH_SIZE:]  # Remove processed events
 
-            logger.info(f"Resolver batch {batch_num}: processing {len(events)} events")
+            # Log the action types in this batch for debugging
+            batch_types = set(e.action_type for e in events)
+            logger.info(f"Resolver batch {batch_num}: processing {len(events)} events (types: {batch_types})")
 
-            # Build SIMPLIFIED prompt (no KPI data needed)
-            prompt = self.build_resolver_prompt(events, game_time)
+            # Build SIMPLIFIED prompts (split for caching efficiency)
+            system_prompt, user_prompt = self.build_resolver_prompt(events, game_time)
 
-            # Call LLM - simplified response needs only 1024 tokens for 5 events
+            # Call LLM with caching - simplified response needs only 1024 tokens for 5 events
             result = await asyncio.to_thread(
-                app.interact_simple, prompt, model="claude-sonnet-4-20250514", max_tokens=1024
+                app.interact_with_caching, system_prompt, user_prompt, model="claude-sonnet-4-20250514", max_tokens=1024
             )
 
             if result.get("status") == "error":
@@ -2033,12 +2359,12 @@ class EntityScheduler:
 
         logger.info(f"Triggering action for {agent_id} at {game_time}")
 
-        # Build prompt
-        prompt = self.manager.event_processor.build_prompt(agent_id, agent, game_time)
+        # Build prompts (split for caching efficiency)
+        system_prompt, user_prompt = self.manager.event_processor.build_prompt(agent_id, agent, game_time)
 
-        # Call LLM in thread pool to avoid blocking the event loop
+        # Call LLM with caching in thread pool to avoid blocking the event loop
         result = await asyncio.to_thread(
-            app.interact_simple, prompt, model=agent.get("model", "claude-sonnet-4-20250514")
+            app.interact_with_caching, system_prompt, user_prompt, model=agent.get("model", "claude-sonnet-4-20250514")
         )
 
         if result.get("status") == "error":
@@ -2118,6 +2444,46 @@ class SimulationManager:
         if self.state.game_clock:
             self.clock.game_time = datetime.fromisoformat(self.state.game_clock)
         self.clock.speed = self.state.clock_speed
+
+    def reload_for_game_switch(self):
+        """Reload all state after switching to a different game.
+
+        This reinitializes all components to load data from the new game's directory.
+        Should only be called when simulation is stopped.
+        """
+        logger.info("Reloading simulation state for game switch...")
+
+        # Clear KPI cache
+        self.kpi_manager.clear_cache()
+
+        # Reinitialize state from new game's files
+        self.state = SimulationState()
+        self.state.load()
+
+        # Reinitialize KPI manager (will read from new directory)
+        self.kpi_manager = KPIManager()
+
+        # Reinitialize map manager
+        self.map_manager = MapStateManager()
+
+        # Reinitialize processors with new state
+        self.event_processor = EventProcessor(self.state, self.map_manager)
+        self.resolver = ResolverProcessor(self.state, self.kpi_manager, self.map_manager)
+
+        # Reinitialize meeting orchestrator
+        self.meeting_orchestrator = MeetingOrchestrator(self)
+
+        # Update clock from loaded state
+        if self.state.game_clock:
+            self.clock.game_time = datetime.fromisoformat(self.state.game_clock)
+        else:
+            self.clock.game_time = DEFAULT_START_TIME
+        self.clock.speed = self.state.clock_speed
+
+        # Reload agents
+        app.load_agents()
+
+        logger.info("Simulation state reloaded for game switch")
 
     async def start_game(self) -> dict:
         """Start the simulation."""
@@ -2237,6 +2603,55 @@ class SimulationManager:
         except Exception as e:
             logger.error(f"Error triggering scheduled event {scheduled.schedule_id}: {e}")
 
+    async def _process_situation_lifecycles(self, game_time: str):
+        """Process ongoing situations and update their phases based on time."""
+        from datetime import datetime, timedelta
+
+        try:
+            current_time = datetime.fromisoformat(game_time)
+        except ValueError:
+            return
+
+        for situation in self.state.ongoing_situations:
+            try:
+                # Skip already completed/failed situations
+                if situation.current_phase in ["completed", "failed"]:
+                    continue
+
+                # Parse start time
+                started_at = datetime.fromisoformat(situation.started_at)
+                elapsed_minutes = (current_time - started_at).total_seconds() / 60
+
+                # Progress through phases based on time
+                expected_duration = situation.expected_duration_minutes
+
+                if situation.current_phase == "initiated":
+                    # Move to active after 10% of expected duration
+                    if elapsed_minutes > expected_duration * 0.1:
+                        self.state.update_situation(situation.situation_id, {
+                            "current_phase": "active"
+                        })
+                        logger.info(f"Situation {situation.situation_id} progressed to 'active'")
+
+                elif situation.current_phase == "active":
+                    # Move to resolving when duration exceeded
+                    if elapsed_minutes >= expected_duration:
+                        self.state.update_situation(situation.situation_id, {
+                            "current_phase": "resolving"
+                        })
+                        logger.info(f"Situation {situation.situation_id} progressed to 'resolving'")
+
+                elif situation.current_phase == "resolving":
+                    # Complete after 10% more time for resolution
+                    if elapsed_minutes >= expected_duration * 1.1:
+                        self.state.update_situation(situation.situation_id, {
+                            "current_phase": "completed"
+                        })
+                        logger.info(f"Situation {situation.situation_id} completed")
+
+            except Exception as e:
+                logger.error(f"Error processing situation {situation.situation_id}: {e}")
+
     async def _resolver_loop(self):
         """Run the resolver periodically to process events."""
         # Start resolving after 15 seconds to let some events accumulate
@@ -2269,6 +2684,9 @@ class SimulationManager:
                     self._trigger_scheduled_event(scheduled, game_time)
 
                 result = await self.resolver.run_resolution_cycle(game_time)
+
+                # Process ongoing situation lifecycles
+                await self._process_situation_lifecycles(game_time)
 
                 # Check for meeting auto-triggers on recently resolved events
                 if self.meeting_orchestrator:

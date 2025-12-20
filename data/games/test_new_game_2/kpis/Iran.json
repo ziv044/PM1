@@ -1,0 +1,19 @@
+{
+  "entity_id": "Iran",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 400,
+    "population_millions": 87,
+    "irgc_personnel": 190000
+  },
+  "dynamic_metrics": {
+    "nuclear_enrichment_pct": 60,
+    "weapons_supplied_to_proxies": 0,
+    "proxy_coordination_level": 80,
+    "sanctions_pressure": 70,
+    "hezbollah_activation_level": 30,
+    "houthi_activation_level": 40,
+    "regime_stability": 75
+  },
+  "pending_operations": []
+}

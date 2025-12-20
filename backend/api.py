@@ -1171,6 +1171,144 @@ def get_meeting_types():
     }
 
 
+# =============================================================================
+# GAME MANAGEMENT ENDPOINTS
+# =============================================================================
+
+class GameCreate(BaseModel):
+    """Request model for creating a new game."""
+    game_id: str
+    display_name: str
+    template: str = "october7"
+    description: str = ""
+
+
+@api.get("/games")
+def list_games():
+    """List all available saved games."""
+    from game_manager import get_game_manager
+    gm = get_game_manager()
+    games = gm.list_games()
+    current = gm.get_current_game()
+    return {
+        "status": "success",
+        "current_game": current,
+        "games": [g.to_dict() for g in games]
+    }
+
+
+@api.get("/games/current")
+def get_current_game():
+    """Get the currently active game."""
+    from game_manager import get_game_manager
+    gm = get_game_manager()
+    current = gm.get_current_game()
+    if not current:
+        return {"status": "success", "game": None, "message": "No game active (legacy mode)"}
+
+    games = gm.list_games()
+    game = next((g for g in games if g.game_id == current), None)
+    return {
+        "status": "success",
+        "game": game.to_dict() if game else None
+    }
+
+
+@api.get("/games/templates")
+def list_templates():
+    """List available game templates."""
+    from game_manager import get_game_manager
+    templates = get_game_manager().list_templates()
+    return {"status": "success", "templates": templates}
+
+
+@api.post("/games")
+def create_game(game: GameCreate):
+    """Create a new game from a template."""
+    from game_manager import get_game_manager
+
+    # Validate game_id format
+    if not game.game_id or not game.game_id.replace("-", "").replace("_", "").isalnum():
+        raise ValidationError("Game ID must be alphanumeric with hyphens/underscores only")
+
+    result = get_game_manager().create_game(
+        game_id=game.game_id,
+        display_name=game.display_name,
+        template=game.template,
+        description=game.description
+    )
+    if result.get("status") == "error":
+        raise ValidationError(result["message"])
+    return result
+
+
+@api.post("/games/{game_id}/load")
+def load_game(game_id: str):
+    """Switch to a different game. Simulation must be stopped."""
+    from game_manager import get_game_manager
+    import simulation
+
+    manager = simulation.SimulationManager.get_instance()
+
+    # Check simulation is stopped
+    if manager.state.is_running:
+        raise ValidationError("Stop simulation before switching games")
+
+    # Switch game in game manager
+    gm = get_game_manager()
+    result = gm.load_game(game_id)
+
+    if result.get("status") == "error":
+        raise ValidationError(result["message"])
+
+    # Reload simulation state
+    manager.reload_for_game_switch()
+
+    return result
+
+
+@api.delete("/games/{game_id}")
+def delete_game(game_id: str):
+    """Delete a saved game."""
+    from game_manager import get_game_manager
+    result = get_game_manager().delete_game(game_id)
+    if result.get("status") == "error":
+        raise ValidationError(result["message"])
+    return result
+
+
+@api.post("/admin/migrate")
+def migrate_to_multi_game():
+    """One-time migration: backup and migrate legacy data to games system."""
+    from game_manager import get_game_manager
+    import simulation
+
+    gm = get_game_manager()
+
+    # Step 1: Backup current data
+    backup_result = gm.backup_current_data()
+    if backup_result.get("status") == "error":
+        raise ValidationError(f"Backup failed: {backup_result['message']}")
+
+    # Step 2: Create October 7th template
+    template_result = gm.create_october7_template()
+
+    # Step 3: Migrate existing data to default game
+    migrate_result = gm.migrate_legacy_to_default()
+
+    # Step 4: Reload simulation with new game
+    if migrate_result.get("status") == "success":
+        manager = simulation.SimulationManager.get_instance()
+        manager.reload_for_game_switch()
+
+    return {
+        "status": "success",
+        "backup": backup_result,
+        "template": template_result,
+        "migration": migrate_result
+    }
+
+
 # Mount static files for frontend (CSS, JS)
 if FRONTEND_DIR.exists():
     api.mount("/css", StaticFiles(directory=str(FRONTEND_DIR / "css")), name="css")

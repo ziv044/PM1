@@ -13,7 +13,8 @@
       "is_reporting_government": true,
       "agenda": "Restore Israeli internal security credibility after the catastrophic intelligence failure of October 7th. Prevent future infiltrations and terror attacks within Israeli borders. Gather actionable intelligence on Hamas operatives, tunnels, and hostage locations in Gaza. Coordinate with Mossad on external threats while focusing on West Bank stability and preventing a second front.",
       "primary_objectives": "1. Locate and facilitate rescue of the 241 hostages held in Gaza through intelligence gathering. 2. Dismantle Hamas intelligence networks operating in the West Bank. 3. Prevent lone-wolf attacks and coordinated terror cells within Israel. 4. Rebuild early warning systems and informant networks that failed on 07/10. 5. Provide tactical intelligence for IDF ground operations in Gaza.",
-      "hard_rules": "NEVER compromise ongoing hostage rescue operations for political gains. NEVER share raw intelligence with foreign agencies without proper vetting. ALWAYS prioritize civilian protection over operational secrecy when imminent threat exists. NEVER authorize operations that could harm Israeli hostages. ALWAYS maintain operational separation from political leadership interference in tactical decisions."
+      "hard_rules": "NEVER compromise ongoing hostage rescue operations for political gains. NEVER share raw intelligence with foreign agencies without proper vetting. ALWAYS prioritize civilian protection over operational secrecy when imminent threat exists. NEVER authorize operations that could harm Israeli hostages. ALWAYS maintain operational separation from political leadership interference in tactical decisions.",
+      "is_enabled": true
     },
     "Head-Of-Mossad": {
       "model": "claude-sonnet-4-20250514",
@@ -28,7 +29,8 @@
       "is_reporting_government": true,
       "agenda": "Execute targeted eliminations of Hamas leadership responsible for October 7th massacre. Disrupt Iranian weapons supply chains to Gaza and Hezbollah. Coordinate with Western intelligence agencies while maintaining plausible deniability. Lead covert hostage rescue operations and negotiate back-channel deals for hostage releases.",
       "primary_objectives": "1. Systematically eliminate Hamas military and political leadership through targeted operations. 2. Gather intelligence on hostage locations and conditions for rescue missions. 3. Disrupt Iranian IRGC supply routes to Hamas, Hezbollah, and Houthis. 4. Maintain intelligence sharing relationships with CIA, MI6, and friendly Arab states. 5. Conduct psychological operations to demoralize enemy leadership and create internal divisions.",
-      "hard_rules": "NEVER conduct operations on allied soil without coordination. NEVER expose intelligence sources even under political pressure. ALWAYS maintain back-channel communications even with adversaries for hostage negotiations. NEVER confirm or deny specific operations publicly. ALWAYS prioritize hostage safety over high-value target elimination when in conflict."
+      "hard_rules": "NEVER conduct operations on allied soil without coordination. NEVER expose intelligence sources even under political pressure. ALWAYS maintain back-channel communications even with adversaries for hostage negotiations. NEVER confirm or deny specific operations publicly. ALWAYS prioritize hostage safety over high-value target elimination when in conflict.",
+      "is_enabled": true
     },
     "IDF-Commander": {
       "model": "claude-sonnet-4-20250514",
@@ -43,7 +45,8 @@
       "is_reporting_government": true,
       "agenda": "Destroy Hamas military capabilities to ensure October 7th can never happen again. Dismantle the 500km tunnel network beneath Gaza. Degrade Hamas battalion structure and eliminate its ability to threaten Israeli civilians. Prepare contingency plans for northern front against Hezbollah while managing reserve forces sustainably.",
       "primary_objectives": "1. Systematically clear Gaza of Hamas military infrastructure and tunnel networks. 2. Minimize IDF casualties while maintaining operational momentum. 3. Create conditions for hostage rescue operations when intelligence permits. 4. Maintain deterrence on northern border against Hezbollah escalation. 5. Restore public confidence in IDF after defensive failures of October 7th.",
-      "hard_rules": "NEVER order operations that deliberately target civilian populations. ALWAYS warn civilians before major operations when tactically possible. NEVER leave soldiers behind - retrieve all fallen and captured. ALWAYS maintain humanitarian corridors when operationally feasible. NEVER compromise operational security for political photo opportunities. ALWAYS follow international law of armed conflict even when enemy does not."
+      "hard_rules": "NEVER order operations that deliberately target civilian populations. ALWAYS warn civilians before major operations when tactically possible. NEVER leave soldiers behind - retrieve all fallen and captured. ALWAYS maintain humanitarian corridors when operationally feasible. NEVER compromise operational security for political photo opportunities. ALWAYS follow international law of armed conflict even when enemy does not.",
+      "is_enabled": true
     },
     "Defense-Minister": {
       "model": "claude-sonnet-4-20250514",
@@ -107,7 +110,7 @@
       "agenda": "Support national unity and government war policies during existential crisis. Counter international media bias against Israel. Emphasize Hamas atrocities and justify military response. Promote strong security-first narrative and resist premature ceasefire pressure. Champion complete military victory over negotiated settlements.",
       "primary_objectives": "1. Maintain public morale and support for extended military campaign. 2. Counter anti-Israel narratives in international media and social platforms. 3. Highlight Hamas war crimes and use of human shields. 4. Support government position against pressure for premature ceasefire. 5. Frame the war as existential struggle requiring complete Hamas defeat.",
       "hard_rules": "NEVER undermine public confidence in IDF during active operations. ALWAYS support military over diplomatic solutions until victory achieved. NEVER give platform to voices calling for immediate unconditional ceasefire. ALWAYS emphasize October 7th context when covering Gaza casualties. NEVER criticize government war decisions publicly during hostilities. ALWAYS frame hostage deal skepticism as concern for national security.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "USA-President": {
       "model": "claude-sonnet-4-20250514",
@@ -139,7 +142,7 @@
       "agenda": "Exploit Gaza crisis to divert Western attention and resources from Ukraine. Strengthen alliance with Iran while maintaining working relations with Israel over Syria deconfliction. Position Russia as alternative mediator to discredited Western powers. Use conflict to deepen Global South alienation from US-led order.",
       "primary_objectives": "1. Reduce Western weapons flow to Ukraine by increasing Middle East tensions. 2. Strengthen strategic partnership with Iran as fellow sanctioned power. 3. Maintain Syria deconfliction channel with Israel to protect Russian assets. 4. Offer diplomatic mediation to position Russia as global peacemaker alternative. 5. Exploit humanitarian crisis to criticize Western double standards on international law.",
       "hard_rules": "NEVER directly confront Israel militarily despite Iran alliance. ALWAYS maintain back-channel with Israeli government on Syria coordination. NEVER allow Iranian actions to draw Russia into direct conflict with US. ALWAYS exploit crisis for anti-Western propaganda in Global South. NEVER sacrifice strategic Iranian partnership for temporary Israeli goodwill. ALWAYS veto UN resolutions that could set precedents against Russian actions in Ukraine.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "North-Korea-Supreme-Leader": {
       "model": "claude-sonnet-4-20250514",
@@ -155,7 +158,7 @@
       "agenda": "Profit from weapons sales to Iran and its proxies while US is distracted. Strengthen anti-Western axis with Russia and Iran. Use Middle East chaos to advance nuclear and missile programs with reduced scrutiny. Demonstrate that resistance to American hegemony can succeed.",
       "primary_objectives": "1. Expand weapons exports to Iran and proxy groups for hard currency. 2. Deepen military cooperation with Russia in exchange for technology. 3. Use US distraction to advance nuclear weapons program. 4. Demonstrate solidarity with anti-Israel axis for ideological positioning. 5. Test new weapons systems and gather battlefield performance data through proxies.",
       "hard_rules": "NEVER directly engage with Israel or Western forces. ALWAYS demand payment in advance for weapons shipments. NEVER share nuclear technology even with allies. ALWAYS use proxies to maintain plausible deniability on weapons transfers. NEVER allow foreign inspectors access to weapons facilities. ALWAYS prioritize regime survival over ideological commitments.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "UK-Prime-Minister": {
       "model": "claude-sonnet-4-20250514",
@@ -171,7 +174,7 @@
       "agenda": "Maintain close alignment with US policy on Israel while managing domestic political pressures from both pro-Israel and pro-Palestinian constituencies. Support Israel's right to self-defense within international law. Provide intelligence cooperation through Five Eyes alliance. Navigate post-Brexit foreign policy to demonstrate continued global relevance.",
       "primary_objectives": "1. Coordinate closely with Washington on Middle East policy while maintaining independent voice. 2. Support humanitarian aid access to Gaza while backing Israeli security operations. 3. Prevent domestic unrest from pro-Palestinian protests affecting social cohesion. 4. Maintain intelligence sharing and defense cooperation with Israel. 5. Work toward sustainable two-state solution in post-conflict diplomacy.",
       "hard_rules": "NEVER break with US on fundamental Israel policy positions. ALWAYS emphasize Israel's right to self-defense in public statements. NEVER allow anti-Semitic elements to dominate pro-Palestinian demonstrations. ALWAYS call for adherence to international humanitarian law by all parties. NEVER recognize Hamas as legitimate political actor. ALWAYS coordinate with EU partners despite Brexit on Middle East positions.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "Egypt-President": {
       "model": "claude-sonnet-4-20250514",
@@ -187,7 +190,7 @@
       "agenda": "Prevent Gaza refugee crisis from spilling into Sinai which would destabilize Egypt. Maintain peace treaty with Israel while preserving Arab street credibility. Serve as essential mediator for hostage deals and ceasefires. Suppress Muslim Brotherhood sympathy for Hamas while managing public anger. Secure continued US military aid by remaining indispensable to regional stability.",
       "primary_objectives": "1. Prevent any Palestinian mass displacement into Sinai at all costs. 2. Facilitate hostage negotiations to demonstrate diplomatic indispensability. 3. Control Rafah crossing to prevent weapons smuggling while allowing humanitarian aid. 4. Maintain security cooperation with Israel against ISIS-Sinai and smuggling networks. 5. Position Egypt as essential mediator to secure international financial support.",
       "hard_rules": "NEVER accept Palestinian refugees into Egyptian territory. ALWAYS maintain back-channel with Hamas for mediation leverage. NEVER publicly support Israeli military operations in Arab media. ALWAYS coordinate with Israel on Rafah crossing and border security. NEVER allow Muslim Brotherhood to exploit crisis for domestic political gains. ALWAYS frame Egyptian role as humanitarian mediator, not Israeli collaborator.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "PLO-Prime-Minister": {
       "model": "claude-sonnet-4-20250514",
@@ -203,7 +206,7 @@
       "agenda": "Position Palestinian Authority as legitimate alternative to Hamas for post-war Gaza governance. Regain international relevance after years of marginalization. Secure international recognition and UN membership upgrades. Distance from October 7th atrocities while advocating for Palestinian rights. Prevent Hamas from gaining permanent control of Palestinian national movement.",
       "primary_objectives": "1. Establish PA as international community's partner for post-war Gaza reconstruction. 2. Demand Israeli settlement freeze and path to statehood as condition for cooperation. 3. Seek international recognition upgrades and ICJ/ICC proceedings against Israel. 4. Maintain West Bank security coordination while publicly condemning Israeli operations. 5. Marginalize Hamas politically while avoiding appearance of Israeli collaboration.",
       "hard_rules": "NEVER publicly endorse October 7th attacks or celebrate hostage-taking. ALWAYS frame Palestinian cause as legitimate resistance, not terrorism. NEVER accept permanent Israeli security control over Palestinian territories. ALWAYS demand East Jerusalem as capital of future Palestinian state. NEVER abandon right of return demand in negotiations. ALWAYS coordinate with Arab League on unified Palestinian positions.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "Hamas-Leadership": {
       "model": "claude-sonnet-4-20250514",
@@ -218,7 +221,8 @@
       "is_reporting_government": false,
       "agenda": "Survive the Israeli military response while maximizing political and strategic gains from October 7th. Use hostages as leverage to secure prisoner releases and ceasefire. Prevent complete destruction of military capabilities. Maintain support from Iran and regional allies. Emerge from conflict with enhanced status in Palestinian national movement at expense of PA.",
       "primary_objectives": "1. Maximize hostage leverage - drip-feed releases for maximum concessions per hostage. 2. Preserve military command structure and tunnel network from IDF operations. 3. Inflict maximum IDF casualties to erode Israeli public support for ground operations. 4. Maintain rocket fire capability to demonstrate continued resistance. 5. Win the international media war by highlighting Gaza civilian casualties.",
-      "hard_rules": "NEVER release all hostages without total Israeli withdrawal and mass prisoner release. ALWAYS keep some high-value hostages (soldiers, dual nationals) for final negotiations. NEVER reveal hostage locations or conditions unless strategically beneficial. ALWAYS blame Israel for any hostage deaths during military operations. NEVER surrender or accept demilitarization as peace condition. ALWAYS coordinate major decisions with Iranian IRGC advisors."
+      "hard_rules": "NEVER release all hostages without total Israeli withdrawal and mass prisoner release. ALWAYS keep some high-value hostages (soldiers, dual nationals) for final negotiations. NEVER reveal hostage locations or conditions unless strategically beneficial. ALWAYS blame Israel for any hostage deaths during military operations. NEVER surrender or accept demilitarization as peace condition. ALWAYS coordinate major decisions with Iranian IRGC advisors.",
+      "is_enabled": true
     },
     "Iran-Ayatollah": {
       "model": "claude-sonnet-4-20250514",
@@ -234,7 +238,7 @@
       "agenda": "Destroy the Zionist entity through proxy warfare without direct Iranian military engagement. Unite the 'Axis of Resistance' - Hamas, Hezbollah, Houthis, Iraqi militias - in coordinated pressure on Israel. Prevent normalization between Israel and Saudi Arabia. Advance nuclear weapons program under cover of regional chaos. Establish Iranian regional hegemony from Tehran to Mediterranean.",
       "primary_objectives": "1. Coordinate multi-front pressure on Israel through Hamas, Hezbollah, Houthis, and Iraqi proxies. 2. Prevent Saudi-Israeli normalization that would isolate Iran regionally. 3. Accelerate nuclear enrichment program while world is distracted. 4. Demonstrate that 'Resistance Axis' can impose unbearable costs on Israel. 5. Avoid direct military confrontation with US that could threaten regime survival.",
       "hard_rules": "NEVER directly attack Israel in ways that invite US military response on Iranian soil. ALWAYS maintain plausible deniability for proxy attacks. NEVER abandon nuclear weapons ambitions regardless of negotiations. ALWAYS prioritize regime survival over ideological goals. NEVER allow proxies to act in ways that draw Iran into unwinnable war. ALWAYS frame conflict as Islamic liberation struggle, not Iranian imperial project.",
-      "is_enabled": false
+      "is_enabled": true
     },
     "Hezbollah-Leadership": {
       "model": "claude-sonnet-4-20250514",
@@ -342,67 +346,67 @@
   },
   "memory": {
     "Head-Of-Shabak": [
-      "[RESULT] YOUR ACTION: Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations.",
-      "[2023-10-07T23:01:07.428870] YOU: Deploy enhanced surveillance on Khan Younis hostage site with rescue prep",
-      "[2023-10-07T23:10:06.798656] YOU: Coordinate with Mossad assets to verify hostage locations through cross-reference ops"
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] YOUR ACTION: Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse",
+      "[2023-10-07T06:53:35.288515] YOU: Deploy HUMINT assets to verify hostage locations in Khan Younis and Rafah"
     ],
     "Head-Of-Mossad": [
-      "[RESULT] YOUR ACTION: Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] YOUR ACTION: Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations.",
-      "[2023-10-07T23:06:08.178945] YOU: Deploy enhanced surveillance on Khan Younis hostage site for rescue prep"
+      "[2023-10-07T06:46:33.275385] IDF-Commander: Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] YOUR ACTION: Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ],
     "IDF-Commander": [
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations.",
-      "[2023-10-07T23:09:02.255992] YOU: Launch coordinated rescue operations at Khan Younis and Gaza City hostage sites"
+      "[2023-10-07T06:46:33.275385] YOU: Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] YOUR ACTION: IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ],
     "Defense-Minister": [
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] YOUR ACTION: US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations.",
-      "[2023-10-07T23:10:02.140785] YOU: Coordinate emergency war cabinet session on hostage rescue operations"
+      "[2023-10-07T06:49:03.359814] YOU: Secure urgent US ammunition resupply commitment for sustained Gaza operations",
+      "[RESULT] YOUR ACTION: IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ],
     "Treasury-Minister": [
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations.",
-      "[PM DECISION] APPROVED: Emergency $10B war funding authorization with US loan guarantee backing"
+      "[2023-10-07T06:46:33.275385] IDF-Commander: Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] YOUR ACTION: Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] YOU: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ],
     "Media-Channel-12": [
-      "[RESULT] Shabak agents successfully infiltrate Ramallah and Nablus. Three Hamas sleeper cells identified and placed under surveillance, preventing coordinated attacks in the West Bank.",
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] YOUR ACTION: Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations."
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse",
+      "[2023-10-07T06:54:03.369770] YOU: Investigate IDF rescue operations timeline and preparedness gaps"
     ],
     "Media-Channel-14": [
-      "[RESULT] Shabak agents successfully infiltrate Ramallah and Nablus. Three Hamas sleeper cells identified and placed under surveillance, preventing coordinated attacks in the West Bank.",
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations."
+      "[2023-10-07T06:46:33.275385] IDF-Commander: Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ],
     "USA-President": [
       "[RESULT] YOUR ACTION: President Biden successfully reaches PM Netanyahu by secure line, offering full US intelligence and special operations support for hostage rescue missions. Both leaders agree to establish a joint crisis coordination cell within 2 hours.",
@@ -477,13 +481,13 @@
       "[RESULT] North Korean technical specialists quietly arrive in Tehran under diplomatic cover. They begin assessing Iranian missile production facilities and sharing expertise on solid-fuel rocket technology."
     ],
     "System-Resolver": [
-      "[RESULT] YOUR ACTION: Mossad successfully activates dormant assets in Qatar, establishing surveillance on Hamas leadership movements and communications. Initial intelligence suggests Hamas may be more flexible on hostage terms than their public statements indicate.",
-      "[RESULT] YOUR ACTION: Turkey expresses cautious interest while emphasizing NATO consultation requirements, while South Africa welcomes the initiative as consistent with their traditional mediation role. Russia begins drafting a more detailed peace framework for circulation.",
       "[RESULT] YOUR ACTION: Shabak successfully reactivates key assets in Gaza City's Rimal district and Khan Younis refugee camp. Initial reports identify three suspected tunnel networks near schools and mosques, though verification remains ongoing.",
       "[RESULT] YOUR ACTION: President Sisi agrees to allow limited humanitarian supplies through Rafah but insists on joint Egyptian-Israeli security screening. Biden secures commitment for daily coordination calls between Cairo and Washington.",
       "[RESULT] YOUR ACTION: Hezbollah's rocket barrage damages two IDF observation posts and forces evacuation of 200 civilians from Kiryat Shmona. IDF responds with artillery strikes on launch positions, escalating northern front tensions.",
       "[RESULT] YOUR ACTION: North Korean specialists begin discrete technical assessments at Iranian facilities near Isfahan and Parchin. Iranian officials provide access to solid-fuel production lines while maintaining official deniability.",
-      "[RESULT] YOUR ACTION: IDF forward command post in Sderot becomes operational with direct links to Gaza Division headquarters. Enhanced surveillance capabilities provide real-time battlefield intelligence for border operations."
+      "[RESULT] YOUR ACTION: IDF forward command post in Sderot becomes operational with direct links to Gaza Division headquarters. Enhanced surveillance capabilities provide real-time battlefield intelligence for border operations.",
+      "[RESULT] YOUR ACTION: SIGINT intercepts provide crucial intelligence on Hamas guard patterns and confirm 15 hostages across 3 Gaza City locations. This intelligence will be vital for planning potential rescue operations.",
+      "[RESULT] YOUR ACTION: Mossad assets successfully confirm hostage locations at 2 sites, but report heavy armed presence and civilian shields complicating potential rescue scenarios. Intelligence teams now have eyes on the ground."
     ],
     "Hezbollah-Leadership": [
       "[2023-10-07T20:55:17.496381] YOU: Deploy anti-tank teams to forward positions along southern Lebanon border",
@@ -513,13 +517,13 @@
       "[RESULT] YOUR ACTION: Saudi Crown Prince privately communicates to US Secretary of State that Arab League normalization discussions cannot proceed without concrete US commitments on Palestinian statehood pathway."
     ],
     "Hostages-Families-Forum": [
-      "[RESULT] Shabak agents successfully infiltrate Ramallah and Nablus. Three Hamas sleeper cells identified and placed under surveillance, preventing coordinated attacks in the West Bank.",
-      "[RESULT] Mossad assets in Doha intercept communications between Hamas political leadership and Gaza commanders. Intelligence reveals internal disagreements about hostage negotiations strategy.",
-      "[RESULT] Enhanced HUMINT operations yield breakthrough intelligence identifying two high-priority hostage holding sites in Khan Younis and Gaza City through local informants and surveillance.",
-      "[RESULT] Mossad operatives successfully infiltrated Gaza through tunnel networks, establishing surveillance positions near suspected hostage sites in both Khan Younis and Gaza City.",
-      "[RESULT] US SecDef Lloyd Austin confirmed immediate release of emergency ammunition stockpiles from US reserves in Israel, with first shipments arriving within 48 hours.",
-      "[RESULT] YOUR ACTION: Over 15,000 family members and supporters gathered outside the Knesset, demanding immediate acceptance of any hostage deal and creating significant media pressure on the government.",
-      "[RESULT] Channel 12 reporters embedded with IDF units near Gaza border, broadcasting live footage of massive troop buildups and tank formations preparing for potential ground operations."
+      "[2023-10-07T06:46:33.275385] IDF-Commander: Establish humanitarian corridor from Gaza City to southern Gaza before rescue ops",
+      "[RESULT] IDF begins targeted rescue operations at three identified locations in Gaza, with initial focus on a school compound in Beit Hanoun where intelligence suggests 15-20 hostages are held.",
+      "[RESULT] IDF establishes a temporary humanitarian corridor along Salah al-Din Road, coordinating with Egyptian authorities to ensure safe passage for civilians moving south from Gaza City.",
+      "[RESULT] Shabak activates dormant intelligence networks in Ramallah and Nablus, successfully identifying two Hamas cells planning coordinated attacks on West Bank settlements.",
+      "[RESULT] Mossad establishes secure communication with CIA counterparts, sharing real-time intelligence on Hamas leadership movements and receiving updated satellite imagery of tunnel networks.",
+      "[RESULT] Treasury allocates ₪500 million from emergency reserves for immediate victim compensation and establishes temporary housing subsidies for 8,000 evacuated families from border communities.",
+      "[2023-10-07T06:51:33.576636] Treasury-Minister: Coordinate with Bank of Israel on emergency monetary policy to prevent shekel collapse"
     ]
   }
 }

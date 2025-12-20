@@ -1,5 +1,5 @@
 {
-  "last_updated": "2023-10-07T23:10:02.146598",
+  "last_updated": "2023-10-07T06:49:03.828628",
   "static_locations": [
     {
       "location_id": "base-israel-kirya",
@@ -456,7 +456,7 @@
       "current_location": {
         "lat": 31.5017,
         "lon": 34.4668,
-        "uncertainty_km": 10.0
+        "uncertainty_km": 5.0
       },
       "current_zone": "Gaza City",
       "is_moving": false,
@@ -465,7 +465,7 @@
       "movement_started": null,
       "movement_eta": null,
       "detection_difficulty": 0.98,
-      "last_known_update": "",
+      "last_known_update": "2023-10-07T06:36:30.541906",
       "metadata": {
         "role": "Qassam Brigades Commander",
         "priority": "highest"
@@ -784,7 +784,35 @@
       }
     }
   ],
-  "active_geo_events": [],
+  "active_geo_events": [
+    {
+      "geo_event_id": "geo_f63c55a8",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_3b9e821b",
+      "timestamp": "2023-10-07T06:49:03.828628",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.9038,
+        "lon": 35.2034,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Ramallah",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "active",
+      "description": "Deploy HUMINT assets to infiltrate West Bank Hamas cells preventing second front",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Gaza"
+      ]
+    }
+  ],
   "archived_geo_events": [
     {
       "geo_event_id": "geo_80c95ade",
@@ -1656,6 +1684,60 @@
       "actor_entity": "Israel",
       "affected_entities": [
         "Hostages-Families-Forum"
+      ]
+    },
+    {
+      "geo_event_id": "geo_836c177d",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_243657bc",
+      "timestamp": "2023-10-07T06:36:30.541906",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy SIGINT assets to intercept Hamas communications around verified hostage sites",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Gaza"
+      ]
+    },
+    {
+      "geo_event_id": "geo_70819394",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_8ba089c0",
+      "timestamp": "2023-10-07T06:36:30.541906",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate sleeper assets in Gaza City to confirm hostage locations and guard patterns",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Military-Wing"
       ]
     }
   ]

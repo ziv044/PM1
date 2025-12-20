@@ -1,0 +1,23 @@
+{
+  "entity_id": "UK",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 3100,
+    "population_millions": 67,
+    "military_personnel": 150000,
+    "nuclear_warheads": 225
+  },
+  "dynamic_metrics": {
+    "israel_support_level": 75,
+    "humanitarian_concern_level": 60,
+    "domestic_protests_intensity": 30,
+    "us_coordination_level": 85,
+    "arms_exports_to_israel_active": true,
+    "un_voting_alignment_israel": 70,
+    "intelligence_sharing_active": true,
+    "cyprus_base_readiness": 80,
+    "diplomatic_initiatives": 0,
+    "public_opinion_israel": 45
+  },
+  "pending_operations": []
+}

@@ -13,8 +13,20 @@ logger = setup_logger("app_logs")
 
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-# Data file path
+# Data file path - legacy constant for reference
 DATA_DIR = Path(__file__).parent.parent / "data"
+
+# Dynamic path getter for multi-game support
+def get_agents_file() -> Path:
+    """Get the agents file path for current game."""
+    try:
+        from game_manager import get_game_manager
+        return get_game_manager().get_current_data_path() / "agents.json"
+    except ImportError:
+        # Fallback during initial import before game_manager is available
+        return DATA_DIR / "agents.json"
+
+# Legacy constant for backwards compatibility
 AGENTS_FILE = DATA_DIR / "agents.json"
 
 # Thread-safe global state
@@ -206,29 +218,31 @@ def compile_system_prompt(agent_id: str, agent_data: dict) -> str:
 
 def save_agents() -> None:
     """Save agents, skills, and memory to JSON file."""
-    DATA_DIR.mkdir(exist_ok=True)
+    agents_file = get_agents_file()
+    agents_file.parent.mkdir(parents=True, exist_ok=True)
     data = {
         "agents": agents,
         "skills": agent_skills,
         "memory": agent_memory
     }
-    with open(AGENTS_FILE, "w", encoding="utf-8") as f:
+    with open(agents_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-    logger.info("Agents saved to file")
+    logger.info(f"Agents saved to {agents_file}")
 
 
 def load_agents() -> None:
     """Load agents, skills, and memory from JSON file."""
     global agents, agent_skills, agent_memory
-    if AGENTS_FILE.exists():
-        with open(AGENTS_FILE, "r", encoding="utf-8") as f:
+    agents_file = get_agents_file()
+    if agents_file.exists():
+        with open(agents_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         agents = data.get("agents", {})
         agent_skills = data.get("skills", {})
         agent_memory = data.get("memory", {})
-        logger.info(f"Loaded {len(agents)} agents from file")
+        logger.info(f"Loaded {len(agents)} agents from {agents_file}")
     else:
-        logger.info("No agents file found, starting fresh")
+        logger.info(f"No agents file found at {agents_file}, starting fresh")
 
 
 # Load agents on module import
@@ -674,6 +688,36 @@ def interact_simple(prompt: str, model: str = "claude-sonnet-4-20250514", max_to
         return {"status": "success", "response": response.content[0].text}
     except Exception as e:
         logger.error(f"Error in simple interaction: {str(e)}")
+        return {"status": "error", "message": str(e)}
+
+
+def interact_with_caching(
+    system_prompt: str,
+    user_prompt: str,
+    model: str = "claude-sonnet-4-20250514",
+    max_tokens: int = 1024
+) -> dict:
+    """LLM interaction with system prompt caching for token efficiency.
+
+    Uses Anthropic's ephemeral caching on the system prompt to reduce
+    redundant token processing across repeated calls with similar instructions.
+    """
+    logger.info(f"interact_with_caching called - model: {model}")
+    try:
+        response = client.messages.create(
+            model=model,
+            max_tokens=max_tokens,
+            system=[{
+                "type": "text",
+                "text": system_prompt,
+                "cache_control": {"type": "ephemeral"}
+            }],
+            messages=[{"role": "user", "content": user_prompt}]
+        )
+        logger.info("Cached interaction completed")
+        return {"status": "success", "response": response.content[0].text}
+    except Exception as e:
+        logger.error(f"Error in cached interaction: {str(e)}")
         return {"status": "error", "message": str(e)}
 
 

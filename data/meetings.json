@@ -1,5 +1,38 @@
 {
-  "meetings": [],
+  "meetings": [
+    {
+      "meeting_id": "mtg_f8960cd8",
+      "meeting_type": "negotiation",
+      "title": "test",
+      "description": "Negotiation with multiple parties, potentially including mediators",
+      "status": "scheduled",
+      "created_at": "2025-12-20T13:58:50.697824",
+      "scheduled_game_time": "2023-10-07T03:29:00.000Z",
+      "started_at": null,
+      "ended_at": null,
+      "chair_agent_id": null,
+      "current_round": 1,
+      "max_rounds": 12,
+      "meeting_context": "",
+      "current_state_summary": "",
+      "stakes": "",
+      "participants": [
+        {
+          "agent_id": "Head-Of-Mossad",
+          "role": "principal",
+          "entity": "Head",
+          "initial_position": "",
+          "current_position": "",
+          "has_spoken_this_round": false,
+          "turn_count": 0,
+          "is_player": false
+        }
+      ],
+      "turns": [],
+      "agenda": null,
+      "outcome": null
+    }
+  ],
   "requests": [
     {
       "request_id": "req_5bf2e5d2",
@@ -35,6 +68,24 @@
       "trigger_event_id": "evt_cfd16fa1",
       "status": "approved",
       "created_at": "2025-12-20T12:34:24.578559",
+      "expires_at": null
+    },
+    {
+      "request_id": "req_2c1db518",
+      "meeting_type": "negotiation",
+      "requested_by": "system",
+      "reason": "Hostage situation requires negotiation",
+      "title": "Auto-triggered: hostage_escalation",
+      "suggested_participants": [
+        "Hamas-Leadership",
+        "Egypt-President",
+        "Head-Of-Mossad"
+      ],
+      "suggested_agenda": [],
+      "urgency": "high",
+      "trigger_event_id": "evt_8ba089c0",
+      "status": "approved",
+      "created_at": "2025-12-20T15:40:01.474162",
       "expires_at": null
     }
   ],

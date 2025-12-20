@@ -6,7 +6,8 @@
 const state = {
     agents: {},
     selectedAgentId: null,
-    currentTab: 'details',
+    currentTab: 'simulation',  // Default to simulation tab
+    currentContext: 'simulation',  // 'simulation' or 'agent'
     isEditing: false,
     simulationPollingInterval: null,
     simulationStatus: null,
@@ -24,18 +25,39 @@ const state = {
     meetingParticipants: []
 };
 
+// Simulation-level tabs (always visible)
+const SIMULATION_TABS = ['simulation', 'mapstate', 'logs', 'kpis', 'pmapprovals', 'meetings', 'games'];
+// Agent-level tabs (only when agent selected)
+const AGENT_TABS = ['details', 'skills', 'memory', 'chat', 'debug'];
+
 /**
  * Initialize the application
  */
 async function init() {
-    // Load agents
-    await loadAgents();
+    console.log('[PM1] Initializing app...');
+    try {
+        // Load agents
+        await loadAgents();
+        console.log('[PM1] Agents loaded');
 
-    // Set up event listeners
-    setupEventListeners();
+        // Set up event listeners
+        setupEventListeners();
+        console.log('[PM1] Event listeners set up');
 
-    // Show empty state initially
-    components.showEmptyState(true);
+        // Show Simulation tab by default (main screen for admin)
+        components.showSimulationTab('simulation');
+        console.log('[PM1] Simulation tab shown');
+
+        loadSimulationStatus().then(() => {
+            if (state.simulationStatus && state.simulationStatus.is_running) {
+                startSimulationPolling();
+            }
+        });
+        loadSimulationEvents();
+        console.log('[PM1] Init complete');
+    } catch (error) {
+        console.error('[PM1] Init error:', error);
+    }
 }
 
 /**
@@ -58,12 +80,18 @@ async function loadAgents() {
 async function selectAgent(agentId) {
     state.selectedAgentId = agentId;
     state.currentTab = 'details';
+    state.currentContext = 'agent';
 
-    // Update UI
+    // Stop any simulation-level polling
+    stopSimulationPolling();
+    stopPMApprovalsPolling();
+    stopMeetingsPolling();
+
+    // Update UI - show agent context
     components.renderAgentList(state.agents, agentId);
     components.setAgentTitle(`Agent: ${agentId}`);
-    components.showEmptyState(false);
-    components.showTab('details');
+    components.showAgentContext(true);
+    components.showAgentTab('details');
 
     // Load agent details
     await loadAgentData(agentId);
@@ -219,27 +247,44 @@ async function toggleAgentEnabled(agentId) {
 }
 
 /**
+ * Safely add event listener (null-safe)
+ */
+function safeAddListener(elementId, event, handler) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.addEventListener(event, handler);
+    } else {
+        console.warn(`[PM1] Element not found: ${elementId}`);
+    }
+}
+
+/**
  * Set up all event listeners
  */
 function setupEventListeners() {
-    // Agent list click
-    document.getElementById('agentList').addEventListener('click', (e) => {
-        // Check if toggle button was clicked
-        const toggleBtn = e.target.closest('.toggle-enabled-btn');
-        if (toggleBtn) {
-            e.stopPropagation();
-            toggleAgentEnabled(toggleBtn.dataset.agentId);
-            return;
-        }
+    console.log('[PM1] Setting up event listeners...');
 
-        const card = e.target.closest('.agent-card');
-        if (card) {
-            selectAgent(card.dataset.agentId);
-        }
-    });
+    // Agent list click
+    const agentList = document.getElementById('agentList');
+    if (agentList) {
+        agentList.addEventListener('click', (e) => {
+            // Check if toggle button was clicked
+            const toggleBtn = e.target.closest('.toggle-enabled-btn');
+            if (toggleBtn) {
+                e.stopPropagation();
+                toggleAgentEnabled(toggleBtn.dataset.agentId);
+                return;
+            }
+
+            const card = e.target.closest('.agent-card');
+            if (card) {
+                selectAgent(card.dataset.agentId);
+            }
+        });
+    }
 
     // Enable All button
-    document.getElementById('enableAllBtn').addEventListener('click', async () => {
+    safeAddListener('enableAllBtn', 'click', async () => {
         try {
             await api.setAllAgentsEnabled(true);
             components.showToast('All agents enabled', 'success');
@@ -251,7 +296,7 @@ function setupEventListeners() {
     });
 
     // Disable All button
-    document.getElementById('disableAllBtn').addEventListener('click', async () => {
+    safeAddListener('disableAllBtn', 'click', async () => {
         try {
             await api.setAllAgentsEnabled(false);
             components.showToast('All agents disabled', 'success');
@@ -262,190 +307,262 @@ function setupEventListeners() {
         }
     });
 
-    // Tab clicks
-    document.querySelectorAll('.tab-btn').forEach(btn => {
+    // Simulation tab clicks (always visible)
+    document.querySelectorAll('.sim-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const tab = btn.dataset.tab;
             state.currentTab = tab;
-            components.showTab(tab);
+            state.currentContext = 'simulation';
 
-            // Load logs on demand
-            if (tab === 'logs') {
-                loadLogs();
-            }
-            // Load simulation status on demand
-            if (tab === 'simulation') {
-                loadSimulationStatus().then(() => {
-                    // Start polling if simulation is already running
-                    if (state.simulationStatus && state.simulationStatus.is_running) {
-                        startSimulationPolling();
-                    }
-                });
-                loadSimulationEvents();
-            } else {
-                // Stop polling when leaving simulation tab
-                stopSimulationPolling();
-            }
-            // Load debug console on demand
-            if (tab === 'debug') {
-                populateDebugAgentSelects();
-                loadGameFlow();
-                loadDebugStats();
-            }
-            // Load map state on demand
-            if (tab === 'mapstate') {
-                loadMapState();
-            }
-            // Load PM approvals on demand
-            if (tab === 'pmapprovals') {
-                loadPMApprovals();
-                startPMApprovalsPolling();
-            } else {
-                stopPMApprovalsPolling();
-            }
-            // Load KPIs on demand
-            if (tab === 'kpis') {
-                loadKPIs();
-                loadKPIChangeLog();
-            }
-            // Load meetings on demand
-            if (tab === 'meetings') {
-                loadMeetings();
-                loadMeetingRequests();
-                startMeetingsPolling();
-            } else {
-                stopMeetingsPolling();
-            }
+            // Hide agent context, show simulation tab
+            components.showAgentContext(false);
+            components.showSimulationTab(tab);
+
+            // Handle tab-specific data loading
+            handleSimulationTabLoad(tab);
         });
     });
 
-    // Add agent button
-    document.getElementById('addAgentBtn').addEventListener('click', () => {
-        state.isEditing = false;
-        document.getElementById('modalTitle').textContent = 'Add Agent';
-        document.getElementById('formAgentId').value = '';
-        document.getElementById('formAgentId').disabled = false;
-        document.getElementById('formModel').value = 'claude-sonnet-4-20250514';
-        document.getElementById('formSystemPrompt').value = '';
-        // Reset simulation fields
-        document.getElementById('formEntityType').value = 'System';
-        document.getElementById('formEventFrequency').value = '60';
-        document.getElementById('formAgentCategory').value = '';
-        document.getElementById('formIsEnabled').checked = true;
-        document.getElementById('formIsEnemy').checked = false;
-        document.getElementById('formIsWest').checked = false;
-        document.getElementById('formIsEvilAxis').checked = false;
-        document.getElementById('formIsReportingGovernment').checked = false;
-        document.getElementById('formAgenda').value = '';
-        document.getElementById('formPrimaryObjectives').value = '';
-        document.getElementById('formHardRules').value = '';
-        components.showModal('agentModal');
+    // Agent tab clicks (only when agent selected)
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!state.selectedAgentId) {
+                components.showToast('Please select an agent first', 'warning');
+                return;
+            }
+
+            const tab = btn.dataset.tab;
+            state.currentTab = tab;
+            state.currentContext = 'agent';
+            components.showAgentTab(tab);
+
+            // Handle tab-specific data loading
+            handleAgentTabLoad(tab);
+        });
     });
+
+    // Continue with rest of event listeners
+    setupEventListenersContinued();
+}
+
+/**
+ * Handle simulation tab data loading
+ */
+function handleSimulationTabLoad(tab) {
+    // Stop agent-level polling when switching to simulation context
+    stopSimulationPolling();
+    stopPMApprovalsPolling();
+    stopMeetingsPolling();
+
+    if (tab === 'simulation') {
+        loadSimulationStatus().then(() => {
+            if (state.simulationStatus && state.simulationStatus.is_running) {
+                startSimulationPolling();
+            }
+        });
+        loadSimulationEvents();
+    }
+    if (tab === 'logs') {
+        loadLogs();
+    }
+    if (tab === 'mapstate') {
+        loadMapState();
+    }
+    if (tab === 'kpis') {
+        loadKPIs();
+        loadKPIChangeLog();
+    }
+    if (tab === 'pmapprovals') {
+        loadPMApprovals();
+        startPMApprovalsPolling();
+    }
+    if (tab === 'meetings') {
+        loadMeetings();
+        loadMeetingRequests();
+        startMeetingsPolling();
+    }
+    if (tab === 'games') {
+        loadGamesList();
+    }
+}
+
+/**
+ * Handle agent tab data loading
+ */
+function handleAgentTabLoad(tab) {
+    // Stop simulation-level polling when in agent context
+    stopSimulationPolling();
+    stopPMApprovalsPolling();
+    stopMeetingsPolling();
+
+    if (tab === 'debug') {
+        populateDebugAgentSelects();
+        loadGameFlow();
+        loadDebugStats();
+    }
+}
+
+/**
+ * Set up all event listeners (continued)
+ */
+function setupEventListenersContinued() {
+    // Add agent button
+    const addAgentBtn = document.getElementById('addAgentBtn');
+    if (addAgentBtn) {
+        addAgentBtn.addEventListener('click', () => {
+            state.isEditing = false;
+            document.getElementById('modalTitle').textContent = 'Add Agent';
+            document.getElementById('formAgentId').value = '';
+            document.getElementById('formAgentId').disabled = false;
+            document.getElementById('formModel').value = 'claude-sonnet-4-20250514';
+            document.getElementById('formSystemPrompt').value = '';
+            // Reset simulation fields
+            document.getElementById('formEntityType').value = 'System';
+            document.getElementById('formEventFrequency').value = '60';
+            document.getElementById('formAgentCategory').value = '';
+            document.getElementById('formIsEnabled').checked = true;
+            document.getElementById('formIsEnemy').checked = false;
+            document.getElementById('formIsWest').checked = false;
+            document.getElementById('formIsEvilAxis').checked = false;
+            document.getElementById('formIsReportingGovernment').checked = false;
+            document.getElementById('formAgenda').value = '';
+            document.getElementById('formPrimaryObjectives').value = '';
+            document.getElementById('formHardRules').value = '';
+            components.showModal('agentModal');
+        });
+    }
 
     // Inline edit form submit
-    document.getElementById('inlineEditForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await saveInlineEdit();
-    });
+    const inlineEditForm = document.getElementById('inlineEditForm');
+    if (inlineEditForm) {
+        inlineEditForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveInlineEdit();
+        });
+    }
 
     // Cancel inline edit - reset form to original values
-    document.getElementById('cancelInlineEditBtn').addEventListener('click', () => {
-        const original = components.getOriginalAgentData();
-        if (original && state.selectedAgentId) {
-            components.renderAgentDetails(original, state.selectedAgentId);
-            components.showToast('Changes discarded', 'info');
-        }
-    });
+    const cancelBtn = document.getElementById('cancelInlineEditBtn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            const original = components.getOriginalAgentData();
+            if (original && state.selectedAgentId) {
+                components.renderAgentDetails(original, state.selectedAgentId);
+                components.showToast('Changes discarded', 'info');
+            }
+        });
+    }
 
     // Refresh prompts button
-    document.getElementById('refreshPromptsBtn').addEventListener('click', loadAgentPrompts);
+    const refreshPromptsBtn = document.getElementById('refreshPromptsBtn');
+    if (refreshPromptsBtn) {
+        refreshPromptsBtn.addEventListener('click', loadAgentPrompts);
+    }
 
     // Prompt section toggle handlers
     setupPromptToggles();
 
     // Delete agent button
-    document.getElementById('deleteAgentBtn').addEventListener('click', () => {
-        if (state.selectedAgentId) {
-            components.showModal('deleteModal');
-        }
-    });
+    const deleteAgentBtn = document.getElementById('deleteAgentBtn');
+    if (deleteAgentBtn) {
+        deleteAgentBtn.addEventListener('click', () => {
+            if (state.selectedAgentId) {
+                components.showModal('deleteModal');
+            }
+        });
+    }
 
     // Confirm delete
-    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-        if (!state.selectedAgentId) return;
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (!state.selectedAgentId) return;
 
-        try {
-            await api.deleteAgent(state.selectedAgentId);
-            components.hideModal('deleteModal');
-            components.showToast('Agent deleted successfully', 'success');
+            try {
+                await api.deleteAgent(state.selectedAgentId);
+                components.hideModal('deleteModal');
+                components.showToast('Agent deleted successfully', 'success');
 
-            state.selectedAgentId = null;
-            components.showEmptyState(true);
-            components.setAgentTitle('Select an Agent');
-            await loadAgents();
-        } catch (error) {
-            console.error('Failed to delete agent:', error);
-            components.showToast('Failed to delete agent', 'error');
-        }
-    });
+                state.selectedAgentId = null;
+                components.showEmptyState(true);
+                components.setAgentTitle('Select an Agent');
+                await loadAgents();
+            } catch (error) {
+                console.error('Failed to delete agent:', error);
+                components.showToast('Failed to delete agent', 'error');
+            }
+        });
+    }
 
     // Cancel delete
-    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-        components.hideModal('deleteModal');
-    });
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            components.hideModal('deleteModal');
+        });
+    }
 
     // Agent form submit
-    document.getElementById('agentForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+    const agentForm = document.getElementById('agentForm');
+    if (agentForm) {
+        agentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        const agentId = document.getElementById('formAgentId').value.trim();
-        const agentData = {
-            agent_id: agentId,
-            model: document.getElementById('formModel').value,
-            system_prompt: document.getElementById('formSystemPrompt').value,
-            entity_type: document.getElementById('formEntityType').value,
-            event_frequency: parseInt(document.getElementById('formEventFrequency').value) || 60,
-            agent_category: document.getElementById('formAgentCategory').value,
-            is_enabled: document.getElementById('formIsEnabled').checked,
-            is_enemy: document.getElementById('formIsEnemy').checked,
-            is_west: document.getElementById('formIsWest').checked,
-            is_evil_axis: document.getElementById('formIsEvilAxis').checked,
-            is_reporting_government: document.getElementById('formIsReportingGovernment').checked,
-            agenda: document.getElementById('formAgenda').value,
-            primary_objectives: document.getElementById('formPrimaryObjectives').value,
-            hard_rules: document.getElementById('formHardRules').value
-        };
+            const agentId = document.getElementById('formAgentId').value.trim();
+            const agentData = {
+                agent_id: agentId,
+                model: document.getElementById('formModel').value,
+                system_prompt: document.getElementById('formSystemPrompt').value,
+                entity_type: document.getElementById('formEntityType').value,
+                event_frequency: parseInt(document.getElementById('formEventFrequency').value) || 60,
+                agent_category: document.getElementById('formAgentCategory').value,
+                is_enabled: document.getElementById('formIsEnabled').checked,
+                is_enemy: document.getElementById('formIsEnemy').checked,
+                is_west: document.getElementById('formIsWest').checked,
+                is_evil_axis: document.getElementById('formIsEvilAxis').checked,
+                is_reporting_government: document.getElementById('formIsReportingGovernment').checked,
+                agenda: document.getElementById('formAgenda').value,
+                primary_objectives: document.getElementById('formPrimaryObjectives').value,
+                hard_rules: document.getElementById('formHardRules').value
+            };
 
-        try {
-            if (state.isEditing) {
-                await api.updateAgent(agentId, agentData);
-                components.showToast('Agent updated successfully', 'success');
-            } else {
-                await api.createAgent(agentData);
-                components.showToast('Agent created successfully', 'success');
+            try {
+                if (state.isEditing) {
+                    await api.updateAgent(agentId, agentData);
+                    components.showToast('Agent updated successfully', 'success');
+                } else {
+                    await api.createAgent(agentData);
+                    components.showToast('Agent created successfully', 'success');
+                }
+
+                components.hideModal('agentModal');
+                await loadAgents();
+
+                // Select the new/updated agent
+                selectAgent(agentId);
+            } catch (error) {
+                console.error('Failed to save agent:', error);
+                components.showToast('Failed to save agent', 'error');
             }
-
-            components.hideModal('agentModal');
-            await loadAgents();
-
-            // Select the new/updated agent
-            selectAgent(agentId);
-        } catch (error) {
-            console.error('Failed to save agent:', error);
-            components.showToast('Failed to save agent', 'error');
-        }
-    });
+        });
+    }
 
     // Cancel agent modal
-    document.getElementById('cancelModalBtn').addEventListener('click', () => {
-        components.hideModal('agentModal');
-    });
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    if (cancelModalBtn) {
+        cancelModalBtn.addEventListener('click', () => {
+            components.hideModal('agentModal');
+        });
+    }
 
     // Add skill button
-    document.getElementById('addSkillBtn').addEventListener('click', () => {
-        document.getElementById('formSkill').value = '';
-        components.showModal('skillModal');
-    });
+    const addSkillBtn = document.getElementById('addSkillBtn');
+    if (addSkillBtn) {
+        addSkillBtn.addEventListener('click', () => {
+            document.getElementById('formSkill').value = '';
+            components.showModal('skillModal');
+        });
+    }
 
     // Skill form submit
     document.getElementById('skillForm').addEventListener('submit', async (e) => {
@@ -3036,8 +3153,282 @@ async function resolveNow() {
     }
 }
 
+// =============================================================================
+// GAME MANAGEMENT FUNCTIONS
+// =============================================================================
+
+/**
+ * Load and display the list of saved games
+ */
+async function loadGamesList() {
+    try {
+        const result = await api.listGames();
+        if (result.status === 'success') {
+            renderGamesList(result.games, result.current_game);
+
+            // Update current game banner
+            const currentGame = result.games.find(g => g.game_id === result.current_game);
+            updateCurrentGameBanner(currentGame);
+
+            // Show migration section if no games exist
+            const migrationSection = document.getElementById('migrationSection');
+            if (migrationSection) {
+                if (!result.current_game && result.games.length === 0) {
+                    migrationSection.classList.remove('hidden');
+                } else {
+                    migrationSection.classList.add('hidden');
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load games:', error);
+        components.showToast('Failed to load games list', 'error');
+    }
+}
+
+/**
+ * Render the games list
+ */
+function renderGamesList(games, currentGameId) {
+    const container = document.getElementById('gamesList');
+    if (!container) return;
+
+    if (!games || games.length === 0) {
+        container.innerHTML = '<p class="text-gray-400">No saved games found. Run migration or create a new game.</p>';
+        return;
+    }
+
+    container.innerHTML = games.map(game => {
+        const isActive = game.game_id === currentGameId;
+        const borderClass = isActive ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300';
+
+        return `
+            <div class="p-4 border rounded-lg ${borderClass} transition-colors">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">${escapeHtml(game.display_name)}</h4>
+                        <p class="text-sm text-gray-500">ID: ${escapeHtml(game.game_id)}</p>
+                        <p class="text-xs text-gray-400">
+                            Created: ${new Date(game.created_at).toLocaleDateString()}
+                            | Last played: ${new Date(game.last_played).toLocaleDateString()}
+                        </p>
+                        ${game.game_clock ? `<p class="text-xs text-gray-400">Game time: ${game.game_clock}</p>` : ''}
+                    </div>
+                    <div class="flex gap-2">
+                        ${isActive ?
+                            '<span class="px-3 py-1 bg-blue-600 text-white rounded text-sm">Active</span>' :
+                            `<button class="load-game-btn px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm transition-colors"
+                                     data-game-id="${escapeHtml(game.game_id)}">
+                                Load
+                            </button>
+                            <button class="delete-game-btn px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm transition-colors"
+                                     data-game-id="${escapeHtml(game.game_id)}">
+                                Delete
+                            </button>`
+                        }
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Update the current game banner
+ */
+function updateCurrentGameBanner(game) {
+    const nameEl = document.getElementById('currentGameName');
+    const clockEl = document.getElementById('currentGameClock');
+
+    if (nameEl) {
+        if (game) {
+            nameEl.textContent = game.display_name || game.game_id;
+        } else {
+            nameEl.textContent = 'No game active (run migration first)';
+        }
+    }
+    if (clockEl) {
+        clockEl.textContent = game && game.game_clock ? `Game Time: ${game.game_clock}` : '';
+    }
+}
+
+/**
+ * Create a new game
+ */
+async function createNewGame() {
+    const gameIdInput = document.getElementById('newGameId');
+    const displayNameInput = document.getElementById('newGameName');
+    const templateSelect = document.getElementById('newGameTemplate');
+
+    const gameId = gameIdInput?.value.trim();
+    const displayName = displayNameInput?.value.trim();
+    const template = templateSelect?.value || 'october7';
+
+    if (!gameId || !displayName) {
+        components.showToast('Please fill in Game ID and Display Name', 'error');
+        return;
+    }
+
+    // Validate game ID format
+    if (!/^[a-zA-Z0-9_-]+$/.test(gameId)) {
+        components.showToast('Game ID can only contain letters, numbers, hyphens, and underscores', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('createGameBtn');
+    try {
+        btn.disabled = true;
+        btn.textContent = 'Creating...';
+
+        const result = await api.createGame(gameId, displayName, template);
+        if (result.status === 'success') {
+            components.showToast(`Game '${displayName}' created!`, 'success');
+            gameIdInput.value = '';
+            displayNameInput.value = '';
+            await loadGamesList();
+        } else {
+            components.showToast(result.message || result.detail || 'Failed to create game', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to create game:', error);
+        components.showToast('Failed to create game', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create New Game';
+    }
+}
+
+/**
+ * Handle game action clicks (load/delete)
+ */
+async function handleGameAction(event) {
+    const loadBtn = event.target.closest('.load-game-btn');
+    const deleteBtn = event.target.closest('.delete-game-btn');
+
+    if (loadBtn) {
+        const gameId = loadBtn.dataset.gameId;
+
+        // Check if simulation is running
+        if (state.simulationStatus?.is_running) {
+            components.showToast('Stop simulation before switching games', 'error');
+            return;
+        }
+
+        try {
+            loadBtn.disabled = true;
+            loadBtn.textContent = 'Loading...';
+
+            const result = await api.loadGame(gameId);
+            if (result.status === 'success') {
+                components.showToast(`Loaded game: ${gameId}`, 'success');
+                // Refresh everything
+                await loadGamesList();
+                await loadAgents();
+                await loadSimulationStatus();
+            } else {
+                components.showToast(result.message || result.detail || 'Failed to load game', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to load game:', error);
+            components.showToast('Failed to load game', 'error');
+        } finally {
+            loadBtn.disabled = false;
+            loadBtn.textContent = 'Load';
+        }
+    }
+
+    if (deleteBtn) {
+        const gameId = deleteBtn.dataset.gameId;
+
+        if (!confirm(`Delete game '${gameId}'? This cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            deleteBtn.disabled = true;
+            deleteBtn.textContent = 'Deleting...';
+
+            const result = await api.deleteGame(gameId);
+            if (result.status === 'success') {
+                components.showToast(`Deleted game: ${gameId}`, 'success');
+                await loadGamesList();
+            } else {
+                components.showToast(result.message || result.detail || 'Failed to delete game', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to delete game:', error);
+            components.showToast('Failed to delete game', 'error');
+        } finally {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = 'Delete';
+        }
+    }
+}
+
+/**
+ * Run the data migration
+ */
+async function runMigration() {
+    if (!confirm('This will backup your current data and migrate to the new game system. Continue?')) {
+        return;
+    }
+
+    const btn = document.getElementById('migrateBtn');
+    try {
+        btn.disabled = true;
+        btn.textContent = 'Migrating...';
+
+        const result = await api.migrateData();
+        if (result.status === 'success') {
+            components.showToast('Migration successful!', 'success');
+            document.getElementById('migrationSection')?.classList.add('hidden');
+            await loadGamesList();
+            await loadAgents();
+            await loadSimulationStatus();
+        } else {
+            components.showToast(result.message || result.detail || 'Migration failed', 'error');
+        }
+    } catch (error) {
+        console.error('Migration failed:', error);
+        components.showToast('Migration failed', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Migrate Data';
+    }
+}
+
+/**
+ * Escape HTML for safe display
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Set up game management event listeners
+ */
+function setupGameManagementListeners() {
+    // Create game button
+    safeAddListener('createGameBtn', 'click', createNewGame);
+
+    // Migrate button
+    safeAddListener('migrateBtn', 'click', runMigration);
+
+    // Refresh games button
+    safeAddListener('refreshGamesBtn', 'click', loadGamesList);
+
+    // Games list delegation for load/delete buttons
+    const gamesList = document.getElementById('gamesList');
+    if (gamesList) {
+        gamesList.addEventListener('click', handleGameAction);
+    }
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     init();
     setupMapStateListeners();
+    setupGameManagementListeners();
 });

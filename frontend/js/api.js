@@ -600,5 +600,80 @@ const api = {
             method: 'POST'
         });
         return response.json();
+    },
+
+    // =========================================================================
+    // GAME MANAGEMENT
+    // =========================================================================
+
+    /**
+     * List all saved games
+     */
+    async listGames() {
+        const response = await fetch(`${API_BASE}/games`);
+        return response.json();
+    },
+
+    /**
+     * Get current active game
+     */
+    async getCurrentGame() {
+        const response = await fetch(`${API_BASE}/games/current`);
+        return response.json();
+    },
+
+    /**
+     * Get available templates
+     */
+    async getTemplates() {
+        const response = await fetch(`${API_BASE}/games/templates`);
+        return response.json();
+    },
+
+    /**
+     * Create a new game from template
+     */
+    async createGame(gameId, displayName, template = 'october7', description = '') {
+        const response = await fetch(`${API_BASE}/games`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                game_id: gameId,
+                display_name: displayName,
+                template: template,
+                description: description
+            })
+        });
+        return response.json();
+    },
+
+    /**
+     * Load/switch to a different game
+     */
+    async loadGame(gameId) {
+        const response = await fetch(`${API_BASE}/games/${encodeURIComponent(gameId)}/load`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * Delete a saved game
+     */
+    async deleteGame(gameId) {
+        const response = await fetch(`${API_BASE}/games/${encodeURIComponent(gameId)}`, {
+            method: 'DELETE'
+        });
+        return response.json();
+    },
+
+    /**
+     * Run data migration to multi-game system
+     */
+    async migrateData() {
+        const response = await fetch(`${API_BASE}/admin/migrate`, {
+            method: 'POST'
+        });
+        return response.json();
     }
 };

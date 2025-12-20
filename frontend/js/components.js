@@ -178,7 +178,7 @@ const components = {
     },
 
     /**
-     * Show a specific tab
+     * Show a specific tab (legacy - for backwards compatibility)
      */
     showTab(tabName) {
         // Hide all tabs
@@ -187,7 +187,7 @@ const components = {
         });
 
         // Remove active state from all tab buttons
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.tab-btn, .sim-tab-btn').forEach(btn => {
             btn.classList.remove('border-blue-600', 'text-blue-600');
             btn.classList.add('border-transparent');
         });
@@ -198,7 +198,73 @@ const components = {
             tabElement.classList.remove('hidden');
         }
 
-        // Activate tab button
+        // Activate tab button (check both types)
+        const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"], .sim-tab-btn[data-tab="${tabName}"]`);
+        if (tabBtn) {
+            tabBtn.classList.add('border-blue-600', 'text-blue-600');
+            tabBtn.classList.remove('border-transparent');
+        }
+    },
+
+    /**
+     * Show a simulation-level tab (always accessible)
+     */
+    showSimulationTab(tabName) {
+        // Hide all tab content
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.add('hidden');
+        });
+
+        // Hide empty state
+        const emptyState = document.getElementById('emptyState');
+        if (emptyState) emptyState.classList.add('hidden');
+
+        // Remove active state from ALL tab buttons (both groups)
+        document.querySelectorAll('.tab-btn, .sim-tab-btn').forEach(btn => {
+            btn.classList.remove('border-blue-600', 'text-blue-600');
+            btn.classList.add('border-transparent');
+        });
+
+        // Show selected simulation tab
+        const tabElement = document.getElementById(`${tabName}Tab`);
+        if (tabElement) {
+            tabElement.classList.remove('hidden');
+        }
+
+        // Activate simulation tab button
+        const tabBtn = document.querySelector(`.sim-tab-btn[data-tab="${tabName}"]`);
+        if (tabBtn) {
+            tabBtn.classList.add('border-blue-600', 'text-blue-600');
+            tabBtn.classList.remove('border-transparent');
+        }
+    },
+
+    /**
+     * Show an agent-level tab (requires agent selection)
+     */
+    showAgentTab(tabName) {
+        // Hide all tab content
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.add('hidden');
+        });
+
+        // Hide empty state
+        const emptyState = document.getElementById('emptyState');
+        if (emptyState) emptyState.classList.add('hidden');
+
+        // Remove active state from ALL tab buttons (both groups)
+        document.querySelectorAll('.tab-btn, .sim-tab-btn').forEach(btn => {
+            btn.classList.remove('border-blue-600', 'text-blue-600');
+            btn.classList.add('border-transparent');
+        });
+
+        // Show selected agent tab
+        const tabElement = document.getElementById(`${tabName}Tab`);
+        if (tabElement) {
+            tabElement.classList.remove('hidden');
+        }
+
+        // Activate agent tab button
         const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
         if (tabBtn) {
             tabBtn.classList.add('border-blue-600', 'text-blue-600');
@@ -207,12 +273,29 @@ const components = {
     },
 
     /**
+     * Show/hide agent context (header + tabs)
+     */
+    showAgentContext(show) {
+        const agentHeader = document.getElementById('agentHeader');
+        const agentTabs = document.getElementById('tabsContainer');
+        const agentActions = document.getElementById('agentActions');
+
+        if (agentHeader) agentHeader.classList.toggle('hidden', !show);
+        if (agentTabs) agentTabs.classList.toggle('hidden', !show);
+        if (agentActions) agentActions.classList.toggle('hidden', !show);
+    },
+
+    /**
      * Show/hide empty state
      */
     showEmptyState(show) {
-        document.getElementById('emptyState').classList.toggle('hidden', !show);
-        document.getElementById('tabsContainer').classList.toggle('hidden', show);
-        document.getElementById('agentActions').classList.toggle('hidden', show);
+        const emptyState = document.getElementById('emptyState');
+        const tabsContainer = document.getElementById('tabsContainer');
+        const agentActions = document.getElementById('agentActions');
+
+        if (emptyState) emptyState.classList.toggle('hidden', !show);
+        if (tabsContainer) tabsContainer.classList.toggle('hidden', show);
+        if (agentActions) agentActions.classList.toggle('hidden', show);
     },
 
     /**

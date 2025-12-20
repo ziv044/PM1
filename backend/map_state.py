@@ -27,6 +27,16 @@ logger = setup_logger("map_state")
 DATA_DIR = Path(__file__).parent.parent / "data"
 
 
+# Dynamic path getter for multi-game support
+def get_map_state_file() -> Path:
+    """Get the map state file path for current game."""
+    try:
+        from game_manager import get_game_manager
+        return get_game_manager().get_current_data_path() / "map_state.json"
+    except ImportError:
+        return DATA_DIR / "map_state.json"
+
+
 # =============================================================================
 # ENUMS
 # =============================================================================
@@ -547,24 +557,27 @@ TRACKED_ENTITIES_SEED: List[dict] = [
 class MapStateManager:
     """Thread-safe manager for map state and geographic operations."""
 
-    MAP_STATE_FILE = DATA_DIR / "map_state.json"
-
     def __init__(self):
         self._lock = threading.Lock()
         self._state: Optional[MapState] = None
         self.load()
+
+    def _get_map_state_file(self) -> Path:
+        """Get the map state file path (dynamic for multi-game support)."""
+        return get_map_state_file()
 
     # ===== PERSISTENCE =====
 
     def load(self):
         """Load map state from file, or initialize with seed data."""
         with self._lock:
-            if self.MAP_STATE_FILE.exists():
+            map_state_file = self._get_map_state_file()
+            if map_state_file.exists():
                 try:
-                    with open(self.MAP_STATE_FILE, "r", encoding="utf-8") as f:
+                    with open(map_state_file, "r", encoding="utf-8") as f:
                         data = json.load(f)
                     self._state = MapState.from_dict(data)
-                    logger.info(f"Loaded map state: {len(self._state.static_locations)} locations, "
+                    logger.info(f"Loaded map state from {map_state_file}: {len(self._state.static_locations)} locations, "
                                f"{len(self._state.tracked_entities)} entities, "
                                f"{len(self._state.active_geo_events)} active events")
                 except Exception as e:
@@ -588,9 +601,10 @@ class MapStateManager:
 
     def _save(self):
         """Save map state to file (must be called with lock held)."""
-        DATA_DIR.mkdir(exist_ok=True)
+        map_state_file = self._get_map_state_file()
+        map_state_file.parent.mkdir(parents=True, exist_ok=True)
         try:
-            with open(self.MAP_STATE_FILE, "w", encoding="utf-8") as f:
+            with open(map_state_file, "w", encoding="utf-8") as f:
                 json.dump(self._state.to_dict(), f, indent=2, ensure_ascii=False)
         except Exception as e:
             logger.error(f"Error saving map state: {e}")
@@ -671,6 +685,22 @@ class MapStateManager:
         with self._lock:
             return [e for e in self._state.tracked_entities
                     if e.owner_entity == owner_entity]
+
+    def check_spatial_clash(self, zone_name: str, categories: List[str]) -> List[TrackedEntity]:
+        """Check for tracked entities in a zone that match specified categories.
+
+        Args:
+            zone_name: The zone to check for entities
+            categories: List of entity categories to match (e.g., ["hostage_group", "high_value_target"])
+
+        Returns:
+            List of TrackedEntity objects in the zone matching any of the categories
+        """
+        with self._lock:
+            return [
+                e for e in self._state.tracked_entities
+                if e.current_zone.lower() == zone_name.lower() and e.category in categories
+            ]
 
     def update_entity_location(self, entity_id: str,
                                new_zone: str,

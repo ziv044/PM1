@@ -1,0 +1,12 @@
+{
+  "is_running": false,
+  "clock_speed": 2.0,
+  "game_clock": "2023-10-07T06:29:00",
+  "events": [],
+  "agent_last_action": {},
+  "ongoing_situations": [],
+  "pm_approval_queue": [],
+  "scheduled_events": [],
+  "paused_for_meeting": false,
+  "active_meeting_id": null
+}

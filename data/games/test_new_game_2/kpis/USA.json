@@ -1,0 +1,18 @@
+{
+  "entity_id": "USA",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_trillions_usd": 25.5,
+    "military_budget_billions": 886,
+    "carrier_strike_groups": 11
+  },
+  "dynamic_metrics": {
+    "american_hostages_in_gaza": 10,
+    "american_hostages_rescued": 0,
+    "military_aid_to_israel_billions": 0,
+    "carrier_groups_deployed_mideast": 2,
+    "domestic_approval_israel_policy": 60,
+    "troops_deployed_region": 40000
+  },
+  "pending_operations": []
+}

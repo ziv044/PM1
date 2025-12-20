@@ -1,0 +1,22 @@
+{
+  "entity_id": "PLO",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "west_bank_population_millions": 3.0,
+    "pa_security_forces": 30000,
+    "international_recognition_countries": 139
+  },
+  "dynamic_metrics": {
+    "west_bank_control_pct": 40,
+    "hamas_rivalry_tension": 80,
+    "israeli_coordination_level": 50,
+    "international_legitimacy": 65,
+    "domestic_approval": 25,
+    "security_cooperation_active": true,
+    "settler_violence_incidents": 0,
+    "economic_stability": 40,
+    "us_aid_millions": 500,
+    "governance_capacity": 50
+  },
+  "pending_operations": []
+}

@@ -5,7 +5,16 @@
       "Bash(dir:*)",
       "Bash(git merge:*)",
       "Bash(cat:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(curl:*)",
+      "Bash(echo.)",
+      "Bash(findstr:*)",
+      "Bash(netstat:*)",
+      "Bash(node --check:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "agentvibes"
+  ]
 }
