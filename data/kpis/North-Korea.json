@@ -1,0 +1,23 @@
+{
+  "entity_id": "North-Korea",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 18,
+    "population_millions": 26,
+    "military_personnel": 1280000,
+    "nuclear_warheads": 50
+  },
+  "dynamic_metrics": {
+    "weapons_sales_to_russia": 0,
+    "weapons_sales_to_iran": 0,
+    "weapons_sales_to_hamas": 0,
+    "ballistic_missile_tests": 0,
+    "sanctions_evasion_success": 60,
+    "china_relations_strength": 70,
+    "russia_relations_strength": 75,
+    "regime_stability": 90,
+    "international_isolation": 95,
+    "opportunism_level": 50
+  },
+  "pending_operations": []
+}

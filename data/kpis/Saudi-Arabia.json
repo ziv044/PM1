@@ -1,0 +1,23 @@
+{
+  "entity_id": "Saudi-Arabia",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 1100,
+    "population_millions": 36,
+    "military_personnel": 227000,
+    "oil_production_mbpd": 9.0
+  },
+  "dynamic_metrics": {
+    "israel_normalization_progress": 60,
+    "iran_tensions_level": 80,
+    "us_relations_strength": 70,
+    "houthi_threat_level": 50,
+    "regional_influence": 75,
+    "domestic_stability": 85,
+    "oil_price_usd": 85,
+    "defense_spending_billions": 75,
+    "humanitarian_aid_pledged_millions": 0,
+    "public_opinion_palestinian_cause": 70
+  },
+  "pending_operations": []
+}

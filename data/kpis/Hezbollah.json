@@ -1,0 +1,25 @@
+{
+  "entity_id": "Hezbollah",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "initial_fighters": 100000,
+    "initial_rocket_inventory": 150000,
+    "initial_precision_missiles": 2000,
+    "radwan_force_personnel": 5000
+  },
+  "dynamic_metrics": {
+    "fighters_remaining": 100000,
+    "rocket_inventory": 150000,
+    "precision_missiles": 2000,
+    "radwan_force_operational": 5000,
+    "casualties": 0,
+    "leadership_capacity": 100,
+    "command_structure_intact_pct": 100,
+    "tunnel_network_operational_km": 200,
+    "iranian_resupply_active": true,
+    "cross_border_attacks_daily": 0,
+    "international_pressure": 30,
+    "lebanese_public_support": 40
+  },
+  "pending_operations": []
+}

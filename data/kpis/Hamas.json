@@ -12,6 +12,7 @@
     "rocket_inventory": 12000,
     "hostages_held": 241,
     "leadership_eliminated": 0,
+    "leadership_capacity": 100,
     "casualties": 0,
     "ammunition_rockets_pct": 100,
     "ammunition_small_arms_pct": 100,

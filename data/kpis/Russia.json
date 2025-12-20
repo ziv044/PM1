@@ -1,0 +1,23 @@
+{
+  "entity_id": "Russia",
+  "last_updated": "2023-10-07T06:29:00",
+  "const_metrics": {
+    "gdp_billions_usd": 2200,
+    "population_millions": 144,
+    "military_personnel": 1150000,
+    "nuclear_warheads": 6200
+  },
+  "dynamic_metrics": {
+    "ukraine_war_focus_pct": 90,
+    "iran_alliance_strength": 75,
+    "israel_relations": 50,
+    "syria_military_presence": 5000,
+    "un_veto_readiness": 100,
+    "western_sanctions_pressure": 80,
+    "global_south_influence": 60,
+    "arms_sales_to_iran_active": true,
+    "mediation_credibility": 30,
+    "middle_east_influence": 45
+  },
+  "pending_operations": []
+}
