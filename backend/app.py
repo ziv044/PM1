@@ -409,6 +409,7 @@ def get_all_agents() -> dict:
     result = {}
     for agent_id in agents:
         result[agent_id] = {
+            "agent_id": agent_id,  # Include agent_id in the object
             **agents[agent_id],
             "skills": agent_skills.get(agent_id, []),
             "memory": agent_memory.get(agent_id, [])

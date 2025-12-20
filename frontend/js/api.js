@@ -301,6 +301,18 @@ const api = {
     },
 
     /**
+     * Get the full action prompt for an agent
+     */
+    async getActionPrompt(agentId) {
+        const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}/action-prompt`);
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to get action prompt');
+        }
+        return response.json();
+    },
+
+    /**
      * Enable or disable all agents
      */
     async setAllAgentsEnabled(enabled) {
@@ -308,6 +320,284 @@ const api = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ enabled: enabled })
+        });
+        return response.json();
+    },
+
+    // PM Approvals API methods
+
+    /**
+     * Get pending PM approval requests
+     */
+    async getPMApprovals() {
+        const response = await fetch(`${API_BASE}/simulation/pm-approvals`);
+        return response.json();
+    },
+
+    /**
+     * Process PM decision on an approval request
+     */
+    async processPMDecision(approvalId, decision, notes = null, modifiedSummary = null, dueGameTime = null) {
+        const response = await fetch(`${API_BASE}/simulation/pm-approve/${encodeURIComponent(approvalId)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                decision: decision,
+                notes: notes,
+                modified_summary: modifiedSummary,
+                due_game_time: dueGameTime
+            })
+        });
+        return response.json();
+    },
+
+    /**
+     * Get pending scheduled events
+     */
+    async getScheduledEvents() {
+        const response = await fetch(`${API_BASE}/simulation/scheduled-events`);
+        return response.json();
+    },
+
+    /**
+     * Cancel a scheduled event
+     */
+    async cancelScheduledEvent(scheduleId) {
+        const response = await fetch(`${API_BASE}/simulation/scheduled-events/${encodeURIComponent(scheduleId)}`, {
+            method: 'DELETE'
+        });
+        return response.json();
+    },
+
+    // Map State API methods
+
+    /**
+     * Get complete map state
+     */
+    async getMapState() {
+        const response = await fetch(`${API_BASE}/map/state`);
+        return response.json();
+    },
+
+    /**
+     * Get static locations
+     */
+    async getMapLocations(ownerEntity = null, locationType = null) {
+        let url = `${API_BASE}/map/locations`;
+        const params = [];
+        if (ownerEntity) params.push(`owner_entity=${encodeURIComponent(ownerEntity)}`);
+        if (locationType) params.push(`location_type=${encodeURIComponent(locationType)}`);
+        if (params.length) url += '?' + params.join('&');
+        const response = await fetch(url);
+        return response.json();
+    },
+
+    /**
+     * Get tracked entities
+     */
+    async getMapEntities(ownerEntity = null, category = null, zone = null) {
+        let url = `${API_BASE}/map/entities`;
+        const params = [];
+        if (ownerEntity) params.push(`owner_entity=${encodeURIComponent(ownerEntity)}`);
+        if (category) params.push(`category=${encodeURIComponent(category)}`);
+        if (zone) params.push(`zone=${encodeURIComponent(zone)}`);
+        if (params.length) url += '?' + params.join('&');
+        const response = await fetch(url);
+        return response.json();
+    },
+
+    /**
+     * Get geo events for animations
+     */
+    async getMapEvents(activeOnly = true) {
+        const response = await fetch(`${API_BASE}/map/events?active_only=${activeOnly}`);
+        return response.json();
+    },
+
+    /**
+     * Get valid zones
+     */
+    async getMapZones() {
+        const response = await fetch(`${API_BASE}/map/zones`);
+        return response.json();
+    },
+
+    /**
+     * Move an entity to a destination zone
+     */
+    async moveEntity(entityId, destinationZone, travelTimeMinutes = 30) {
+        const response = await fetch(`${API_BASE}/map/entities/${encodeURIComponent(entityId)}/move`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                destination_zone: destinationZone,
+                travel_time_minutes: travelTimeMinutes
+            })
+        });
+        return response.json();
+    },
+
+    /**
+     * Teleport an entity to a zone (instant)
+     */
+    async teleportEntity(entityId, destinationZone) {
+        const response = await fetch(`${API_BASE}/map/entities/${encodeURIComponent(entityId)}/teleport`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ destination_zone: destinationZone })
+        });
+        return response.json();
+    },
+
+    // KPI API methods
+
+    /**
+     * Get all entity KPIs
+     */
+    async getKPIs() {
+        const response = await fetch(`${API_BASE}/kpis`);
+        return response.json();
+    },
+
+    /**
+     * Get KPIs for a specific entity
+     */
+    async getEntityKPIs(entityId) {
+        const response = await fetch(`${API_BASE}/kpis/${encodeURIComponent(entityId)}`);
+        return response.json();
+    },
+
+    /**
+     * Manually trigger event resolution (works even when simulation is stopped)
+     */
+    async resolveNow() {
+        const response = await fetch(`${API_BASE}/simulation/resolve-now`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    // =========================================================================
+    // MEETINGS API
+    // =========================================================================
+
+    /**
+     * Get all meetings and meeting system state
+     */
+    async getMeetings() {
+        const response = await fetch(`${API_BASE}/meetings`);
+        return response.json();
+    },
+
+    /**
+     * Get meeting types and configurations
+     */
+    async getMeetingTypes() {
+        const response = await fetch(`${API_BASE}/meetings/types`);
+        return response.json();
+    },
+
+    /**
+     * Get a specific meeting
+     */
+    async getMeeting(meetingId) {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}`);
+        return response.json();
+    },
+
+    /**
+     * Create/schedule a new meeting
+     */
+    async createMeeting(meetingData) {
+        const response = await fetch(`${API_BASE}/meetings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(meetingData)
+        });
+        return response.json();
+    },
+
+    /**
+     * Get pending meeting requests from AI/system
+     */
+    async getMeetingRequests() {
+        const response = await fetch(`${API_BASE}/meetings/requests`);
+        return response.json();
+    },
+
+    /**
+     * Approve a meeting request
+     */
+    async approveMeetingRequest(requestId) {
+        const response = await fetch(`${API_BASE}/meetings/requests/${encodeURIComponent(requestId)}/approve`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * Reject a meeting request
+     */
+    async rejectMeetingRequest(requestId) {
+        const response = await fetch(`${API_BASE}/meetings/requests/${encodeURIComponent(requestId)}/reject`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * Start a scheduled meeting (pauses simulation)
+     */
+    async startMeeting(meetingId) {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}/start`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * PM interjects with a statement during meeting
+     */
+    async meetingInterject(meetingId, content, actionType = 'statement', addressedTo = [], emotionalTone = 'calm') {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}/turn`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content: content,
+                action_type: actionType,
+                addressed_to: addressedTo,
+                emotional_tone: emotionalTone
+            })
+        });
+        return response.json();
+    },
+
+    /**
+     * Advance to next round (execute AI turns)
+     */
+    async advanceMeetingRound(meetingId) {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}/advance`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * Conclude meeting and generate outcomes
+     */
+    async concludeMeeting(meetingId) {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}/conclude`, {
+            method: 'POST'
+        });
+        return response.json();
+    },
+
+    /**
+     * Abort meeting without outcomes
+     */
+    async abortMeeting(meetingId) {
+        const response = await fetch(`${API_BASE}/meetings/${encodeURIComponent(meetingId)}/abort`, {
+            method: 'POST'
         });
         return response.json();
     }

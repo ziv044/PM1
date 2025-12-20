@@ -37,25 +37,42 @@ const components = {
     },
 
     /**
-     * Render agent details tab
+     * Render agent details tab - now with editable form fields
      */
     renderAgentDetails(agent, agentId) {
+        // Agent ID remains read-only text
         document.getElementById('detailAgentId').textContent = agentId;
-        document.getElementById('detailModel').textContent = agent.model;
-        document.getElementById('detailSystemPrompt').textContent = agent.system_prompt || '(No system prompt set)';
+
+        // Form fields - use .value for inputs/selects/textareas
+        document.getElementById('detailModel').value = agent.model || 'claude-sonnet-4-20250514';
+        document.getElementById('detailSystemPrompt').value = agent.system_prompt || '';
 
         // Simulation properties
-        document.getElementById('detailEntityType').textContent = agent.entity_type || 'System';
-        document.getElementById('detailEventFrequency').textContent = agent.event_frequency || 60;
-        document.getElementById('detailAgentCategory').textContent = agent.agent_category || '(Not set)';
+        document.getElementById('detailEntityType').value = agent.entity_type || 'System';
+        document.getElementById('detailEventFrequency').value = agent.event_frequency || 60;
+        document.getElementById('detailAgentCategory').value = agent.agent_category || '';
+
+        // Checkboxes
         document.getElementById('detailIsEnabled').checked = agent.is_enabled !== false;
         document.getElementById('detailIsEnemy').checked = agent.is_enemy || false;
         document.getElementById('detailIsWest').checked = agent.is_west || false;
         document.getElementById('detailIsEvilAxis').checked = agent.is_evil_axis || false;
         document.getElementById('detailIsReportingGovernment').checked = agent.is_reporting_government || false;
-        document.getElementById('detailAgenda').textContent = agent.agenda || '(Not set)';
-        document.getElementById('detailPrimaryObjectives').textContent = agent.primary_objectives || '(Not set)';
-        document.getElementById('detailHardRules').textContent = agent.hard_rules || '(Not set)';
+
+        // Textareas
+        document.getElementById('detailAgenda').value = agent.agenda || '';
+        document.getElementById('detailPrimaryObjectives').value = agent.primary_objectives || '';
+        document.getElementById('detailHardRules').value = agent.hard_rules || '';
+
+        // Store original values for cancel functionality
+        this._originalAgentData = { ...agent, agent_id: agentId };
+    },
+
+    /**
+     * Get original agent data for cancel functionality
+     */
+    getOriginalAgentData() {
+        return this._originalAgentData;
     },
 
     /**
@@ -241,6 +258,128 @@ const components = {
             button.disabled = false;
             button.textContent = button.dataset.originalText || button.textContent;
         }
+    },
+
+    /**
+     * Render PM approval cards
+     */
+    renderPMApprovals(approvals) {
+        const container = document.getElementById('pmApprovalsContainer');
+        const countEl = document.getElementById('pendingApprovalsCount');
+
+        if (countEl) {
+            countEl.textContent = `${approvals.length} pending`;
+        }
+
+        if (!approvals || approvals.length === 0) {
+            container.innerHTML = '<p class="text-gray-400 text-center py-8">No pending approval requests</p>';
+            return;
+        }
+
+        container.innerHTML = approvals.map(approval => {
+            const urgencyColors = {
+                'immediate': 'border-l-4 border-red-500 bg-red-50',
+                'high': 'border-l-4 border-orange-500 bg-orange-50',
+                'normal': 'border-l-4 border-blue-500 bg-blue-50',
+                'low': 'border-l-4 border-gray-400 bg-gray-50'
+            };
+            const urgencyClass = urgencyColors[approval.urgency] || urgencyColors.normal;
+
+            const urgencyBadgeColors = {
+                'immediate': 'bg-red-200 text-red-800',
+                'high': 'bg-orange-200 text-orange-800',
+                'normal': 'bg-blue-200 text-blue-800',
+                'low': 'bg-gray-200 text-gray-800'
+            };
+            const urgencyBadgeClass = urgencyBadgeColors[approval.urgency] || urgencyBadgeColors.normal;
+
+            let timeStr = '';
+            try {
+                const timestamp = new Date(approval.timestamp);
+                timeStr = timestamp.toLocaleString('en-GB', {
+                    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                });
+            } catch (e) {
+                timeStr = approval.timestamp || '';
+            }
+
+            return `
+            <div class="p-4 rounded shadow-sm ${urgencyClass}" data-approval-id="${this.escapeHtml(approval.approval_id)}">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <span class="text-xs uppercase font-medium text-gray-500">${this.escapeHtml(approval.request_type)}</span>
+                        <span class="text-xs text-gray-400 ml-2">${timeStr}</span>
+                    </div>
+                    <span class="text-xs font-medium uppercase px-2 py-1 rounded ${urgencyBadgeClass}">${this.escapeHtml(approval.urgency)}</span>
+                </div>
+
+                <h4 class="font-medium text-gray-800 mb-2">${this.escapeHtml(approval.summary)}</h4>
+
+                <p class="text-sm text-gray-600 mb-3">${this.escapeHtml(approval.context || '')}</p>
+
+                <div class="flex items-center justify-between">
+                    <div class="text-xs text-gray-500">
+                        From: <span class="font-medium">${this.escapeHtml(approval.requesting_agent)}</span>
+                        ${approval.recommendation ? ` | Recommends: <span class="text-blue-600">${this.escapeHtml(approval.recommendation)}</span>` : ''}
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button class="pm-approve-btn bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
+                                data-approval-id="${this.escapeHtml(approval.approval_id)}">
+                            Approve
+                        </button>
+                        <button class="pm-modify-btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
+                                data-approval-id="${this.escapeHtml(approval.approval_id)}"
+                                data-summary="${this.escapeHtml(approval.summary)}">
+                            Modify
+                        </button>
+                        <button class="pm-reject-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+                                data-approval-id="${this.escapeHtml(approval.approval_id)}">
+                            Reject
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    },
+
+    /**
+     * Render scheduled events
+     */
+    renderScheduledEvents(events) {
+        const container = document.getElementById('scheduledEventsContainer');
+
+        if (!events || events.length === 0) {
+            container.innerHTML = '<p class="text-gray-400 text-sm">No scheduled events</p>';
+            return;
+        }
+
+        container.innerHTML = events.map(event => {
+            let dueStr = '';
+            try {
+                const dueTime = new Date(event.due_game_time);
+                dueStr = dueTime.toLocaleString('en-GB', {
+                    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                });
+            } catch (e) {
+                dueStr = event.due_game_time || '';
+            }
+
+            return `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded border">
+                <div>
+                    <span class="text-sm font-medium">${this.escapeHtml(event.event_type)}</span>
+                    <span class="text-xs text-gray-500 ml-2">${this.escapeHtml(event.agent_id)}</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-gray-500">Due: ${dueStr}</span>
+                    <button class="cancel-scheduled-btn text-xs text-red-600 hover:text-red-800"
+                            data-schedule-id="${this.escapeHtml(event.schedule_id)}">
+                        Cancel
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
     },
 
     /**

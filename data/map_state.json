@@ -1,0 +1,1527 @@
+{
+  "last_updated": "2023-10-07T22:04:31.853109",
+  "static_locations": [
+    {
+      "location_id": "base-israel-kirya",
+      "name": "Kirya (IDF HQ)",
+      "location_type": "military_base",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 32.07,
+        "lon": 34.79,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "IDF General Staff headquarters in Tel Aviv",
+      "capacity": null
+    },
+    {
+      "location_id": "base-israel-nevatim",
+      "name": "Nevatim Airbase",
+      "location_type": "military_base",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.2083,
+        "lon": 35.0125,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Primary F-35 base in southern Israel",
+      "capacity": null
+    },
+    {
+      "location_id": "base-israel-ramat-david",
+      "name": "Ramat David Airbase",
+      "location_type": "military_base",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 32.6653,
+        "lon": 35.1794,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Major IAF base in northern Israel",
+      "capacity": null
+    },
+    {
+      "location_id": "base-israel-palmachim",
+      "name": "Palmachim Airbase",
+      "location_type": "military_base",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.8975,
+        "lon": 34.6906,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Space and missile testing facility",
+      "capacity": null
+    },
+    {
+      "location_id": "nuke-israel-dimona",
+      "name": "Dimona Nuclear Research Center",
+      "location_type": "nuclear_plant",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.0025,
+        "lon": 35.1447,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Nuclear facility (officially research)",
+      "capacity": null
+    },
+    {
+      "location_id": "nuke-iran-natanz",
+      "name": "Natanz Enrichment Facility",
+      "location_type": "nuclear_plant",
+      "owner_entity": "Iran",
+      "coordinates": {
+        "lat": 33.7244,
+        "lon": 51.7275,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Primary uranium enrichment facility",
+      "capacity": null
+    },
+    {
+      "location_id": "nuke-iran-fordow",
+      "name": "Fordow Fuel Enrichment Plant",
+      "location_type": "nuclear_plant",
+      "owner_entity": "Iran",
+      "coordinates": {
+        "lat": 34.8833,
+        "lon": 50.9833,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Underground enrichment facility near Qom",
+      "capacity": null
+    },
+    {
+      "location_id": "border-rafah",
+      "name": "Rafah Border Crossing",
+      "location_type": "border_crossing",
+      "owner_entity": "Egypt",
+      "coordinates": {
+        "lat": 31.2486,
+        "lon": 34.2537,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Gaza-Egypt border crossing",
+      "capacity": null
+    },
+    {
+      "location_id": "border-erez",
+      "name": "Erez Crossing",
+      "location_type": "border_crossing",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.5503,
+        "lon": 34.5574,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Gaza-Israel pedestrian crossing",
+      "capacity": null
+    },
+    {
+      "location_id": "border-kerem-shalom",
+      "name": "Kerem Shalom Crossing",
+      "location_type": "border_crossing",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.2275,
+        "lon": 34.2656,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Main goods crossing into Gaza",
+      "capacity": null
+    },
+    {
+      "location_id": "tunnel-jabalia-1",
+      "name": "Jabalia Tunnel Complex",
+      "location_type": "tunnel_entrance",
+      "owner_entity": "Hamas",
+      "coordinates": {
+        "lat": 31.5377,
+        "lon": 34.4895,
+        "uncertainty_km": 0.5
+      },
+      "is_active": true,
+      "description": "Major tunnel network hub in northern Gaza",
+      "capacity": null
+    },
+    {
+      "location_id": "tunnel-khan-younis-1",
+      "name": "Khan Younis Tunnel Network",
+      "location_type": "tunnel_entrance",
+      "owner_entity": "Hamas",
+      "coordinates": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 1.0
+      },
+      "is_active": true,
+      "description": "Tunnel complex in central Gaza",
+      "capacity": null
+    },
+    {
+      "location_id": "tunnel-rafah-1",
+      "name": "Rafah Cross-Border Tunnels",
+      "location_type": "tunnel_entrance",
+      "owner_entity": "Hamas",
+      "coordinates": {
+        "lat": 31.2834,
+        "lon": 34.26,
+        "uncertainty_km": 0.8
+      },
+      "is_active": true,
+      "description": "Smuggling tunnels to Egypt",
+      "capacity": null
+    },
+    {
+      "location_id": "gov-israel-knesset",
+      "name": "Knesset",
+      "location_type": "government_hq",
+      "owner_entity": "Israel",
+      "coordinates": {
+        "lat": 31.7767,
+        "lon": 35.2053,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Israeli Parliament in Jerusalem",
+      "capacity": null
+    },
+    {
+      "location_id": "gov-iran-tehran",
+      "name": "Iranian Government Complex",
+      "location_type": "government_hq",
+      "owner_entity": "Iran",
+      "coordinates": {
+        "lat": 35.6997,
+        "lon": 51.4039,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Central government buildings in Tehran",
+      "capacity": null
+    },
+    {
+      "location_id": "hq-hezbollah-dahieh",
+      "name": "Dahieh Command Complex",
+      "location_type": "command_center",
+      "owner_entity": "Hezbollah",
+      "coordinates": {
+        "lat": 33.8547,
+        "lon": 35.4794,
+        "uncertainty_km": 1.0
+      },
+      "is_active": true,
+      "description": "Hezbollah headquarters in southern Beirut suburbs with deep bunker network",
+      "capacity": null
+    },
+    {
+      "location_id": "base-hezbollah-nabatieh",
+      "name": "Nabatieh Operations Base",
+      "location_type": "military_base",
+      "owner_entity": "Hezbollah",
+      "coordinates": {
+        "lat": 33.3775,
+        "lon": 35.4838,
+        "uncertainty_km": 2.0
+      },
+      "is_active": true,
+      "description": "Hezbollah southern command and rocket storage facility",
+      "capacity": null
+    },
+    {
+      "location_id": "base-hezbollah-baalbek",
+      "name": "Baalbek Training Compound",
+      "location_type": "military_base",
+      "owner_entity": "Hezbollah",
+      "coordinates": {
+        "lat": 34.0067,
+        "lon": 36.2108,
+        "uncertainty_km": 3.0
+      },
+      "is_active": true,
+      "description": "Hezbollah training facility in Bekaa Valley, IRGC presence",
+      "capacity": null
+    },
+    {
+      "location_id": "border-lebanon-blue-line",
+      "name": "Blue Line (Lebanon-Israel Border)",
+      "location_type": "border_crossing",
+      "owner_entity": "UNIFIL",
+      "coordinates": {
+        "lat": 33.0869,
+        "lon": 35.125,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "UN-demarcated withdrawal line between Lebanon and Israel",
+      "capacity": null
+    },
+    {
+      "location_id": "hq-houthi-sanaa",
+      "name": "Houthi Government Complex (Sanaa)",
+      "location_type": "government_hq",
+      "owner_entity": "Houthis",
+      "coordinates": {
+        "lat": 15.3694,
+        "lon": 44.191,
+        "uncertainty_km": 0.5
+      },
+      "is_active": true,
+      "description": "Houthi-controlled former Yemeni government buildings in Sanaa",
+      "capacity": null
+    },
+    {
+      "location_id": "base-houthi-saada",
+      "name": "Saada Military Stronghold",
+      "location_type": "military_base",
+      "owner_entity": "Houthis",
+      "coordinates": {
+        "lat": 16.94,
+        "lon": 43.76,
+        "uncertainty_km": 10.0
+      },
+      "is_active": true,
+      "description": "Houthi heartland and primary military stronghold in mountainous terrain",
+      "capacity": null
+    },
+    {
+      "location_id": "base-houthi-hodeidah",
+      "name": "Hodeidah Port & Missile Base",
+      "location_type": "military_base",
+      "owner_entity": "Houthis",
+      "coordinates": {
+        "lat": 14.7979,
+        "lon": 42.954,
+        "uncertainty_km": 2.0
+      },
+      "is_active": true,
+      "description": "Strategic Red Sea port used for anti-ship missile and drone launches",
+      "capacity": null
+    },
+    {
+      "location_id": "strait-bab-el-mandeb",
+      "name": "Bab el-Mandeb Strait",
+      "location_type": "strategic_waterway",
+      "owner_entity": "International",
+      "coordinates": {
+        "lat": 12.5833,
+        "lon": 43.3333,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Critical chokepoint connecting Red Sea to Gulf of Aden - Houthi attack zone",
+      "capacity": null
+    },
+    {
+      "location_id": "gov-saudi-riyadh",
+      "name": "Saudi Royal Court (Riyadh)",
+      "location_type": "government_hq",
+      "owner_entity": "Saudi Arabia",
+      "coordinates": {
+        "lat": 24.7136,
+        "lon": 46.6753,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Saudi government center and MBS headquarters",
+      "capacity": null
+    },
+    {
+      "location_id": "base-saudi-king-khalid",
+      "name": "King Khalid Military City",
+      "location_type": "military_base",
+      "owner_entity": "Saudi Arabia",
+      "coordinates": {
+        "lat": 27.9,
+        "lon": 45.5333,
+        "uncertainty_km": 0
+      },
+      "is_active": true,
+      "description": "Major Saudi military base near Yemen border",
+      "capacity": null
+    }
+  ],
+  "tracked_entities": [
+    {
+      "entity_id": "hostage-group-1",
+      "name": "Hostage Group Alpha",
+      "category": "hostage_group",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 2.0
+      },
+      "current_zone": "Khan Younis",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.8,
+      "last_known_update": "",
+      "metadata": {
+        "hostage_count": 45,
+        "includes_foreign_nationals": true,
+        "condition": "unknown"
+      }
+    },
+    {
+      "entity_id": "hostage-group-2",
+      "name": "Hostage Group Beta",
+      "category": "hostage_group",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.2834,
+        "lon": 34.2525,
+        "uncertainty_km": 3.0
+      },
+      "current_zone": "Rafah",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.9,
+      "last_known_update": "",
+      "metadata": {
+        "hostage_count": 80,
+        "includes_soldiers": true,
+        "condition": "unknown"
+      }
+    },
+    {
+      "entity_id": "hostage-group-3",
+      "name": "Hostage Group Gamma",
+      "category": "hostage_group",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.625
+      },
+      "current_zone": "Gaza City",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.85,
+      "last_known_update": "2023-10-07T18:52:29.046531",
+      "metadata": {
+        "hostage_count": 35,
+        "includes_elderly": true,
+        "condition": "critical"
+      }
+    },
+    {
+      "entity_id": "hvt-sinwar",
+      "name": "Yahya Sinwar",
+      "category": "high_value_target",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.35,
+        "lon": 34.31,
+        "uncertainty_km": 5.0
+      },
+      "current_zone": "Khan Younis",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.95,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Hamas Leader in Gaza",
+        "priority": "highest"
+      }
+    },
+    {
+      "entity_id": "hvt-deif",
+      "name": "Mohammed Deif",
+      "category": "high_value_target",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 10.0
+      },
+      "current_zone": "Gaza City",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.98,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Qassam Brigades Commander",
+        "priority": "highest"
+      }
+    },
+    {
+      "entity_id": "hvt-haniyeh",
+      "name": "Ismail Haniyeh",
+      "category": "high_value_target",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 25.2867,
+        "lon": 51.5333,
+        "uncertainty_km": 0.5
+      },
+      "current_zone": "Qatar",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.3,
+      "last_known_update": "2023-10-07T17:35:44.888173",
+      "metadata": {
+        "role": "Hamas Political Leader",
+        "priority": "high",
+        "location_type": "abroad"
+      }
+    },
+    {
+      "entity_id": "unit-idf-36div",
+      "name": "IDF 36th Division",
+      "category": "military_unit",
+      "owner_entity": "Israel",
+      "current_location": {
+        "lat": 31.525,
+        "lon": 34.5964,
+        "uncertainty_km": 0.5
+      },
+      "current_zone": "Sderot",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.1,
+      "last_known_update": "",
+      "metadata": {
+        "unit_type": "armored",
+        "strength": "division",
+        "status": "deployed"
+      }
+    },
+    {
+      "entity_id": "unit-hamas-qassam-north",
+      "name": "Qassam Northern Brigade",
+      "category": "military_unit",
+      "owner_entity": "Hamas",
+      "current_location": {
+        "lat": 31.5377,
+        "lon": 34.4895,
+        "uncertainty_km": 3.0
+      },
+      "current_zone": "Jabalia",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.7,
+      "last_known_update": "",
+      "metadata": {
+        "unit_type": "infantry",
+        "strength": "brigade",
+        "status": "active"
+      }
+    },
+    {
+      "entity_id": "hvt-nasrallah",
+      "name": "Hassan Nasrallah",
+      "category": "high_value_target",
+      "owner_entity": "Hezbollah",
+      "current_location": {
+        "lat": 33.8547,
+        "lon": 35.4794,
+        "uncertainty_km": 3.0
+      },
+      "current_zone": "Dahieh (Beirut)",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.98,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Hezbollah Secretary General",
+        "priority": "highest",
+        "location_type": "deep_bunker"
+      }
+    },
+    {
+      "entity_id": "hvt-qassem",
+      "name": "Naim Qassem",
+      "category": "high_value_target",
+      "owner_entity": "Hezbollah",
+      "current_location": {
+        "lat": 33.8547,
+        "lon": 35.4794,
+        "uncertainty_km": 5.0
+      },
+      "current_zone": "Dahieh (Beirut)",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.9,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Deputy Secretary General",
+        "priority": "high",
+        "location_type": "bunker"
+      }
+    },
+    {
+      "entity_id": "hvt-safieddine",
+      "name": "Hashem Safieddine",
+      "category": "high_value_target",
+      "owner_entity": "Hezbollah",
+      "current_location": {
+        "lat": 33.8547,
+        "lon": 35.4794,
+        "uncertainty_km": 4.0
+      },
+      "current_zone": "Dahieh (Beirut)",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.88,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Head of Executive Council",
+        "priority": "high",
+        "location_type": "command_center"
+      }
+    },
+    {
+      "entity_id": "hvt-shukr",
+      "name": "Fuad Shukr",
+      "category": "high_value_target",
+      "owner_entity": "Hezbollah",
+      "current_location": {
+        "lat": 33.8547,
+        "lon": 35.4794,
+        "uncertainty_km": 6.0
+      },
+      "current_zone": "Dahieh (Beirut)",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.92,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Senior Military Commander",
+        "priority": "high",
+        "location_type": "military_command"
+      }
+    },
+    {
+      "entity_id": "hvt-aqil",
+      "name": "Ibrahim Aqil",
+      "category": "high_value_target",
+      "owner_entity": "Hezbollah",
+      "current_location": {
+        "lat": 33.27,
+        "lon": 35.2037,
+        "uncertainty_km": 8.0
+      },
+      "current_zone": "Southern Lebanon",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.85,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Radwan Force Commander",
+        "priority": "high",
+        "location_type": "field_command"
+      }
+    },
+    {
+      "entity_id": "hvt-abdul-malik-houthi",
+      "name": "Abdul-Malik al-Houthi",
+      "category": "high_value_target",
+      "owner_entity": "Houthis",
+      "current_location": {
+        "lat": 16.9,
+        "lon": 43.85,
+        "uncertainty_km": 50.0
+      },
+      "current_zone": "Saada Province (Yemen)",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.99,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Houthi Supreme Leader",
+        "priority": "highest",
+        "location_type": "hidden_mountain_compound"
+      }
+    },
+    {
+      "entity_id": "hvt-mahdi-mashat",
+      "name": "Mahdi al-Mashat",
+      "category": "high_value_target",
+      "owner_entity": "Houthis",
+      "current_location": {
+        "lat": 15.3694,
+        "lon": 44.191,
+        "uncertainty_km": 5.0
+      },
+      "current_zone": "Sanaa",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.75,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Supreme Political Council President",
+        "priority": "high",
+        "location_type": "government_building"
+      }
+    },
+    {
+      "entity_id": "hvt-bin-habtour",
+      "name": "Abdulaziz bin Habtour",
+      "category": "high_value_target",
+      "owner_entity": "Houthis",
+      "current_location": {
+        "lat": 15.3694,
+        "lon": 44.191,
+        "uncertainty_km": 3.0
+      },
+      "current_zone": "Sanaa",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.7,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Prime Minister",
+        "priority": "medium",
+        "location_type": "government_building"
+      }
+    },
+    {
+      "entity_id": "hvt-mohammed-ali-houthi",
+      "name": "Mohammed Ali al-Houthi",
+      "category": "high_value_target",
+      "owner_entity": "Houthis",
+      "current_location": {
+        "lat": 15.3694,
+        "lon": 44.191,
+        "uncertainty_km": 4.0
+      },
+      "current_zone": "Sanaa",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.78,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Revolutionary Committee Head",
+        "priority": "high",
+        "location_type": "command_center"
+      }
+    },
+    {
+      "entity_id": "hvt-yahya-saree",
+      "name": "Yahya Saree",
+      "category": "high_value_target",
+      "owner_entity": "Houthis",
+      "current_location": {
+        "lat": 15.3694,
+        "lon": 44.191,
+        "uncertainty_km": 10.0
+      },
+      "current_zone": "Sanaa",
+      "is_moving": false,
+      "destination": null,
+      "destination_zone": null,
+      "movement_started": null,
+      "movement_eta": null,
+      "detection_difficulty": 0.8,
+      "last_known_update": "",
+      "metadata": {
+        "role": "Military Spokesman",
+        "priority": "medium",
+        "location_type": "media_center"
+      }
+    }
+  ],
+  "active_geo_events": [
+    {
+      "geo_event_id": "geo_ce987dcb",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_cfe1d614",
+      "timestamp": "2023-10-07T22:04:31.853109",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 25.2867,
+        "lon": 51.5333,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Doha",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "active",
+      "description": "Activate deep cover assets in Qatar to monitor Hamas leadership negotiations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Qatar",
+        "Hamas-Political-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_26472d89",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_a4cbc4ee",
+      "timestamp": "2023-10-07T22:04:31.853109",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "active",
+      "description": "Deploy HUMINT assets in Gaza to verify hostage locations and tunnel networks",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    }
+  ],
+  "archived_geo_events": [
+    {
+      "geo_event_id": "geo_80c95ade",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_33157a12",
+      "timestamp": "2023-10-07T14:59:55.569988",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Coordinate with IDF to exploit cyber intel on northern Gaza tunnel hostage locations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_be56dd9f",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_2684699d",
+      "timestamp": "2023-10-07T14:59:55.569988",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy technical surveillance teams to Gaza border to intercept Hamas communications",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_23cd3827",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_c96da932",
+      "timestamp": "2023-10-07T15:29:57.337170",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy tech team to intercept Hamas communications in Khan Younis area",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_045c274b",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_9c27e448",
+      "timestamp": "2023-10-07T15:51:28.761931",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy specialized reconnaissance units to verify hostage locations in Khan Younis",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_d2d8977e",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_ad6ecb91",
+      "timestamp": "2023-10-07T16:06:29.937439",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT assets to verify hostage locations in Khan Younis and Rafah",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander",
+        "Mossad"
+      ]
+    },
+    {
+      "geo_event_id": "geo_2da67138",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_7cffa919",
+      "timestamp": "2023-10-07T16:06:29.937439",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate HUMINT assets in Gaza to pinpoint hostage locations and guard rotations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_12069c83",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_20657e1e",
+      "timestamp": "2023-10-07T16:06:29.937439",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Establish safe house network in Gaza for potential hostage extraction operations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ee5d4aaf",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_cddc77b1",
+      "timestamp": "2023-10-07T16:06:29.937439",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy undercover operatives to Khan Younis for hostage rescue reconnaissance",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ebf2c021",
+      "event_type": "air_strike",
+      "source_event_id": "evt_6d64862d",
+      "timestamp": "2023-10-07T17:35:44.888173",
+      "origin": {
+        "lat": 33.5,
+        "lon": 34.0,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Eastern Mediterranean",
+      "destination": {
+        "lat": 33.5,
+        "lon": 34.0,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eastern Mediterranean",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 15,
+      "status": "completed",
+      "description": "Deploy USS Gerald R. Ford carrier strike group to Eastern Mediterranean",
+      "actor_entity": "USA",
+      "affected_entities": [
+        "Iran",
+        "Israel",
+        "Hezbollah"
+      ]
+    },
+    {
+      "geo_event_id": "geo_f79fc081",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_07087df1",
+      "timestamp": "2023-10-07T17:35:44.888173",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 25.2867,
+        "lon": 51.5333,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Qatar",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate deep cover assets in Qatar to monitor Haniyeh's communications and movements",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Qatar",
+        "Hamas"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ed86966c",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_53a75e78",
+      "timestamp": "2023-10-07T18:52:29.046531",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy HUMINT assets in Gaza to verify hostage locations and enhance rescue feasibility",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF-Commander",
+        "Prime-Minister"
+      ]
+    },
+    {
+      "geo_event_id": "geo_90756d2e",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_04e70d4a",
+      "timestamp": "2023-10-07T18:52:29.046531",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate sleeper cell network in Gaza to triangulate exact hostage locations",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hostages-Families-Forum",
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_1d40812a",
+      "event_type": "interceptor",
+      "source_event_id": "evt_9a7c1890",
+      "timestamp": "2023-10-07T19:54:29.127369",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 29.5577,
+        "lon": 34.9519,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eilat",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 10,
+      "status": "completed",
+      "description": "Deploy Iron Dome batteries to Eilat following Houthi drone attack",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Houthi-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ca7a9d2a",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_2e5e2efc",
+      "timestamp": "2023-10-07T19:54:29.127369",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Establish secure communication channels with HUMINT assets in Gaza for hostage intel",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Mossad",
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_e9dd6334",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_b2f2aeb8",
+      "timestamp": "2023-10-07T19:54:29.127369",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate sleeper cells in Gaza to verify hostage locations and establish rescue corridors",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ac704601",
+      "event_type": "force_deployment",
+      "source_event_id": "evt_880f77f1",
+      "timestamp": "2023-10-07T19:54:29.127369",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 27.0,
+        "lon": 35.0,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Red Sea",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy naval mines in Bab el-Mandeb strait to threaten Red Sea shipping",
+      "actor_entity": "Houthis",
+      "affected_entities": [
+        "Saudi-Leadership",
+        "US-Military"
+      ]
+    },
+    {
+      "geo_event_id": "geo_73bc317c",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_e2ea87c4",
+      "timestamp": "2023-10-07T19:54:29.127369",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate deep-cover assets in Khan Younis to verify Hostage Group Alpha location",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "IDF",
+        "Mossad"
+      ]
+    },
+    {
+      "geo_event_id": "geo_ca5daf94",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_65e2e937",
+      "timestamp": "2023-10-07T20:21:39.011446",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy specialized tunnel detection units to map Hamas underground network",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas"
+      ]
+    },
+    {
+      "geo_event_id": "geo_d7e62f14",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_cfd16fa1",
+      "timestamp": "2023-10-07T20:21:39.011446",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate Khan Younis HUMINT network to confirm Hostage Group Alpha status and Sinwar location",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Yahya Sinwar",
+        "Hostage Group Alpha"
+      ]
+    },
+    {
+      "geo_event_id": "geo_465ae3ba",
+      "event_type": "air_strike",
+      "source_event_id": "evt_4addce4d",
+      "timestamp": "2023-10-07T20:21:39.011446",
+      "origin": {
+        "lat": 33.5,
+        "lon": 34.0,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Eastern Mediterranean",
+      "destination": {
+        "lat": 33.5,
+        "lon": 34.0,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eastern Mediterranean",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 15,
+      "status": "completed",
+      "description": "Deploy USS Gerald R. Ford carrier strike group to Eastern Mediterranean",
+      "actor_entity": "USA",
+      "affected_entities": [
+        "Israel-PM",
+        "Iran-Ayatollah",
+        "Hamas-Military"
+      ]
+    },
+    {
+      "geo_event_id": "geo_fea6d3b8",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_2a0142aa",
+      "timestamp": "2023-10-07T20:59:01.195717",
+      "origin": {
+        "lat": 33.5,
+        "lon": 34.0,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Eastern Mediterranean",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Activate joint US-Israel hostage rescue coordination cell with Delta Force liaison",
+      "actor_entity": "USA",
+      "affected_entities": [
+        "Israel-PM"
+      ]
+    },
+    {
+      "geo_event_id": "geo_1b6b58ea",
+      "event_type": "interceptor",
+      "source_event_id": "evt_fa5c2b7f",
+      "timestamp": "2023-10-07T20:59:01.195717",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 29.5577,
+        "lon": 34.9519,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eilat",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 10,
+      "status": "completed",
+      "description": "Deploy Iron Dome reinforcements and naval intercept units to defend Eilat",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Houthi-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_8ccb7bb5",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_9fc07da6",
+      "timestamp": "2023-10-07T20:59:01.195717",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 25.2867,
+        "lon": 51.5333,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Doha",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Intercept and analyze Hamas leadership communications following Qatari mediation",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Qatar-Government",
+        "Hamas-Leadership"
+      ]
+    },
+    {
+      "geo_event_id": "geo_601aaa8e",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_0e9a1536",
+      "timestamp": "2023-10-07T20:21:39.011446",
+      "origin": null,
+      "origin_zone": null,
+      "destination": {
+        "lat": 29.5577,
+        "lon": 34.9519,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Eilat",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch coordinated drone swarm attack on Eilat port to overwhelm Iron Dome defenses",
+      "actor_entity": "Houthis",
+      "affected_entities": [
+        "IDF-Commander"
+      ]
+    },
+    {
+      "geo_event_id": "geo_df004433",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_a4b5c68b",
+      "timestamp": "2023-10-07T20:21:39.011446",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 25.2867,
+        "lon": 51.5333,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Doha",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy technical surveillance assets to monitor Qatari-Hamas communications in Doha",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Qatar",
+        "Hamas-Leadership"
+      ]
+    }
+  ]
+}

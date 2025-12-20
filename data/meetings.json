@@ -1,0 +1,42 @@
+{
+  "meetings": [],
+  "requests": [
+    {
+      "request_id": "req_5bf2e5d2",
+      "meeting_type": "negotiation",
+      "requested_by": "system",
+      "reason": "Hostage situation requires negotiation",
+      "title": "Auto-triggered: hostage_escalation",
+      "suggested_participants": [
+        "Hamas-Leadership",
+        "Egypt-President",
+        "Head-Of-Shabak"
+      ],
+      "suggested_agenda": [],
+      "urgency": "high",
+      "trigger_event_id": "evt_2e5e2efc",
+      "status": "approved",
+      "created_at": "2025-12-20T12:33:20.062309",
+      "expires_at": null
+    },
+    {
+      "request_id": "req_b46e8b62",
+      "meeting_type": "negotiation",
+      "requested_by": "system",
+      "reason": "Hostage situation requires negotiation",
+      "title": "Auto-triggered: hostage_escalation",
+      "suggested_participants": [
+        "Hamas-Leadership",
+        "Egypt-President",
+        "Head-Of-Mossad"
+      ],
+      "suggested_agenda": [],
+      "urgency": "high",
+      "trigger_event_id": "evt_cfd16fa1",
+      "status": "approved",
+      "created_at": "2025-12-20T12:34:24.578559",
+      "expires_at": null
+    }
+  ],
+  "active_meeting_id": null
+}
