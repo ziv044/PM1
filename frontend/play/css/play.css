@@ -1,0 +1,266 @@
+/**
+ * PM1 Player Mode - Custom Styles
+ * Tailwind handles most styling, these are additional customizations
+ */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3a3a5a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4a4a6a;
+}
+
+/* KPI Category collapsible styling */
+.kpi-category {
+    background: rgba(26, 26, 46, 0.5);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #2a2a4a;
+}
+
+.kpi-category:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+/* Event card animations */
+#eventsContent > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Agent card hover effects */
+.agent-card {
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.agent-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Entity tab active state */
+.entity-tab.active {
+    position: relative;
+}
+
+.entity-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #1a1a2e;
+}
+
+/* Fog of war animation */
+.fog-circle {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Event ring animation for map */
+.event-ring {
+    animation: expandRing 1s ease-out forwards;
+}
+
+@keyframes expandRing {
+    from {
+        r: 0;
+        opacity: 1;
+    }
+    to {
+        r: 30;
+        opacity: 0;
+    }
+}
+
+/* PM Decision modal backdrop */
+#pmDecisionModal {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#pmDecisionModal > div {
+    animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Alert level pulse animation */
+#alertLevel:not(.hidden) {
+    animation: alertPulse 1s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Simulation status indicator */
+#simStatus span:first-child {
+    animation: statusBlink 2s ease-in-out infinite;
+}
+
+@keyframes statusBlink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Line clamp utility (fallback if Tailwind doesn't include) */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Tactical map SVG styling */
+.tactical-map-svg {
+    display: block;
+}
+
+.tactical-map-svg text {
+    font-family: system-ui, -apple-system, sans-serif;
+    user-select: none;
+}
+
+/* Entity layer on map */
+#entityLayer .entity {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+#entityLayer .entity:hover {
+    opacity: 0.8;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+    main {
+        grid-template-columns: 1fr !important;
+        height: auto !important;
+    }
+
+    #kpiPanel,
+    #eventsPanel,
+    #mapPanel {
+        grid-column: span 12 !important;
+        height: 300px;
+    }
+
+    #entityPanel {
+        position: relative;
+        height: auto;
+    }
+}
+
+/* High contrast for important elements */
+.text-game-danger {
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.text-game-accent {
+    text-shadow: 0 0 10px rgba(74, 158, 255, 0.2);
+}
+
+/* Button hover states */
+button:not(:disabled):hover {
+    filter: brightness(1.1);
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* Checkbox styling for filters */
+.event-filter {
+    accent-color: #4a9eff;
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(74, 158, 255, 0.1),
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}

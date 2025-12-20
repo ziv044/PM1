@@ -346,13 +346,13 @@
   },
   "memory": {
     "Head-Of-Shabak": [
-      "[2023-10-07T09:37:13.226910] YOU: Deploy signals intelligence assets to monitor Gaza communications for hostage locations",
       "[2023-10-07T09:42:19.337540] IDF-Commander: Launch precision airstrikes on identified Hamas tunnel entrances in northern Gaza",
       "[2023-10-07T09:44:25.018723] Treasury-Minister: Secure emergency $10B US aid package and loan guarantees for war funding",
       "[2023-10-07T09:45:51.952736] Hostages-Families-Forum: Hold urgent press conference in Doha with Egyptian mediators to announce progress on prisoner exchange framework",
       "[RESULT] IDF successfully deploys reinforcement battalions to Gaza perimeter and conducts detailed reconnaissance of Hamas tunnel networks and defensive positions.",
       "[RESULT] YOUR ACTION: Shabak intelligence operatives successfully establish surveillance networks in West Bank cities, identifying potential Hamas cells and preventing coordinated uprising attempts.",
-      "[RESULT] Mossad surveillance teams confirm multiple hostage locations in Khan Younis tunnel complexes and gather critical intelligence on Hamas guard rotations and facility layouts."
+      "[RESULT] Mossad surveillance teams confirm multiple hostage locations in Khan Younis tunnel complexes and gather critical intelligence on Hamas guard rotations and facility layouts.",
+      "[2023-10-07T09:51:31.164422] YOU: Deploy human intel assets to verify hostage locations in Khan Younis tunnels"
     ],
     "Head-Of-Mossad": [
       "[2023-10-07T09:39:38.232579] YOU: Activate human assets in Gaza to verify hostage locations and conditions",
