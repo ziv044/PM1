@@ -79,8 +79,84 @@ const ApiAdapter = {
             agentId: event.agent_id || null,
             agentName: event.agent_name || event.agent_id || 'Unknown',
             isPublic: event.is_public !== false,
+            kpiChanges: this.transformKPIChanges(event.kpi_changes),
             raw: event
         };
+    },
+
+    /**
+     * Transform KPI changes array to display-friendly format
+     * @param {Array|null} kpiChanges - Raw KPI changes from backend
+     * @returns {Array} Formatted KPI changes for display
+     */
+    transformKPIChanges(kpiChanges) {
+        if (!kpiChanges || !Array.isArray(kpiChanges) || kpiChanges.length === 0) {
+            return [];
+        }
+
+        // Metric label mappings for readable display
+        const metricLabels = {
+            'casualties_military': 'Military Casualties',
+            'casualties_civilian': 'Civilian Casualties',
+            'casualties': 'Casualties',
+            'fighters_remaining': 'Fighters',
+            'hostages_held_by_enemy': 'Hostages Held',
+            'hostages_rescued': 'Hostages Rescued',
+            'morale_military': 'Military Morale',
+            'morale_civilian': 'Civilian Morale',
+            'international_standing': 'Int\'l Standing',
+            'ammunition_iron_dome_pct': 'Iron Dome Ammo',
+            'ammunition_precision_pct': 'Precision Ammo',
+            'ammunition_artillery_pct': 'Artillery Ammo',
+            'infrastructure_damage_pct': 'Infrastructure Damage',
+            'tunnel_km_destroyed': 'Tunnels Destroyed',
+            'tunnel_network_operational_km': 'Tunnel Network',
+            'intel_accuracy': 'Intel Accuracy',
+            'leadership_cohesion': 'Leadership',
+            'leadership_capacity': 'Leadership Capacity',
+            'intel_capability': 'Intel Capability',
+            'economic_stability': 'Economic Stability',
+            'hostages_released': 'Hostages Released',
+            'ships_damaged': 'Ships Damaged',
+            'red_sea_attacks_conducted': 'Red Sea Attacks',
+            'international_notoriety': 'Int\'l Notoriety',
+            'us_strikes_received': 'US Strikes',
+            'drones_inventory': 'Drones'
+        };
+
+        return kpiChanges.map(change => {
+            // Extract metric name from path (e.g., "dynamic_metrics.casualties_military" -> "casualties_military")
+            const metricPath = change.metric || '';
+            const metricName = metricPath.split('.').pop();
+            const label = metricLabels[metricName] || metricName.replace(/_/g, ' ');
+
+            // Handle both old format {old, new} and new format {change, old_value, new_value}
+            let changeValue;
+            let oldValue = change.old_value ?? change.old;
+            let newValue = change.new_value ?? change.new;
+
+            if (change.change !== undefined) {
+                changeValue = change.change;
+            } else if (oldValue !== undefined && newValue !== undefined) {
+                // Fallback: calculate from old/new for legacy data
+                changeValue = newValue - oldValue;
+            } else {
+                changeValue = 0;
+            }
+
+            const isPositive = changeValue > 0;
+
+            return {
+                entity: change.entity_id || 'Unknown',
+                metric: metricName,
+                label: label,
+                change: changeValue,
+                displayChange: isPositive ? `+${changeValue}` : `${changeValue}`,
+                isPositive: isPositive,
+                oldValue: oldValue,
+                newValue: newValue
+            };
+        });
     },
 
     /**
@@ -355,39 +431,28 @@ const ApiAdapter = {
             return this.transformMapState(data);
         } catch (error) {
             console.error('Failed to fetch map state:', error);
-            return { entities: [], locations: [] };
+            return { static_locations: [], tracked_entities: [], active_geo_events: [] };
         }
     },
 
     /**
      * Transform map state for tactical display
+     * Returns the raw map_state structure that TacticalMap.render() expects
      */
     transformMapState(data) {
         // Handle nested map_state structure from API
         const mapState = data.map_state || data;
-        const entities = mapState.tracked_entities || mapState.entities || [];
-        const locations = mapState.static_locations || mapState.known_locations || mapState.locations || [];
 
+        // Return the raw structure that TacticalMap expects:
+        // - static_locations: array of location objects with coordinates
+        // - tracked_entities: array of entity objects with current_location
+        // - active_geo_events: array of geo event objects for animations
         return {
-            entities: entities.map(entity => ({
-                id: entity.entity_id || entity.id,
-                name: entity.entity_name || entity.name,
-                type: entity.entity_type || 'unknown',
-                owner: entity.owner_entity || 'unknown',
-                isFriendly: entity.owner_entity === 'Israel',
-                location: entity.current_location || null,
-                uncertainty: entity.current_location?.uncertainty_km || 0,
-                status: entity.current_status || 'unknown',
-                raw: entity
-            })),
-            locations: locations.map(loc => ({
-                id: loc.location_id || loc.id,
-                name: loc.location_name || loc.name,
-                type: loc.location_type,
-                coordinates: loc.coordinates || null,
-                controlledBy: loc.controlled_by || null,
-                raw: loc
-            }))
+            static_locations: mapState.static_locations || [],
+            tracked_entities: mapState.tracked_entities || [],
+            active_geo_events: mapState.active_geo_events || [],
+            archived_geo_events: mapState.archived_geo_events || [],
+            last_updated: mapState.last_updated || null
         };
     },
 
@@ -400,12 +465,14 @@ const ApiAdapter = {
             const response = await fetch(`${API_BASE}/simulation/pm-approvals`);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
+            console.log('[ApiAdapter] PM approvals raw response:', data);
             const approvals = data.pending_approvals || data.approvals || data || [];
+            console.log('[ApiAdapter] PM approvals extracted array:', approvals);
 
             return approvals.map(approval => ({
-                id: approval.request_id || approval.id,
-                agentId: approval.agent_id,
-                agentName: approval.agent_name || approval.agent_id,
+                id: approval.approval_id || approval.request_id || approval.id,
+                agentId: approval.requesting_agent || approval.agent_id,
+                agentName: approval.requesting_agent || approval.agent_name || approval.agent_id,
                 requestType: approval.request_type || 'action',
                 summary: approval.summary || approval.description || '',
                 urgency: approval.urgency || 'medium',

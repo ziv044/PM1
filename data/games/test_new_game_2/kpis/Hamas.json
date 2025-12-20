@@ -1,19 +1,19 @@
 {
   "entity_id": "Hamas",
-  "last_updated": "2025-12-20T17:29:04.686858",
+  "last_updated": "2025-12-20T23:02:57.884605",
   "const_metrics": {
     "initial_fighters": 30000,
     "initial_tunnel_network_km": 500,
     "initial_rocket_inventory": 12000
   },
   "dynamic_metrics": {
-    "fighters_remaining": 29882,
+    "fighters_remaining": 29760,
     "tunnel_network_operational_km": 482,
     "rocket_inventory": 12000,
     "hostages_held": 241,
     "leadership_eliminated": 0,
     "leadership_capacity": 100,
-    "casualties": 159,
+    "casualties": 263,
     "ammunition_rockets_pct": 100,
     "ammunition_small_arms_pct": 100,
     "command_structure_intact_pct": 100,

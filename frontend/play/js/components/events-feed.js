@@ -123,6 +123,7 @@ const EventsFeed = {
         const priorityBadge = priorityBadges[event.priority] || '';
         const icon = typeIcons[event.type] || '&#128196;';
         const actualTime = this.formatActualTime(event.timestamp);
+        const kpiSection = this.renderKPIChanges(event.kpiChanges);
 
         return `
             <div class="p-4 border-l-4 ${colorClass} border-b border-game-border hover:bg-white/5 transition-colors cursor-pointer"
@@ -138,10 +139,63 @@ const EventsFeed = {
                     </div>
                 </div>
                 <p class="text-sm text-gray-400 line-clamp-2 ml-16">${this.escapeHtml(event.description)}</p>
+                ${kpiSection}
                 <div class="mt-2 ml-16 flex items-center gap-2 text-xs text-gray-500">
                     <span>From: ${this.escapeHtml(event.agentName)}</span>
                     ${event.isPublic ? '<span class="text-game-accent">&#128227; Public</span>' : '<span>&#128274; Intel</span>'}
                 </div>
+            </div>
+        `;
+    },
+
+    /**
+     * Render KPI changes section for an event
+     * @param {Array} kpiChanges - Transformed KPI changes from ApiAdapter
+     * @returns {string} HTML for KPI changes display
+     */
+    renderKPIChanges(kpiChanges) {
+        if (!kpiChanges || kpiChanges.length === 0) {
+            return '';
+        }
+
+        const changes = kpiChanges.map(change => {
+            // Determine color and icon based on change direction and entity
+            const isIsrael = change.entity === 'Israel';
+            // For Israel: positive morale/standing is good, positive casualties is bad
+            // For enemies: negative fighters is good for Israel
+            const isBadMetric = ['casualties_military', 'casualties_civilian', 'casualties', 'infrastructure_damage_pct', 'hostages_held_by_enemy'].includes(change.metric);
+
+            let colorClass, arrow;
+            if (isIsrael) {
+                // For Israel metrics
+                if (isBadMetric) {
+                    // Higher casualties = bad
+                    colorClass = change.isPositive ? 'text-game-danger' : 'text-game-success';
+                    arrow = change.isPositive ? '&#9650;' : '&#9660;';  // up = bad, down = good
+                } else {
+                    // Higher morale/standing = good
+                    colorClass = change.isPositive ? 'text-game-success' : 'text-game-danger';
+                    arrow = change.isPositive ? '&#9650;' : '&#9660;';
+                }
+            } else {
+                // For enemy metrics (Hamas, Hezbollah, etc.)
+                // Lower enemy fighters/leadership = good for Israel
+                colorClass = change.isPositive ? 'text-game-warning' : 'text-game-accent';
+                arrow = change.isPositive ? '&#9650;' : '&#9660;';
+            }
+
+            return `<span class="inline-flex items-center gap-1 ${colorClass}">
+                <span class="text-xs">${change.entity}</span>
+                <span class="font-medium">${change.label}</span>
+                <span>${arrow}</span>
+                <span class="font-mono">${change.displayChange}</span>
+            </span>`;
+        }).join('');
+
+        return `
+            <div class="mt-2 ml-16 flex flex-wrap gap-2 text-xs">
+                <span class="text-gray-500">&#128200; Impact:</span>
+                ${changes}
             </div>
         `;
     },

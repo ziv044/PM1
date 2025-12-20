@@ -174,6 +174,7 @@ class SimulationEvent:
     parent_event_id: Optional[str] = None  # Links resolution to original event
     resolution_event_id: Optional[str] = None  # Points to the resolving event
     pending_data: Optional[dict] = None  # Context for pending resolution
+    kpi_changes: Optional[List[dict]] = None  # KPI changes from resolution
 
     def to_dict(self) -> dict:
         result = asdict(self)
@@ -189,6 +190,7 @@ class SimulationEvent:
         data.setdefault("parent_event_id", None)
         data.setdefault("resolution_event_id", None)
         data.setdefault("pending_data", None)
+        data.setdefault("kpi_changes", None)
         return cls(**data)
 
 
@@ -472,9 +474,16 @@ class SimulationState:
     # === PM Approval Queue Management ===
 
     def add_pm_approval(self, request: PMApprovalRequest):
-        """Add a PM approval request and save state."""
+        """Add a PM approval request, pause clock, and save state."""
         self.pm_approval_queue.append(request)
         self.save()
+        # Pause the clock when PM approval is required
+        # Use late import to avoid circular dependency
+        try:
+            manager = SimulationManager.get_instance()
+            manager.pause_for_pm_approval()
+        except Exception:
+            pass  # Manager may not be initialized yet
 
     def get_pending_approvals(self) -> List[PMApprovalRequest]:
         """Get all pending PM approval requests."""
@@ -779,9 +788,11 @@ class KPIManager:
                     else:
                         target[final_key] = change  # Direct assignment for non-numeric
                     changes_made.append({
+                        "entity_id": entity_id,
                         "metric": metric,
-                        "old": old_value,
-                        "new": target[final_key],
+                        "change": change,
+                        "old_value": old_value,
+                        "new_value": target[final_key],
                         "reason": reason
                     })
                     logger.info(f"KPI updated: {entity_id}.{metric}: {old_value} -> {target[final_key]} ({reason})")
@@ -2141,19 +2152,25 @@ class ResolverProcessor:
             # Apply RULE-BASED KPI changes
             kpi_result = apply_kpi_rule(event, self.kpi_manager)
             success = kpi_result.get("success", True)
-            stats["kpi_changes"] += len(kpi_result.get("changes", []))
+            all_kpi_changes = kpi_result.get("changes", [])
+            stats["kpi_changes"] += len(all_kpi_changes)
 
             # Apply spatial clash detection (if event targets a zone)
             if self.map_manager:
                 clash_result = apply_spatial_clash(event, self.map_manager, self.kpi_manager, game_time)
                 if clash_result.get("clashes_detected", 0) > 0:
-                    stats["kpi_changes"] += len(clash_result.get("kpi_changes", []))
+                    clash_kpi_changes = clash_result.get("kpi_changes", [])
+                    all_kpi_changes.extend(clash_kpi_changes)
+                    stats["kpi_changes"] += len(clash_kpi_changes)
                     logger.info(f"Spatial clash detected for {event_id}: {clash_result['entities_affected']}")
 
                 # Create geo event for map visualization
                 geo_event = create_geo_event_for_action(event, self.map_manager, success, game_time)
                 if geo_event:
                     logger.debug(f"Created geo event for {event_id}: {geo_event.get('event_type')}")
+
+            # Store KPI changes on the original event
+            event.kpi_changes = all_kpi_changes if all_kpi_changes else None
 
             # Get LLM narrative (or generate default)
             llm_res = llm_resolutions.get(event_id, {})
@@ -2162,7 +2179,7 @@ class ResolverProcessor:
             # Mark event as resolved
             event.resolution_status = "resolved" if success else "failed"
 
-            # Create resolution event for history
+            # Create resolution event for history (includes KPI changes for visibility)
             resolution_event = SimulationEvent(
                 event_id=f"res_{uuid.uuid4().hex[:8]}",
                 timestamp=game_time,
@@ -2171,7 +2188,8 @@ class ResolverProcessor:
                 summary=outcome,
                 is_public=True,
                 parent_event_id=event_id,
-                resolution_status="immediate"
+                resolution_status="immediate",
+                kpi_changes=all_kpi_changes if all_kpi_changes else None
             )
             self.state.add_event(resolution_event)
             event.resolution_event_id = resolution_event.event_id
@@ -2331,8 +2349,9 @@ class EntityScheduler:
 
         while self.manager.state.is_running:
             try:
-                # Check if simulation is paused for a meeting
-                if self.manager.state.paused_for_meeting:
+                # Check if simulation is paused for a meeting OR pending PM approvals
+                pending_approvals = self.manager.state.get_pending_approvals()
+                if self.manager.state.paused_for_meeting or len(pending_approvals) > 0:
                     await asyncio.sleep(1)  # Check every second while paused
                     continue
 
@@ -2484,6 +2503,21 @@ class SimulationManager:
         app.load_agents()
 
         logger.info("Simulation state reloaded for game switch")
+
+    def pause_for_pm_approval(self):
+        """Pause the clock when PM approval is required."""
+        if self.clock.is_running and self.state.is_running:
+            self.clock.stop()
+            self.state.game_clock = self.clock.get_game_time_str()
+            logger.info("Clock paused for PM approval")
+
+    def resume_after_pm_approval(self):
+        """Resume the clock if no more PM approvals are pending."""
+        pending = self.state.get_pending_approvals()
+        if len(pending) == 0 and self.state.is_running and not self.clock.is_running:
+            if not self.state.paused_for_meeting:
+                self.clock.start()
+                logger.info("Clock resumed after PM approvals processed")
 
     async def start_game(self) -> dict:
         """Start the simulation."""
@@ -2659,8 +2693,9 @@ class SimulationManager:
 
         while self.state.is_running:
             try:
-                # Skip resolver cycle if simulation is paused for a meeting
-                if self.state.paused_for_meeting:
+                # Skip resolver cycle if simulation is paused for a meeting OR pending PM approvals
+                pending_approvals = self.state.get_pending_approvals()
+                if self.state.paused_for_meeting or len(pending_approvals) > 0:
                     await asyncio.sleep(1)
                     continue
 
@@ -2718,9 +2753,15 @@ class SimulationManager:
     def get_status(self) -> dict:
         """Get current simulation status."""
         entities = self.scheduler.get_entity_agents()
+        pending_approvals = self.state.get_pending_approvals()
+        # Simulation is paused if meeting is active OR PM approvals are pending
+        is_paused = self.state.paused_for_meeting or len(pending_approvals) > 0
         return {
             "status": "success",
             "is_running": self.state.is_running,
+            "paused": is_paused,
+            "paused_for_meeting": self.state.paused_for_meeting,
+            "pending_pm_approvals": len(pending_approvals),
             "game_time": self.clock.get_game_time_str() if self.state.is_running else self.state.game_clock,
             "clock_speed": self.clock.speed,
             "entity_count": len(entities),

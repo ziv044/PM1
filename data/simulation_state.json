@@ -1720,7 +1720,7 @@
       "timestamp": "2023-10-07T08:08:16.625267",
       "agent_id": "UK-Prime-Minister",
       "action_type": "economic",
-      "summary": "Announce £100M UK humanitarian aid package for Gaza civilians",
+      "summary": "Announce \u00a3100M UK humanitarian aid package for Gaza civilians",
       "is_public": true,
       "affected_agents": [
         "USA-President",
@@ -3494,7 +3494,7 @@
       "timestamp": "2023-10-07T15:04:55.835377",
       "agent_id": "Treasury-Minister",
       "action_type": "economic",
-      "summary": "Authorize emergency ₪50B war budget with immediate Iron Dome replenishment funding",
+      "summary": "Authorize emergency \u20aa50B war budget with immediate Iron Dome replenishment funding",
       "is_public": true,
       "affected_agents": [
         "IDF-Commander",
@@ -4427,7 +4427,7 @@
       "timestamp": "2023-10-07T16:06:29.937439",
       "agent_id": "System-Resolver",
       "action_type": "resolution",
-      "summary": "Channel 12's exposé triggers widespread public anger, with opposition leader Yair Lapid demanding emergency Knesset session on intelligence failures. Netanyahu's approval rating drops 8 points as families of victims join calls for accountability.",
+      "summary": "Channel 12's expos\u00e9 triggers widespread public anger, with opposition leader Yair Lapid demanding emergency Knesset session on intelligence failures. Netanyahu's approval rating drops 8 points as families of victims join calls for accountability.",
       "is_public": true,
       "affected_agents": [],
       "reasoning": "",
@@ -8710,6 +8710,30 @@
       "status": "approved",
       "pm_decision": "approve",
       "pm_decision_time": "2023-10-07T23:09:59.968121"
+    },
+    {
+      "approval_id": "apr_test_001",
+      "event_id": "evt_test_001",
+      "request_type": "military_major",
+      "summary": "TEST: IDF requests approval for ground operation in northern sector",
+      "requesting_agent": "IDF-Commander",
+      "timestamp": "2023-10-07T16:00:00.000000",
+      "urgency": "high",
+      "options": [
+        {
+          "option_id": "approve",
+          "label": "Approve"
+        },
+        {
+          "option_id": "reject",
+          "label": "Reject"
+        }
+      ],
+      "context": "Test approval for PM modal verification",
+      "recommendation": "Approve the operation",
+      "status": "pending",
+      "pm_decision": null,
+      "pm_decision_time": null
     }
   ],
   "scheduled_events": [],

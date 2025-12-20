@@ -699,6 +699,9 @@ def process_pm_approval(approval_id: str, decision: PMDecision):
     if not result.get("success"):
         raise NotFoundError(result.get("message", f"Approval request {approval_id} not found or already processed"))
 
+    # Resume clock if no more pending approvals
+    manager.resume_after_pm_approval()
+
     return {
         "status": "success",
         "message": f"Decision '{decision.decision}' recorded for {approval_id}",

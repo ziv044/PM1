@@ -24,7 +24,12 @@ const PMDecisions = {
      * @param {Object} approval - Approval request from ApiAdapter
      */
     show(approval) {
-        if (!this.modal || !this.contentEl || !this.actionsEl) return;
+        console.log('[PMDecisions] show() called with:', approval);
+        console.log('[PMDecisions] Elements - modal:', !!this.modal, 'content:', !!this.contentEl, 'actions:', !!this.actionsEl);
+        if (!this.modal || !this.contentEl || !this.actionsEl) {
+            console.error('[PMDecisions] Missing DOM elements, cannot show modal');
+            return;
+        }
 
         this.currentApproval = approval;
 
@@ -121,15 +126,19 @@ const PMDecisions = {
         const options = approval.options || ['Approve', 'Deny'];
 
         return options.map((option, index) => {
-            const isApprove = option.toLowerCase().includes('approve') || index === 0;
+            // Handle both object format {option_id, label} and string format
+            const optionLabel = typeof option === 'object' ? (option.label || option.option_id) : option;
+            const optionValue = typeof option === 'object' ? (option.option_id || option.label) : option;
+
+            const isApprove = optionLabel.toLowerCase().includes('approve') || index === 0;
             const btnClass = isApprove
                 ? 'bg-game-success hover:bg-game-success/80 text-white'
                 : 'bg-game-danger hover:bg-game-danger/80 text-white';
 
             return `
                 <button class="pm-decision-btn px-6 py-2 rounded font-medium ${btnClass}"
-                        data-decision="${this.escapeHtml(option)}">
-                    ${this.escapeHtml(option)}
+                        data-decision="${this.escapeHtml(optionValue)}">
+                    ${this.escapeHtml(optionLabel)}
                 </button>
             `;
         }).join('');

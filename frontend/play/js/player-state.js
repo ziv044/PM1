@@ -81,8 +81,13 @@ const PlayerState = {
      * Register callbacks for UI updates
      */
     on(event, callback) {
-        if (this._callbacks.hasOwnProperty('on' + event.charAt(0).toUpperCase() + event.slice(1))) {
-            this._callbacks['on' + event.charAt(0).toUpperCase() + event.slice(1)] = callback;
+        const callbackKey = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
+        console.log('[PlayerState] Registering callback:', event, '->', callbackKey);
+        if (this._callbacks.hasOwnProperty(callbackKey)) {
+            this._callbacks[callbackKey] = callback;
+            console.log('[PlayerState] Callback registered successfully:', callbackKey);
+        } else {
+            console.warn('[PlayerState] Unknown callback key:', callbackKey);
         }
     },
 
@@ -123,12 +128,19 @@ const PlayerState = {
      * Refresh all data
      */
     async refreshAll() {
-        // Run all polls in parallel, catching individual failures
+        // IMPORTANT: Load agents FIRST because event filtering depends on agent data
+        // (isEventVisibleToPlayer needs _allAgents to filter System agent events)
+        try {
+            await this.pollAgents();
+        } catch (e) {
+            console.error('[PlayerState] pollAgents failed:', e);
+        }
+
+        // Now run remaining polls in parallel
         const results = await Promise.allSettled([
             this.pollSimulationStatus().catch(e => console.error('[PlayerState] pollSimulationStatus failed:', e)),
             this.pollEvents().catch(e => console.error('[PlayerState] pollEvents failed:', e)),
             this.pollKPIs().catch(e => console.error('[PlayerState] pollKPIs failed:', e)),
-            this.pollAgents().catch(e => console.error('[PlayerState] pollAgents failed:', e)),
             this.pollMap().catch(e => console.error('[PlayerState] pollMap failed:', e)),
             this.pollPMApprovals().catch(e => console.error('[PlayerState] pollPMApprovals failed:', e))
         ]);
@@ -160,6 +172,7 @@ const PlayerState = {
 
     /**
      * Poll events and filter for player visibility
+     * Also triggers a map refresh to sync geo events with simulation events
      */
     async pollEvents() {
         const allEvents = await ApiAdapter.getEvents();
@@ -175,6 +188,9 @@ const PlayerState = {
         if (this._callbacks.onEventsUpdate) {
             this._callbacks.onEventsUpdate(filteredEvents);
         }
+
+        // Also refresh map to sync active_geo_events with simulation events
+        await this.pollMap();
     },
 
     /**
@@ -284,14 +300,19 @@ const PlayerState = {
      */
     async pollPMApprovals() {
         const approvals = await ApiAdapter.getPMApprovals();
+        console.log('[PlayerState] PM approvals poll result:', approvals.length, 'pending', approvals);
 
         // Check if new approvals arrived
         const hadApprovals = this.pmApprovals.length > 0;
         this.pmApprovals = approvals;
 
         // If there are pending approvals, notify UI
-        if (approvals.length > 0 && this._callbacks.onPMApprovalRequired) {
-            this._callbacks.onPMApprovalRequired(approvals[0]); // Show first pending
+        if (approvals.length > 0) {
+            console.log('[PlayerState] PM approval required, callback registered:', !!this._callbacks.onPMApprovalRequired);
+            if (this._callbacks.onPMApprovalRequired) {
+                console.log('[PlayerState] Calling onPMApprovalRequired with:', approvals[0]);
+                this._callbacks.onPMApprovalRequired(approvals[0]); // Show first pending
+            }
         }
     },
 
