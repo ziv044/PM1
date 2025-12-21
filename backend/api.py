@@ -118,6 +118,7 @@ class AgentUpdate(BaseModel):
     agenda: Optional[str] = None
     primary_objectives: Optional[str] = None
     hard_rules: Optional[str] = None
+    pm_instructions: Optional[str] = None
     is_enabled: Optional[bool] = None
 
 
@@ -134,6 +135,10 @@ class ChatMessage(BaseModel):
     max_tokens: int = 1024
     temperature: float = 1.0
     stream: bool = False
+
+
+class PMInstructionsRequest(BaseModel):
+    raw_instructions: str
 
 
 # Routes
@@ -219,6 +224,7 @@ def update_agent(agent_id: str, agent: AgentUpdate):
         agenda=agent.agenda,
         primary_objectives=agent.primary_objectives,
         hard_rules=agent.hard_rules,
+        pm_instructions=agent.pm_instructions,
         is_enabled=agent.is_enabled
     )
     if result.get("status") == "error":
@@ -369,6 +375,43 @@ def chat_with_agent(agent_id: str, chat: ChatMessage):
     if result.get("status") == "error":
         raise NotFoundError(result["message"])
     return result
+
+
+@api.post("/agents/{agent_id}/summarize-instructions")
+def summarize_pm_instructions(agent_id: str, request: PMInstructionsRequest):
+    """Use Haiku to summarize PM's raw instructions into concise directives.
+
+    Only works for agents that report to government (is_reporting_government: true).
+    Returns the summarized instructions for PM review before applying.
+    """
+    validate_agent_id(agent_id)
+
+    # Verify agent exists
+    result = app.get_agent(agent_id)
+    if result.get("status") == "error":
+        raise NotFoundError(result["message"])
+
+    agent = result.get("agent", {})
+
+    # Verify agent reports to government
+    if not agent.get("is_reporting_government"):
+        raise ValidationError(f"Agent {agent_id} does not report to government. PM instructions are only for government-reporting agents.")
+
+    # Get current PM instructions (if any) for context
+    current_instructions = agent.get("pm_instructions", "")
+
+    # Call Haiku for summarization
+    summary_result = app.summarize_instructions_with_haiku(agent_id, request.raw_instructions)
+
+    return {
+        "status": "success",
+        "agent_id": agent_id,
+        "agent_name": agent_id.replace('-', ' ').title(),
+        "raw_instructions": request.raw_instructions,
+        "summary": summary_result.get("summary"),
+        "current_instructions": current_instructions,
+        "fallback": summary_result.get("fallback", False)
+    }
 
 
 @api.get("/logs")
@@ -1315,6 +1358,111 @@ def migrate_to_multi_game():
         "backup": backup_result,
         "template": template_result,
         "migration": migrate_result
+    }
+
+
+# =============================================================================
+# EVENT INJECTOR (Admin Testing)
+# =============================================================================
+
+class InjectEventRequest(BaseModel):
+    """Request model for injecting a geo event."""
+    event_type: str  # missile_launch, air_strike, etc.
+    actor_entity: str  # Israel, Hamas, etc.
+    origin_zone: str = ""
+    destination_zone: str = ""
+    duration_seconds: int = 10
+    description: str = ""
+
+
+@api.post("/admin/inject-event")
+def inject_geo_event(request: InjectEventRequest):
+    """Inject an event for testing.
+
+    This endpoint allows admins to inject events directly to test
+    map coordinate changes and animations. Creates both a SimulationEvent
+    (stored in events archive) and a GeoEvent (for map animation).
+    """
+    import simulation
+    from map_state import MapStateManager
+    import uuid
+
+    # Get current game time from simulation state
+    manager = simulation.SimulationManager.get_instance()
+    game_time = manager.state.game_clock
+
+    # Generate a unique event ID
+    event_id = f"inject_{uuid.uuid4().hex[:8]}"
+
+    # Map event_type to action_type for SimulationEvent
+    action_type_map = {
+        "missile_launch": "military",
+        "rocket_barrage": "military",
+        "air_strike": "military",
+        "interceptor": "military",
+        "force_movement": "military",
+        "force_deployment": "military",
+        "battle_zone": "military",
+        "intel_operation": "intelligence",
+        "assassination": "intelligence",
+        "hostage_transfer": "intelligence",
+        "relocate": "internal"
+    }
+    action_type = action_type_map.get(request.event_type, "military")
+
+    # Create description if not provided
+    description = request.description or f"[INJECTED] {request.event_type.replace('_', ' ').title()}"
+    if request.origin_zone and request.destination_zone:
+        description += f" from {request.origin_zone} to {request.destination_zone}"
+    elif request.origin_zone:
+        description += f" at {request.origin_zone}"
+    elif request.destination_zone:
+        description += f" targeting {request.destination_zone}"
+
+    # Create the SimulationEvent for events archive
+    sim_event = simulation.SimulationEvent(
+        event_id=event_id,
+        timestamp=game_time,
+        agent_id=f"Admin-Injected-{request.actor_entity}",
+        action_type=action_type,
+        summary=description,
+        is_public=True,
+        affected_agents=[],
+        reasoning=f"Manually injected event for testing by admin",
+        resolution_status="resolved",
+        parent_event_id=None,
+        resolution_event_id=None,
+        pending_data={
+            "origin_zone": request.origin_zone,
+            "destination_zone": request.destination_zone,
+            "event_type": request.event_type,
+            "actor_entity": request.actor_entity
+        }
+    )
+
+    # Add to events archive
+    manager.state.add_event(sim_event)
+
+    # Get map state manager and create geo event for animation
+    map_manager = MapStateManager()
+    geo_event = map_manager.create_geo_event(
+        event_type=request.event_type,
+        source_event_id=event_id,
+        game_time=game_time,
+        origin_zone=request.origin_zone if request.origin_zone else None,
+        destination_zone=request.destination_zone if request.destination_zone else None,
+        duration_seconds=request.duration_seconds,
+        description=description,
+        actor_entity=request.actor_entity,
+        affected_entities=[]
+    )
+
+    return {
+        "status": "success",
+        "message": f"Injected {request.event_type} event",
+        "event": sim_event.to_dict(),
+        "geo_event": geo_event.to_dict(),
+        "game_time": game_time
     }
 
 

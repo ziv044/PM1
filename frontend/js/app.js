@@ -22,11 +22,14 @@ const state = {
     activeMeeting: null,
     meetingTypes: {},
     selectedMeetingType: null,
-    meetingParticipants: []
+    meetingParticipants: [],
+    // Event Injector state
+    injectedEvents: [],
+    availableZones: []
 };
 
 // Simulation-level tabs (always visible)
-const SIMULATION_TABS = ['simulation', 'mapstate', 'logs', 'kpis', 'pmapprovals', 'meetings', 'games'];
+const SIMULATION_TABS = ['simulation', 'mapstate', 'eventinjector', 'logs', 'kpis', 'pmapprovals', 'meetings', 'games'];
 // Agent-level tabs (only when agent selected)
 const AGENT_TABS = ['details', 'skills', 'memory', 'chat', 'debug'];
 
@@ -383,6 +386,9 @@ function handleSimulationTabLoad(tab) {
     }
     if (tab === 'games') {
         loadGamesList();
+    }
+    if (tab === 'eventinjector') {
+        loadEventInjectorData();
     }
 }
 
@@ -3426,9 +3432,349 @@ function setupGameManagementListeners() {
     }
 }
 
+// =============================================================================
+// EVENT INJECTOR
+// =============================================================================
+
+/**
+ * Load Event Injector data (zones, active events)
+ */
+async function loadEventInjectorData() {
+    try {
+        // Load available zones using existing API
+        const zonesResult = await api.getMapZones();
+        console.log('[EventInjector] Zones result:', zonesResult);
+        if (zonesResult.zones && Array.isArray(zonesResult.zones)) {
+            state.availableZones = zonesResult.zones;
+            populateZoneSelects();
+        } else {
+            console.warn('[EventInjector] No zones found in response');
+        }
+
+        // Load active geo events
+        await loadActiveGeoEvents();
+    } catch (error) {
+        console.error('Failed to load event injector data:', error);
+        components.showToast('Failed to load zones', 'error');
+    }
+}
+
+/**
+ * Populate zone select dropdowns with grouped zones
+ */
+function populateZoneSelects() {
+    const originSelect = document.getElementById('injectOriginZone');
+    const destSelect = document.getElementById('injectDestZone');
+
+    if (!originSelect || !destSelect) {
+        console.warn('[EventInjector] Zone select elements not found');
+        return;
+    }
+
+    // Clear existing options except first
+    while (originSelect.options.length > 1) originSelect.remove(1);
+    while (destSelect.options.length > 1) destSelect.remove(1);
+
+    // Group zones by region
+    const zoneGroups = {
+        'Gaza Strip': ['Gaza City', 'Khan Younis', 'Rafah', 'Jabalia', 'Deir al-Balah', 'Beit Hanoun', 'Shati Camp', 'Nuseirat'],
+        'Israel - Cities': ['Tel Aviv', 'Jerusalem', 'Haifa', 'Beer Sheva', 'Eilat'],
+        'Israel - Border': ['Sderot', 'Ashkelon', 'Ashdod', 'Netivot', 'Ofakim'],
+        'Israel - Strategic': ['Dimona', 'Nevatim'],
+        'West Bank': ['Ramallah', 'Hebron', 'Nablus', 'Jenin', 'Bethlehem'],
+        'Lebanon': ['Beirut', 'South Lebanon', 'Tyre'],
+        'Egypt': ['Cairo', 'Sinai', 'El-Arish'],
+        'Iran': ['Tehran', 'Natanz', 'Isfahan', 'Qom'],
+        'Yemen': ['Sanaa', 'Hodeidah'],
+        'Syria': ['Damascus', 'Aleppo']
+    };
+
+    // Categorize zones
+    const categorizedZones = {};
+    const otherZones = [];
+    Object.keys(zoneGroups).forEach(group => {
+        categorizedZones[group] = [];
+    });
+
+    state.availableZones.forEach(zone => {
+        let found = false;
+        for (const [group, zones] of Object.entries(zoneGroups)) {
+            if (zones.includes(zone)) {
+                categorizedZones[group].push(zone);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            otherZones.push(zone);
+        }
+    });
+
+    // Add grouped options to both selects
+    [originSelect, destSelect].forEach(select => {
+        for (const [group, zones] of Object.entries(categorizedZones)) {
+            if (zones.length === 0) continue;
+
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = group;
+
+            zones.forEach(zone => {
+                const option = document.createElement('option');
+                option.value = zone;
+                option.textContent = zone;
+                optgroup.appendChild(option);
+            });
+
+            select.appendChild(optgroup);
+        }
+
+        // Add "Other" group if there are uncategorized zones
+        if (otherZones.length > 0) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = 'Other';
+            otherZones.forEach(zone => {
+                const option = document.createElement('option');
+                option.value = zone;
+                option.textContent = zone;
+                optgroup.appendChild(option);
+            });
+            select.appendChild(optgroup);
+        }
+    });
+
+    console.log('[EventInjector] Populated zone selects with', state.availableZones.length, 'zones');
+}
+
+/**
+ * Load active geo events for display
+ */
+async function loadActiveGeoEvents() {
+    try {
+        const result = await api.getActiveGeoEvents();
+        const container = document.getElementById('activeGeoEventsList');
+        if (!container) return;
+
+        const events = result.events || [];
+
+        if (events.length === 0) {
+            container.innerHTML = '<p class="text-gray-400 text-sm">No active geo events.</p>';
+            return;
+        }
+
+        container.innerHTML = events.map(evt => `
+            <div class="bg-gray-50 p-2 rounded text-xs border-l-4 ${getEventBorderColor(evt.event_type)}">
+                <div class="flex justify-between items-start">
+                    <span class="font-medium">${evt.event_type.replace(/_/g, ' ').toUpperCase()}</span>
+                    <span class="text-gray-400">${evt.status}</span>
+                </div>
+                <div class="text-gray-600 mt-1">
+                    ${evt.origin_zone ? `<span>${evt.origin_zone}</span>` : ''}
+                    ${evt.origin_zone && evt.destination_zone ? ' → ' : ''}
+                    ${evt.destination_zone ? `<span>${evt.destination_zone}</span>` : ''}
+                </div>
+                <div class="text-gray-500 mt-1">${evt.description || ''}</div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Failed to load active geo events:', error);
+    }
+}
+
+/**
+ * Get border color class for event type
+ */
+function getEventBorderColor(eventType) {
+    const colors = {
+        'missile_launch': 'border-red-500',
+        'rocket_barrage': 'border-red-600',
+        'air_strike': 'border-blue-500',
+        'interceptor': 'border-green-500',
+        'force_movement': 'border-gray-500',
+        'force_deployment': 'border-gray-600',
+        'battle_zone': 'border-orange-500',
+        'intel_operation': 'border-purple-500',
+        'hostage_transfer': 'border-yellow-500',
+        'assassination': 'border-red-800'
+    };
+    return colors[eventType] || 'border-gray-400';
+}
+
+/**
+ * Inject an event
+ */
+async function injectEvent(eventData) {
+    try {
+        const result = await api.injectGeoEvent(eventData);
+
+        if (result.status === 'success') {
+            components.showToast(`Injected ${eventData.event_type} event`, 'success');
+
+            // Add to injected events list
+            state.injectedEvents.unshift({
+                ...result.geo_event,
+                injected_at: new Date().toISOString()
+            });
+
+            // Keep only last 10
+            state.injectedEvents = state.injectedEvents.slice(0, 10);
+
+            // Update UI
+            renderInjectedEvents();
+            await loadActiveGeoEvents();
+        } else {
+            components.showToast(result.message || 'Failed to inject event', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to inject event:', error);
+        components.showToast('Failed to inject event', 'error');
+    }
+}
+
+/**
+ * Render injected events list
+ */
+function renderInjectedEvents() {
+    const container = document.getElementById('injectedEventsList');
+    if (!container) return;
+
+    if (state.injectedEvents.length === 0) {
+        container.innerHTML = '<p class="text-gray-400 text-sm">No events injected yet.</p>';
+        return;
+    }
+
+    container.innerHTML = state.injectedEvents.map(evt => `
+        <div class="bg-purple-50 p-2 rounded text-xs border-l-4 border-purple-500">
+            <div class="flex justify-between items-start">
+                <span class="font-medium text-purple-800">${evt.event_type.replace(/_/g, ' ').toUpperCase()}</span>
+                <span class="text-purple-600">${evt.actor_entity}</span>
+            </div>
+            <div class="text-gray-600 mt-1">
+                ${evt.origin_zone ? `${evt.origin_zone}` : ''}
+                ${evt.origin_zone && evt.destination_zone ? ' → ' : ''}
+                ${evt.destination_zone ? `${evt.destination_zone}` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Handle inject event form submission
+ */
+async function handleInjectEvent() {
+    const entity = document.getElementById('injectEntity').value;
+    const eventType = document.getElementById('injectEventType').value;
+    const originZone = document.getElementById('injectOriginZone').value;
+    const destZone = document.getElementById('injectDestZone').value;
+    const duration = parseInt(document.getElementById('injectDuration').value) || 10;
+    const description = document.getElementById('injectDescription').value;
+
+    if (!entity) {
+        components.showToast('Please select an entity', 'warning');
+        return;
+    }
+    if (!eventType) {
+        components.showToast('Please select an event type', 'warning');
+        return;
+    }
+
+    await injectEvent({
+        event_type: eventType,
+        actor_entity: entity,
+        origin_zone: originZone,
+        destination_zone: destZone,
+        duration_seconds: duration,
+        description: description
+    });
+}
+
+/**
+ * Set up Event Injector event listeners
+ */
+function setupEventInjectorListeners() {
+    // Inject event button
+    safeAddListener('injectEventBtn', 'click', handleInjectEvent);
+
+    // Refresh active geo events
+    safeAddListener('refreshActiveGeoEventsBtn', 'click', loadActiveGeoEvents);
+
+    // Clear injected events
+    safeAddListener('clearInjectedEventsBtn', 'click', () => {
+        state.injectedEvents = [];
+        renderInjectedEvents();
+    });
+
+    // Quick action buttons
+    safeAddListener('quickRocketBarrage', 'click', () => {
+        injectEvent({
+            event_type: 'rocket_barrage',
+            actor_entity: 'Hamas',
+            origin_zone: 'Gaza City',
+            destination_zone: 'Tel Aviv',
+            duration_seconds: 15,
+            description: 'Hamas rocket barrage targeting Tel Aviv'
+        });
+    });
+
+    safeAddListener('quickAirStrike', 'click', () => {
+        injectEvent({
+            event_type: 'air_strike',
+            actor_entity: 'Israel',
+            origin_zone: 'Tel Aviv',
+            destination_zone: 'Gaza City',
+            duration_seconds: 12,
+            description: 'IAF precision strike on Gaza City'
+        });
+    });
+
+    safeAddListener('quickIronDome', 'click', () => {
+        injectEvent({
+            event_type: 'interceptor',
+            actor_entity: 'Israel',
+            origin_zone: 'Ashkelon',
+            destination_zone: 'Gaza City',
+            duration_seconds: 8,
+            description: 'Iron Dome interception'
+        });
+    });
+
+    safeAddListener('quickHezbollahMissile', 'click', () => {
+        injectEvent({
+            event_type: 'missile_launch',
+            actor_entity: 'Hezbollah',
+            origin_zone: 'South Lebanon',
+            destination_zone: 'Haifa',
+            duration_seconds: 20,
+            description: 'Hezbollah missile attack on northern Israel'
+        });
+    });
+
+    safeAddListener('quickIranMissile', 'click', () => {
+        injectEvent({
+            event_type: 'missile_launch',
+            actor_entity: 'Iran',
+            origin_zone: 'Tehran',
+            destination_zone: 'Tel Aviv',
+            duration_seconds: 30,
+            description: 'Iranian ballistic missile launch'
+        });
+    });
+
+    safeAddListener('quickForceMovement', 'click', () => {
+        injectEvent({
+            event_type: 'force_movement',
+            actor_entity: 'Israel',
+            origin_zone: 'Beer Sheva',
+            destination_zone: 'Rafah',
+            duration_seconds: 25,
+            description: 'IDF ground forces advancing'
+        });
+    });
+}
+
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     init();
     setupMapStateListeners();
     setupGameManagementListeners();
+    setupEventInjectorListeners();
 });

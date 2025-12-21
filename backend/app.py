@@ -213,6 +213,15 @@ def compile_system_prompt(agent_id: str, agent_data: dict) -> str:
             "",
         ])
 
+    # Add PM directives if present (instructions from Prime Minister)
+    pm_instructions = agent_data.get("pm_instructions", "")
+    if pm_instructions:
+        lines.extend([
+            "## PM DIRECTIVES (Current Instructions from Prime Minister)",
+            pm_instructions,
+            "",
+        ])
+
     return "\n".join(lines)
 
 
@@ -480,6 +489,7 @@ def agent_update(
     agenda: str = None,
     primary_objectives: str = None,
     hard_rules: str = None,
+    pm_instructions: str = None,
     is_enabled: bool = None
 ) -> dict:
     """Update an existing agent's properties. Automatically recompiles system_prompt when components change."""
@@ -488,7 +498,7 @@ def agent_update(
     # Fields that trigger system_prompt recompilation
     PROMPT_COMPONENT_FIELDS = {
         'is_enemy', 'is_west', 'is_evil_axis', 'agent_category',
-        'is_reporting_government', 'agenda', 'primary_objectives', 'hard_rules'
+        'is_reporting_government', 'agenda', 'primary_objectives', 'hard_rules', 'pm_instructions'
     }
 
     with _state_lock:
@@ -529,6 +539,9 @@ def agent_update(
             needs_recompile = True
         if hard_rules is not None:
             agents[agent_id]["hard_rules"] = hard_rules
+            needs_recompile = True
+        if pm_instructions is not None:
+            agents[agent_id]["pm_instructions"] = pm_instructions
             needs_recompile = True
         if is_enabled is not None:
             agents[agent_id]["is_enabled"] = is_enabled
@@ -719,6 +732,52 @@ def interact_with_caching(
     except Exception as e:
         logger.error(f"Error in cached interaction: {str(e)}")
         return {"status": "error", "message": str(e)}
+
+
+def summarize_instructions_with_haiku(agent_id: str, raw_instructions: str) -> dict:
+    """Use Haiku to summarize PM instructions into concise directives.
+
+    Args:
+        agent_id: The agent receiving the instructions
+        raw_instructions: The PM's raw input text
+
+    Returns:
+        Dict with status and summary or error message
+    """
+    logger.info(f"summarize_instructions_with_haiku called - agent_id: {agent_id}")
+
+    agent_name = agent_id.replace('-', ' ').title()
+
+    prompt = f"""You are summarizing instructions from the Prime Minister of Israel to {agent_name}.
+
+The PM's raw instructions:
+"{raw_instructions}"
+
+Create a concise summary (2-4 sentences max) that captures:
+1. The key directive or action requested
+2. Any priority or urgency indicated
+3. Any constraints or conditions mentioned
+
+Write in second person imperative ("You must...", "Prioritize...", "Focus on...").
+Be direct and actionable. Remove pleasantries and redundant context.
+Output ONLY the summarized instructions, nothing else."""
+
+    try:
+        response = client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=256,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        summary = response.content[0].text.strip()
+        logger.info(f"PM instructions summarized for {agent_id}")
+        log_activity("pm_instructions", agent_id, "summarize", f"Raw: {raw_instructions[:50]}... -> Summary: {summary[:50]}...", success=True)
+        return {"status": "success", "summary": summary}
+    except Exception as e:
+        logger.error(f"Haiku summarization failed: {e}")
+        log_activity("pm_instructions", agent_id, "summarize_error", str(e), success=False, error=str(e))
+        # Fallback: truncate raw instructions
+        fallback = raw_instructions[:500] if len(raw_instructions) > 500 else raw_instructions
+        return {"status": "success", "summary": fallback, "fallback": True}
 
 
 if __name__ == "__main__":

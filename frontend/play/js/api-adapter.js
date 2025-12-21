@@ -528,6 +528,71 @@ const ApiAdapter = {
     },
 
     /**
+     * Get agent details including PM instructions
+     * @param {string} agentId
+     * @returns {Promise<{success: boolean, agent: Object|null}>}
+     */
+    async getAgentDetails(agentId) {
+        try {
+            const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            return { success: true, agent: data.agent || data };
+        } catch (error) {
+            console.error('Failed to get agent details:', error);
+            return { success: false, agent: null };
+        }
+    },
+
+    /**
+     * Summarize PM instructions using Haiku
+     * @param {string} agentId
+     * @param {string} rawInstructions
+     * @returns {Promise<{success: boolean, summary: string|null, error: string|null}>}
+     */
+    async summarizePMInstructions(agentId, rawInstructions) {
+        try {
+            const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}/summarize-instructions`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ raw_instructions: rawInstructions })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                return { success: false, summary: null, error: data.detail || 'Failed to summarize' };
+            }
+            return { success: true, summary: data.summarized_instructions, error: null };
+        } catch (error) {
+            console.error('Failed to summarize PM instructions:', error);
+            return { success: false, summary: null, error: 'Network error' };
+        }
+    },
+
+    /**
+     * Apply PM instructions to an agent
+     * @param {string} agentId
+     * @param {string} instructions - The summarized instructions to apply
+     * @returns {Promise<{success: boolean, error: string|null}>}
+     */
+    async applyPMInstructions(agentId, instructions) {
+        try {
+            const response = await fetch(`${API_BASE}/agents/${encodeURIComponent(agentId)}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pm_instructions: instructions })
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                return { success: false, error: data.detail || 'Failed to apply instructions' };
+            }
+            return { success: true, error: null };
+        } catch (error) {
+            console.error('Failed to apply PM instructions:', error);
+            return { success: false, error: 'Network error' };
+        }
+    },
+
+    /**
      * Start the simulation
      * @param {number} clockSpeed - Speed multiplier (default 2.0)
      * @returns {Promise<boolean>}
@@ -564,6 +629,97 @@ const ApiAdapter = {
         } catch (error) {
             console.error('Failed to stop simulation:', error);
             return false;
+        }
+    },
+
+    // ========== Game Management ==========
+
+    /**
+     * List all saved games
+     * @returns {Promise<{success: boolean, games: Array, currentGame: string|null}>}
+     */
+    async listGames() {
+        try {
+            const response = await fetch(`${API_BASE}/games`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            return {
+                success: true,
+                currentGame: data.current_game,
+                games: data.games || []
+            };
+        } catch (error) {
+            console.error('Failed to list games:', error);
+            return { success: false, games: [], currentGame: null };
+        }
+    },
+
+    /**
+     * Get currently active game
+     * @returns {Promise<{success: boolean, game: Object|null}>}
+     */
+    async getCurrentGame() {
+        try {
+            const response = await fetch(`${API_BASE}/games/current`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            return {
+                success: true,
+                game: data.game
+            };
+        } catch (error) {
+            console.error('Failed to get current game:', error);
+            return { success: false, game: null };
+        }
+    },
+
+    /**
+     * Create a new game from template
+     * @param {string} gameId - Unique game identifier
+     * @param {string} displayName - Human-readable game name
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    async createGame(gameId, displayName) {
+        try {
+            const response = await fetch(`${API_BASE}/games`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    game_id: gameId,
+                    display_name: displayName,
+                    template: 'october7',
+                    description: ''
+                })
+            });
+            const data = await response.json();
+            return {
+                success: response.ok && data.status === 'success',
+                message: data.message || (response.ok ? 'Game created' : 'Failed to create game')
+            };
+        } catch (error) {
+            console.error('Failed to create game:', error);
+            return { success: false, message: 'Network error' };
+        }
+    },
+
+    /**
+     * Load/switch to a different game
+     * @param {string} gameId - Game to load
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    async loadGame(gameId) {
+        try {
+            const response = await fetch(`${API_BASE}/games/${encodeURIComponent(gameId)}/load`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+            return {
+                success: response.ok && data.status === 'success',
+                message: data.message || (response.ok ? 'Game loaded' : 'Failed to load game')
+            };
+        } catch (error) {
+            console.error('Failed to load game:', error);
+            return { success: false, message: 'Network error' };
         }
     }
 };

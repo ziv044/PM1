@@ -59,6 +59,12 @@
             <div id="alertLevel" class="hidden px-3 py-1 rounded-full text-sm font-medium bg-game-danger/20 text-game-danger">
                 ALERT: HIGH
             </div>
+            <!-- Game Menu Button -->
+            <button id="gameMenuBtn" class="p-2 rounded hover:bg-game-border text-gray-400 hover:text-gray-200 transition-colors" title="Game Menu">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
     </header>
 
@@ -198,6 +204,124 @@
             <div class="px-4 py-3 border-t border-game-border flex justify-end">
                 <button id="closeFilterBtn" class="px-4 py-2 bg-game-accent text-white rounded hover:bg-game-accent/80 text-sm">
                     Apply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Menu Modal -->
+    <div id="gameMenuModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-game-dark border border-game-border rounded-lg w-80 mx-4 shadow-2xl">
+            <div class="px-4 py-3 border-b border-game-border flex items-center justify-between">
+                <h3 class="font-semibold text-gray-200">Game Menu</h3>
+                <button id="closeGameMenuBtn" class="text-gray-400 hover:text-gray-200 text-xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 space-y-4">
+                <div class="text-center">
+                    <p class="text-xs text-gray-400">Current Game</p>
+                    <p id="currentGameDisplay" class="font-medium text-game-accent">Loading...</p>
+                    <p id="currentGameTime" class="text-xs text-gray-400 mt-1">--</p>
+                    <p class="text-xs text-game-success mt-2">Auto-saved</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="newGameBtn" class="flex-1 px-3 py-2 rounded bg-game-accent hover:bg-game-accent/80 text-white text-sm font-medium">
+                        + New Game
+                    </button>
+                    <button id="loadGameBtn" class="flex-1 px-3 py-2 rounded bg-game-border hover:bg-game-border/80 text-gray-200 text-sm font-medium">
+                        Load Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Game Modal -->
+    <div id="newGameModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-game-dark border border-game-border rounded-lg w-96 mx-4 shadow-2xl">
+            <div class="px-4 py-3 border-b border-game-border flex items-center justify-between">
+                <h3 class="font-semibold text-gray-200">New Game</h3>
+                <button id="closeNewGameBtn" class="text-gray-400 hover:text-gray-200 text-xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 space-y-4">
+                <p class="text-sm text-gray-400">Start a fresh October 7th scenario.</p>
+                <div>
+                    <label class="block text-sm text-gray-300 mb-1">Save Name</label>
+                    <input id="newGameNameInput" type="text"
+                        class="w-full bg-game-card border border-game-border rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-game-accent"
+                        placeholder="My Campaign">
+                </div>
+                <div class="flex gap-2">
+                    <button id="cancelNewGameBtn" class="flex-1 px-3 py-2 rounded bg-game-border text-gray-200 text-sm">
+                        Cancel
+                    </button>
+                    <button id="createGameBtn" class="flex-1 px-3 py-2 rounded bg-game-success hover:bg-game-success/80 text-white text-sm font-medium">
+                        Create & Start
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Game Modal -->
+    <div id="loadGameModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-game-dark border border-game-border rounded-lg w-96 mx-4 shadow-2xl max-h-[80vh] flex flex-col">
+            <div class="px-4 py-3 border-b border-game-border flex items-center justify-between">
+                <h3 class="font-semibold text-gray-200">Load Game</h3>
+                <button id="closeLoadGameBtn" class="text-gray-400 hover:text-gray-200 text-xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 flex-1 overflow-y-auto">
+                <p class="text-xs text-gray-400 mb-3">Simulation must be stopped to load a different game.</p>
+                <div id="gamesListContainer" class="space-y-2">
+                    <p class="text-gray-400 text-center py-4">Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PM Instructions Modal -->
+    <div id="pmInstructionsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-game-dark border border-game-border rounded-lg w-[500px] mx-4 shadow-2xl max-h-[80vh] flex flex-col">
+            <div class="px-4 py-3 border-b border-game-border flex items-center justify-between bg-game-card">
+                <div class="flex items-center gap-3">
+                    <span id="pmInstructionsAgentAvatar" class="text-2xl">&#128100;</span>
+                    <div>
+                        <h3 class="font-semibold text-gray-200">PM Directive</h3>
+                        <p id="pmInstructionsAgentName" class="text-sm text-gray-400">Agent Name</p>
+                    </div>
+                </div>
+                <button id="closePMInstructionsBtn" class="text-gray-400 hover:text-gray-200 text-xl leading-none">&times;</button>
+            </div>
+            <div class="p-4 flex-1 overflow-y-auto space-y-4">
+                <!-- Current Instructions (if any) -->
+                <div id="currentInstructionsSection" class="hidden">
+                    <label class="block text-xs text-gray-400 mb-1">Current Directive</label>
+                    <div id="currentInstructionsDisplay" class="bg-game-card border border-game-border rounded p-3 text-sm text-gray-300 italic"></div>
+                </div>
+
+                <!-- Input Section -->
+                <div>
+                    <label class="block text-sm text-gray-300 mb-1">Your Instructions</label>
+                    <textarea id="pmInstructionsInput"
+                        class="w-full h-24 bg-game-card border border-game-border rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-game-accent resize-none"
+                        placeholder="Give your directive to this agent... (e.g., 'Focus on hostage rescue operations. Coordinate with IDF before any major decisions.')"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Your instructions will be summarized and added to the agent's directives.</p>
+                </div>
+
+                <!-- Preview Section (shows after summarize) -->
+                <div id="pmInstructionsPreview" class="hidden">
+                    <label class="block text-xs text-gray-400 mb-1">Summarized Directive (Preview)</label>
+                    <div id="pmInstructionsSummary" class="bg-game-accent/10 border border-game-accent/30 rounded p-3 text-sm text-game-accent"></div>
+                </div>
+            </div>
+            <div class="px-4 py-3 border-t border-game-border flex justify-end gap-2">
+                <button id="cancelPMInstructionsBtn" class="px-4 py-2 rounded bg-game-border text-gray-200 text-sm hover:bg-game-border/80">
+                    Cancel
+                </button>
+                <button id="summarizePMInstructionsBtn" class="px-4 py-2 rounded bg-game-accent text-white text-sm font-medium hover:bg-game-accent/80">
+                    Summarize
+                </button>
+                <button id="applyPMInstructionsBtn" class="hidden px-4 py-2 rounded bg-game-success text-white text-sm font-medium hover:bg-game-success/80">
+                    Apply Directive
                 </button>
             </div>
         </div>

@@ -44,6 +44,7 @@
                 <nav class="flex space-x-4">
                     <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="simulation">Simulation</button>
                     <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="mapstate">Map State</button>
+                    <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="eventinjector">Event Injector</button>
                     <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="logs">Logs</button>
                     <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="kpis">KPIs</button>
                     <button class="sim-tab-btn px-4 py-3 text-gray-600 hover:text-blue-600 border-b-2 border-transparent" data-tab="pmapprovals">PM Approvals</button>
@@ -489,6 +490,255 @@
                                 <button id="teleportEntityBtn" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm">
                                     Teleport
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Injector Tab -->
+                <div id="eventinjectorTab" class="tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left Column: Inject Event Form -->
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="text-lg font-medium mb-4">Inject Event</h3>
+                            <p class="text-sm text-gray-500 mb-4">Inject events on behalf of any entity to test map dynamics and coordinate changes.</p>
+
+                            <!-- Entity Selection -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Acting Entity</label>
+                                <select id="injectEntity" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Select Entity --</option>
+                                    <optgroup label="Israel & Allies">
+                                        <option value="Israel">Israel</option>
+                                        <option value="USA">USA</option>
+                                        <option value="UK">UK</option>
+                                    </optgroup>
+                                    <optgroup label="Enemies">
+                                        <option value="Hamas">Hamas</option>
+                                        <option value="Hezbollah">Hezbollah</option>
+                                        <option value="Iran">Iran</option>
+                                        <option value="Houthis">Houthis</option>
+                                        <option value="North-Korea">North Korea</option>
+                                    </optgroup>
+                                    <optgroup label="Regional">
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="PLO">PLO</option>
+                                        <option value="Saudi-Arabia">Saudi Arabia</option>
+                                        <option value="Russia">Russia</option>
+                                    </optgroup>
+                                    <optgroup label="Key Targets (Locations)">
+                                        <option value="key_target_dimona">Dimona Nuclear Facility</option>
+                                        <option value="key_target_kirya">IDF HQ (Kirya)</option>
+                                        <option value="key_target_nevatim">Nevatim Airbase</option>
+                                        <option value="key_target_natanz">Natanz (Iran Nuclear)</option>
+                                        <option value="key_target_fordow">Fordow (Iran Nuclear)</option>
+                                    </optgroup>
+                                    <optgroup label="High Value Targets (HVTs)">
+                                        <option value="hvt-sinwar">Yahya Sinwar (Hamas)</option>
+                                        <option value="hvt-deif">Mohammed Deif (Hamas)</option>
+                                        <option value="hvt-haniyeh">Ismail Haniyeh (Hamas)</option>
+                                        <option value="hvt-nasrallah">Hassan Nasrallah (Hezbollah)</option>
+                                        <option value="hvt-qassem">Naim Qassem (Hezbollah)</option>
+                                        <option value="hvt-safieddine">Hashem Safieddine (Hezbollah)</option>
+                                        <option value="hvt-shukr">Fuad Shukr (Hezbollah)</option>
+                                        <option value="hvt-abdul-malik-houthi">Abdul-Malik al-Houthi</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Event Type Selection -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
+                                <select id="injectEventType" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Select Event Type --</option>
+                                    <optgroup label="Military Actions">
+                                        <option value="missile_launch">Missile Launch</option>
+                                        <option value="rocket_barrage">Rocket Barrage</option>
+                                        <option value="air_strike">Air Strike</option>
+                                        <option value="interceptor">Interceptor</option>
+                                        <option value="force_movement">Force Movement</option>
+                                        <option value="force_deployment">Force Deployment</option>
+                                        <option value="battle_zone">Battle Zone</option>
+                                    </optgroup>
+                                    <optgroup label="Intelligence & Special Ops">
+                                        <option value="intel_operation">Intel Operation</option>
+                                        <option value="assassination">Assassination</option>
+                                        <option value="hostage_transfer">Hostage Transfer</option>
+                                        <option value="relocate">Relocate (Move Entity)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Origin Zone -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Origin Zone</label>
+                                <select id="injectOriginZone" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Select Origin Zone --</option>
+                                    <optgroup label="Gaza Strip">
+                                        <option value="Gaza City">Gaza City</option>
+                                        <option value="Khan Younis">Khan Younis</option>
+                                        <option value="Rafah">Rafah</option>
+                                        <option value="Jabalia">Jabalia</option>
+                                        <option value="Deir al-Balah">Deir al-Balah</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Cities">
+                                        <option value="Tel Aviv">Tel Aviv</option>
+                                        <option value="Jerusalem">Jerusalem</option>
+                                        <option value="Haifa">Haifa</option>
+                                        <option value="Beer Sheva">Beer Sheva</option>
+                                        <option value="Eilat">Eilat</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Border">
+                                        <option value="Sderot">Sderot</option>
+                                        <option value="Ashkelon">Ashkelon</option>
+                                        <option value="Ashdod">Ashdod</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Strategic">
+                                        <option value="Dimona">Dimona</option>
+                                        <option value="Nevatim">Nevatim</option>
+                                    </optgroup>
+                                    <optgroup label="Lebanon">
+                                        <option value="Beirut">Beirut</option>
+                                        <option value="South Lebanon">South Lebanon</option>
+                                        <option value="Tyre">Tyre</option>
+                                    </optgroup>
+                                    <optgroup label="Iran">
+                                        <option value="Tehran">Tehran</option>
+                                        <option value="Natanz">Natanz</option>
+                                        <option value="Isfahan">Isfahan</option>
+                                    </optgroup>
+                                    <optgroup label="Yemen">
+                                        <option value="Sanaa">Sanaa</option>
+                                        <option value="Hodeidah">Hodeidah</option>
+                                    </optgroup>
+                                    <optgroup label="Other">
+                                        <option value="Cairo">Cairo</option>
+                                        <option value="Damascus">Damascus</option>
+                                        <option value="Ramallah">Ramallah</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Destination Zone -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Destination Zone</label>
+                                <select id="injectDestZone" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Select Destination Zone --</option>
+                                    <optgroup label="Gaza Strip">
+                                        <option value="Gaza City">Gaza City</option>
+                                        <option value="Khan Younis">Khan Younis</option>
+                                        <option value="Rafah">Rafah</option>
+                                        <option value="Jabalia">Jabalia</option>
+                                        <option value="Deir al-Balah">Deir al-Balah</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Cities">
+                                        <option value="Tel Aviv">Tel Aviv</option>
+                                        <option value="Jerusalem">Jerusalem</option>
+                                        <option value="Haifa">Haifa</option>
+                                        <option value="Beer Sheva">Beer Sheva</option>
+                                        <option value="Eilat">Eilat</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Border">
+                                        <option value="Sderot">Sderot</option>
+                                        <option value="Ashkelon">Ashkelon</option>
+                                        <option value="Ashdod">Ashdod</option>
+                                    </optgroup>
+                                    <optgroup label="Israel - Strategic">
+                                        <option value="Dimona">Dimona</option>
+                                        <option value="Nevatim">Nevatim</option>
+                                    </optgroup>
+                                    <optgroup label="Lebanon">
+                                        <option value="Beirut">Beirut</option>
+                                        <option value="South Lebanon">South Lebanon</option>
+                                        <option value="Tyre">Tyre</option>
+                                    </optgroup>
+                                    <optgroup label="Iran">
+                                        <option value="Tehran">Tehran</option>
+                                        <option value="Natanz">Natanz</option>
+                                        <option value="Isfahan">Isfahan</option>
+                                    </optgroup>
+                                    <optgroup label="Yemen">
+                                        <option value="Sanaa">Sanaa</option>
+                                        <option value="Hodeidah">Hodeidah</option>
+                                    </optgroup>
+                                    <optgroup label="Other">
+                                        <option value="Cairo">Cairo</option>
+                                        <option value="Damascus">Damascus</option>
+                                        <option value="Ramallah">Ramallah</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Animation Duration (seconds)</label>
+                                <input type="number" id="injectDuration" value="10" min="1" max="120"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <textarea id="injectDescription" rows="2"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Brief description of the event..."></textarea>
+                            </div>
+
+                            <!-- Inject Button -->
+                            <button id="injectEventBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded transition-colors">
+                                Inject Event
+                            </button>
+                        </div>
+
+                        <!-- Right Column: Recent Injected Events & Active Geo Events -->
+                        <div class="space-y-6">
+                            <!-- Recent Injected Events -->
+                            <div class="bg-white rounded-lg shadow p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-medium">Recent Injected Events</h3>
+                                    <button id="clearInjectedEventsBtn" class="text-red-600 hover:text-red-700 text-sm">Clear</button>
+                                </div>
+                                <div id="injectedEventsList" class="space-y-2 max-h-48 overflow-y-auto">
+                                    <p class="text-gray-400 text-sm">No events injected yet.</p>
+                                </div>
+                            </div>
+
+                            <!-- Active Geo Events -->
+                            <div class="bg-white rounded-lg shadow p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-medium">Active Geo Events</h3>
+                                    <button id="refreshActiveGeoEventsBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                                        Refresh
+                                    </button>
+                                </div>
+                                <div id="activeGeoEventsList" class="space-y-2 max-h-64 overflow-y-auto">
+                                    <p class="text-gray-400 text-sm">No active geo events.</p>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="bg-white rounded-lg shadow p-6">
+                                <h3 class="text-lg font-medium mb-4">Quick Actions</h3>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button id="quickRocketBarrage" class="bg-red-100 hover:bg-red-200 text-red-800 p-3 rounded text-sm transition-colors">
+                                        Hamas Rocket Barrage
+                                    </button>
+                                    <button id="quickAirStrike" class="bg-blue-100 hover:bg-blue-200 text-blue-800 p-3 rounded text-sm transition-colors">
+                                        Israel Air Strike
+                                    </button>
+                                    <button id="quickIronDome" class="bg-green-100 hover:bg-green-200 text-green-800 p-3 rounded text-sm transition-colors">
+                                        Iron Dome Intercept
+                                    </button>
+                                    <button id="quickHezbollahMissile" class="bg-orange-100 hover:bg-orange-200 text-orange-800 p-3 rounded text-sm transition-colors">
+                                        Hezbollah Missile
+                                    </button>
+                                    <button id="quickIranMissile" class="bg-purple-100 hover:bg-purple-200 text-purple-800 p-3 rounded text-sm transition-colors">
+                                        Iran Missile Launch
+                                    </button>
+                                    <button id="quickForceMovement" class="bg-gray-100 hover:bg-gray-200 text-gray-800 p-3 rounded text-sm transition-colors">
+                                        IDF Force Movement
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

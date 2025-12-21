@@ -675,5 +675,21 @@ const api = {
             method: 'POST'
         });
         return response.json();
+    },
+
+    // =========================================================================
+    // EVENT INJECTOR
+    // =========================================================================
+
+    /**
+     * Inject a geo event for map animation testing
+     */
+    async injectGeoEvent(eventData) {
+        const response = await fetch(`${API_BASE}/admin/inject-event`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(eventData)
+        });
+        return response.json();
     }
 };

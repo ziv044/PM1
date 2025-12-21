@@ -2328,10 +2328,10 @@ class EntityScheduler:
         self._tasks: Dict[str, asyncio.Task] = {}
 
     def get_entity_agents(self) -> Dict[str, dict]:
-        """Get all agents with entity_type='Entity'."""
+        """Get all agents with entity_type='Entity' that are enabled."""
         entities = {}
         for agent_id, agent in app.agents.items():
-            if agent.get("entity_type") == "Entity":
+            if agent.get("entity_type") == "Entity" and agent.get("is_enabled", True):
                 entities[agent_id] = agent
         return entities
 
@@ -2371,6 +2371,11 @@ class EntityScheduler:
         """Trigger an entity to take an action via LLM."""
         if agent_id not in app.agents:
             logger.warning(f"Agent {agent_id} no longer exists")
+            return
+
+        # Check if agent is still enabled (may have been disabled mid-simulation)
+        if not app.agents[agent_id].get("is_enabled", True):
+            logger.debug(f"Agent {agent_id} is disabled, skipping action")
             return
 
         agent = app.agents[agent_id]

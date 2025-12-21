@@ -31,3 +31,6 @@ build/
 
 # AgentVibes local config
 .agentvibes/
+
+# Game saves (user data)
+data/games/

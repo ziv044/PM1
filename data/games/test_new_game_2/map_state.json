@@ -1,5 +1,5 @@
 {
-  "last_updated": "2023-10-08T05:45:47.122717",
+  "last_updated": "2023-10-08T05:53:18.716228",
   "static_locations": [
     {
       "location_id": "base-israel-kirya",
@@ -786,10 +786,10 @@
   ],
   "active_geo_events": [
     {
-      "geo_event_id": "geo_09b44f98",
-      "event_type": "missile_launch",
-      "source_event_id": "evt_bbd763fa",
-      "timestamp": "2023-10-08T05:45:47.122717",
+      "geo_event_id": "geo_b726f9c8",
+      "event_type": "force_deployment",
+      "source_event_id": "evt_48467720",
+      "timestamp": "2023-10-08T05:53:18.716228",
       "origin": {
         "lat": 32.0853,
         "lon": 34.7818,
@@ -804,19 +804,19 @@
       "destination_zone": "Gaza City",
       "center": null,
       "radius_km": 0.0,
-      "duration_seconds": 20,
+      "duration_seconds": 30,
       "status": "active",
-      "description": "Launch precision airstrikes on identified tunnel entrances in Gaza City",
+      "description": "Deploy 36th Division from Sderot to establish staging area in northern Gaza",
       "actor_entity": "Israel",
       "affected_entities": [
-        "Hamas-Command"
+        "Hamas-Military-Wing"
       ]
     },
     {
-      "geo_event_id": "geo_3f507661",
+      "geo_event_id": "geo_5b82fb71",
       "event_type": "intel_operation",
-      "source_event_id": "evt_07e849b8",
-      "timestamp": "2023-10-08T05:45:47.122717",
+      "source_event_id": "evt_89d2fe1a",
+      "timestamp": "2023-10-08T05:53:18.716228",
       "origin": {
         "lat": 32.0853,
         "lon": 34.7818,
@@ -833,17 +833,18 @@
       "radius_km": 0.0,
       "duration_seconds": 30,
       "status": "active",
-      "description": "Deploy technical surveillance teams to verify hostage locations in Khan Younis",
+      "description": "Deploy human assets to verify hostage locations before potential Hamas evacuation",
       "actor_entity": "Israel",
       "affected_entities": [
-        "Hamas-Gaza"
+        "Mossad",
+        "IDF-Commander"
       ]
     },
     {
-      "geo_event_id": "geo_36ab906e",
+      "geo_event_id": "geo_8fa84080",
       "event_type": "intel_operation",
-      "source_event_id": "evt_5e3c1942",
-      "timestamp": "2023-10-08T05:45:47.122717",
+      "source_event_id": "evt_9e3aedc7",
+      "timestamp": "2023-10-08T05:53:18.716228",
       "origin": {
         "lat": 32.0853,
         "lon": 34.7818,
@@ -851,19 +852,19 @@
       },
       "origin_zone": "Tel Aviv",
       "destination": {
-        "lat": 31.3462,
-        "lon": 34.3058,
+        "lat": 25.2867,
+        "lon": 51.5333,
         "uncertainty_km": 0.0
       },
-      "destination_zone": "Khan Younis",
+      "destination_zone": "Qatar",
       "center": null,
       "radius_km": 0.0,
       "duration_seconds": 30,
       "status": "active",
-      "description": "Deploy technical surveillance to intercept Hamas communications in Khan Younis",
+      "description": "Deploy surveillance assets to monitor Haniyeh's location in Qatar",
       "actor_entity": "Israel",
       "affected_entities": [
-        "Hamas"
+        "Ismail-Haniyeh"
       ]
     }
   ],
@@ -2835,6 +2836,137 @@
       "affected_entities": [
         "Hostage Group Gamma"
       ]
+    },
+    {
+      "geo_event_id": "geo_09b44f98",
+      "event_type": "missile_launch",
+      "source_event_id": "evt_bbd763fa",
+      "timestamp": "2023-10-08T05:45:47.122717",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.5017,
+        "lon": 34.4668,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Gaza City",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 20,
+      "status": "completed",
+      "description": "Launch precision airstrikes on identified tunnel entrances in Gaza City",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Command"
+      ]
+    },
+    {
+      "geo_event_id": "geo_3f507661",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_07e849b8",
+      "timestamp": "2023-10-08T05:45:47.122717",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy technical surveillance teams to verify hostage locations in Khan Younis",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas-Gaza"
+      ]
+    },
+    {
+      "geo_event_id": "geo_36ab906e",
+      "event_type": "intel_operation",
+      "source_event_id": "evt_5e3c1942",
+      "timestamp": "2023-10-08T05:45:47.122717",
+      "origin": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Tel Aviv",
+      "destination": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Khan Younis",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 30,
+      "status": "completed",
+      "description": "Deploy technical surveillance to intercept Hamas communications in Khan Younis",
+      "actor_entity": "Israel",
+      "affected_entities": [
+        "Hamas"
+      ]
+    },
+    {
+      "geo_event_id": "geo_594f2c8e",
+      "event_type": "relocate",
+      "source_event_id": "inject_949acc6e",
+      "timestamp": "2023-10-08T05:45:47.122717",
+      "origin": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Khan Younis",
+      "destination": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Tel Aviv",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 100,
+      "status": "completed",
+      "description": "Injected relocate event",
+      "actor_entity": "hvt-sinwar",
+      "affected_entities": []
+    },
+    {
+      "geo_event_id": "geo_fd8579e7",
+      "event_type": "relocate",
+      "source_event_id": "inject_c870918e",
+      "timestamp": "2023-10-08T05:45:47.122717",
+      "origin": {
+        "lat": 31.3462,
+        "lon": 34.3058,
+        "uncertainty_km": 0.0
+      },
+      "origin_zone": "Khan Younis",
+      "destination": {
+        "lat": 32.0853,
+        "lon": 34.7818,
+        "uncertainty_km": 0.0
+      },
+      "destination_zone": "Tel Aviv",
+      "center": null,
+      "radius_km": 0.0,
+      "duration_seconds": 10,
+      "status": "completed",
+      "description": "Injected relocate event",
+      "actor_entity": "hvt-sinwar",
+      "affected_entities": []
     }
   ]
 }

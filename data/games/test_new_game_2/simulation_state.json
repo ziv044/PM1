@@ -1,7 +1,7 @@
 {
   "is_running": false,
   "clock_speed": 2.0,
-  "game_clock": "2023-10-08T05:45:47.122717",
+  "game_clock": "2023-10-08T05:58:51.976485",
   "events": [
     {
       "event_id": "evt_c6fda902",
@@ -19158,9 +19158,9 @@
       "is_public": true,
       "affected_agents": [],
       "reasoning": "",
-      "resolution_status": "immediate",
+      "resolution_status": "resolved",
       "parent_event_id": "evt_5e3c1942",
-      "resolution_event_id": null,
+      "resolution_event_id": "res_eb83307e",
       "pending_data": null,
       "kpi_changes": null
     },
@@ -19173,9 +19173,9 @@
       "is_public": true,
       "affected_agents": [],
       "reasoning": "",
-      "resolution_status": "immediate",
+      "resolution_status": "resolved",
       "parent_event_id": "res_89a8d515",
-      "resolution_event_id": null,
+      "resolution_event_id": "res_5f21edc4",
       "pending_data": null,
       "kpi_changes": null
     },
@@ -19403,15 +19403,253 @@
       "resolution_event_id": null,
       "pending_data": null,
       "kpi_changes": null
+    },
+    {
+      "event_id": "evt_89d2fe1a",
+      "timestamp": "2023-10-08T05:45:48.315070",
+      "agent_id": "Head-Of-Shabak",
+      "action_type": "intelligence",
+      "summary": "Deploy human assets to verify hostage locations before potential Hamas evacuation",
+      "is_public": false,
+      "affected_agents": [
+        "Mossad",
+        "IDF-Commander"
+      ],
+      "reasoning": "Mossad intel shows Hamas planning hostage movement in 24-48 hours. Must deploy HUMINT assets immediately to confirm exact locations and movement plans before hostages are relocated, making rescue impossible. Technical surveillance identified 3 potential sites - need human verification for rescue ops.",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_55ee4bf0",
+      "pending_data": {
+        "target_zone": "Khan Younis"
+      },
+      "kpi_changes": [
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.morale_civilian",
+          "change": 2,
+          "old_value": 68,
+          "new_value": 70,
+          "reason": "Deploy human assets to verify hostage locations before potential Hamas evacuation (success)"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_9e3aedc7",
+      "timestamp": "2023-10-08T05:48:18.578992",
+      "agent_id": "Head-Of-Mossad",
+      "action_type": "intelligence",
+      "summary": "Deploy surveillance assets to monitor Haniyeh's location in Qatar",
+      "is_public": false,
+      "affected_agents": [
+        "Ismail-Haniyeh"
+      ],
+      "reasoning": "With HIGH confidence intel on Haniyeh's location in Qatar and recent intercepts revealing Hamas evacuation plans, need to establish continuous surveillance on this high-value target who may coordinate leadership movements from his safe haven",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_6c67b9ac",
+      "pending_data": {
+        "type": "intelligence",
+        "created_at": "2023-10-08T05:48:18.578992",
+        "expected_resolution_minutes": 120,
+        "target_zone": "Qatar"
+      },
+      "kpi_changes": null
+    },
+    {
+      "event_id": "evt_48467720",
+      "timestamp": "2023-10-08T05:50:48.942421",
+      "agent_id": "IDF-Commander",
+      "action_type": "military",
+      "summary": "Deploy 36th Division from Sderot to establish staging area in northern Gaza",
+      "is_public": true,
+      "affected_agents": [
+        "Hamas-Military-Wing"
+      ],
+      "reasoning": "With airstrikes degrading tunnel infrastructure and intelligence indicating imminent Hamas commander movement, need to position ground forces to exploit tactical advantage while maintaining pressure on tunnel network destruction",
+      "resolution_status": "resolved",
+      "parent_event_id": null,
+      "resolution_event_id": "res_6eea38ac",
+      "pending_data": {
+        "target_zone": "Gaza City"
+      },
+      "kpi_changes": [
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.hostages_held_by_enemy",
+          "change": -2,
+          "old_value": 200,
+          "new_value": 198,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        },
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.international_standing",
+          "change": -8,
+          "old_value": 2,
+          "new_value": -6,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        },
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.international_standing",
+          "change": -5,
+          "old_value": -6,
+          "new_value": -11,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_59e37e69",
+      "timestamp": "2023-10-08T05:53:18.696988",
+      "agent_id": "Defense-Minister",
+      "action_type": "diplomatic",
+      "summary": "Coordinate with US Secretary of Defense on urgent ammunition resupply pipeline",
+      "is_public": false,
+      "affected_agents": [
+        "USA"
+      ],
+      "reasoning": "With major IDF operations underway in Gaza and potential northern escalation, securing continuous US military aid flow is critical. Recent strikes and division deployment will consume significant ammunition stocks.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": null
+    },
+    {
+      "event_id": "res_6eea38ac",
+      "timestamp": "2023-10-08T05:53:18.716228",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "The 36th Division successfully repositions from Sderot to the Gaza border, establishing a forward staging area with artillery and logistical support. Units are now positioned for potential ground operations pending political authorization.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_48467720",
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": [
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.hostages_held_by_enemy",
+          "change": -2,
+          "old_value": 200,
+          "new_value": 198,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        },
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.international_standing",
+          "change": -8,
+          "old_value": 2,
+          "new_value": -6,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        },
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.international_standing",
+          "change": -5,
+          "old_value": -6,
+          "new_value": -11,
+          "reason": "Spatial clash at Gaza City: Deploy 36th Division from Sderot to establish staging area in northern Gaza"
+        }
+      ]
+    },
+    {
+      "event_id": "res_55ee4bf0",
+      "timestamp": "2023-10-08T05:53:18.716228",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Shabak deploys covert human intelligence assets into Gaza through established networks. Initial reports suggest hostages are being held in multiple locations across Gaza City and Khan Younis, with frequent movement anticipated.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_89d2fe1a",
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": [
+        {
+          "entity_id": "Israel",
+          "metric": "dynamic_metrics.morale_civilian",
+          "change": 2,
+          "old_value": 68,
+          "new_value": 70,
+          "reason": "Deploy human assets to verify hostage locations before potential Hamas evacuation (success)"
+        }
+      ]
+    },
+    {
+      "event_id": "res_6c67b9ac",
+      "timestamp": "2023-10-08T05:53:18.716228",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Mossad surveillance teams in Doha confirm Haniyeh's location at a secure compound in West Bay. Electronic monitoring of his communications and movement patterns is now active.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "evt_9e3aedc7",
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": null
+    },
+    {
+      "event_id": "res_eb83307e",
+      "timestamp": "2023-10-08T05:53:18.716228",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Intelligence intercepts reveal Hamas leadership is preparing to evacuate key commanders from Gaza within 48 hours, with hostages potentially being moved to deeper tunnel complexes or used as human shields during the evacuation.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_588880c5",
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": null
+    },
+    {
+      "event_id": "res_5f21edc4",
+      "timestamp": "2023-10-08T05:53:18.716228",
+      "agent_id": "System-Resolver",
+      "action_type": "resolution",
+      "summary": "Advanced US bunker-busting munitions and precision-guided ordnance are now integrated into IAF arsenals. IDF capabilities for targeting underground Hamas infrastructure have significantly improved.",
+      "is_public": true,
+      "affected_agents": [],
+      "reasoning": "",
+      "resolution_status": "immediate",
+      "parent_event_id": "res_c0a16a48",
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": null
+    },
+    {
+      "event_id": "evt_68070fde",
+      "timestamp": "2023-10-08T05:55:48.604255",
+      "agent_id": "Treasury-Minister",
+      "action_type": "economic",
+      "summary": "Release NIS 2B emergency compensation fund for evacuated northern/southern communities",
+      "is_public": true,
+      "affected_agents": [
+        "Civilian-Populations"
+      ],
+      "reasoning": "With 36th Division deploying and operations intensifying, must immediately compensate evacuated families and businesses before costs spiral. This fulfills objective 2 and maintains public support during extended military operations.",
+      "resolution_status": "immediate",
+      "parent_event_id": null,
+      "resolution_event_id": null,
+      "pending_data": null,
+      "kpi_changes": null
     }
   ],
   "agent_last_action": {
-    "Head-Of-Shabak": "2023-10-08T05:36:32.744088",
-    "Head-Of-Mossad": "2023-10-08T05:39:03.125270",
-    "IDF-Commander": "2023-10-08T05:41:33.162198",
-    "Defense-Minister": "2023-10-08T05:27:20.946038",
-    "System-Resolver": "2023-10-08T05:45:47.122717",
-    "Treasury-Minister": "2023-10-08T05:36:31.871834",
+    "Head-Of-Shabak": "2023-10-08T05:45:48.315070",
+    "Head-Of-Mossad": "2023-10-08T05:48:18.578992",
+    "IDF-Commander": "2023-10-08T05:50:48.942421",
+    "Defense-Minister": "2023-10-08T05:53:18.696988",
+    "System-Resolver": "2023-10-08T05:53:18.716228",
+    "Treasury-Minister": "2023-10-08T05:55:48.604255",
     "Media-Channel-12": "2023-10-08T05:32:20.705569",
     "Media-Channel-14": "2023-10-08T05:01:04.958963",
     "USA-President": "2023-10-08T05:03:35.036862",

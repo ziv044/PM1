@@ -264,3 +264,19 @@ button:disabled {
         left: 100%;
     }
 }
+
+/* Toast notification animation */
+.animate-toast {
+    animation: toastIn 0.2s ease-out;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

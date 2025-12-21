@@ -1,5 +1,6 @@
 /**
  * Entity Panel Component - Displays friendly agents grouped by category
+ * Includes PM Instructions flow for giving directives to agents
  */
 
 const EntityPanel = {
@@ -7,6 +8,10 @@ const EntityPanel = {
     tabsContainer: null,
     currentCategory: 'security',
     lastAgentIds: '',  // Track to avoid flicker
+
+    // PM Instructions modal state
+    selectedAgent: null,
+    pendingSummary: null,
 
     /**
      * Initialize the entity panel
@@ -22,7 +27,41 @@ const EntityPanel = {
             });
         });
 
-        console.log('[EntityPanel] Initialized');
+        // Setup agent card click delegation
+        if (this.container) {
+            this.container.addEventListener('click', (e) => {
+                const card = e.target.closest('.agent-card');
+                if (card) {
+                    const agentId = card.dataset.agentId;
+                    this.openPMInstructions(agentId);
+                }
+            });
+        }
+
+        // Setup PM Instructions modal handlers
+        this.initPMInstructionsModal();
+
+        console.log('[EntityPanel] Initialized with PM Instructions support');
+    },
+
+    /**
+     * Initialize PM Instructions modal event handlers
+     */
+    initPMInstructionsModal() {
+        // Close button
+        document.getElementById('closePMInstructionsBtn')?.addEventListener('click', () => this.closePMInstructions());
+        document.getElementById('cancelPMInstructionsBtn')?.addEventListener('click', () => this.closePMInstructions());
+
+        // Backdrop click to close
+        document.getElementById('pmInstructionsModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'pmInstructionsModal') this.closePMInstructions();
+        });
+
+        // Summarize button
+        document.getElementById('summarizePMInstructionsBtn')?.addEventListener('click', () => this.summarizeInstructions());
+
+        // Apply button
+        document.getElementById('applyPMInstructionsBtn')?.addEventListener('click', () => this.applyInstructions());
     },
 
     /**
@@ -133,6 +172,147 @@ const EntityPanel = {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    },
+
+    // ========== PM Instructions Flow ==========
+
+    /**
+     * Open PM Instructions modal for an agent
+     */
+    async openPMInstructions(agentId) {
+        console.log('[EntityPanel] Opening PM Instructions for:', agentId);
+
+        // Find the agent in our cached data
+        const categories = PlayerState.agentCategories;
+        let agent = null;
+        for (const cat of Object.values(categories)) {
+            agent = cat.agents.find(a => a.id === agentId);
+            if (agent) break;
+        }
+
+        if (!agent) {
+            console.error('[EntityPanel] Agent not found:', agentId);
+            return;
+        }
+
+        // Check if this agent reports to government (PM can only instruct these)
+        if (!agent.isReporting) {
+            PlayApp.showToast('PM can only give directives to agents that report to government', 'error');
+            return;
+        }
+
+        this.selectedAgent = agent;
+        this.pendingSummary = null;
+
+        // Fetch full agent details to get current instructions
+        const result = await ApiAdapter.getAgentDetails(agentId);
+        const currentInstructions = result.success ? (result.agent.pm_instructions || '') : '';
+
+        // Populate modal
+        document.getElementById('pmInstructionsAgentAvatar').innerHTML = agent.avatar;
+        document.getElementById('pmInstructionsAgentName').textContent = agent.name;
+
+        // Show current instructions if any
+        const currentSection = document.getElementById('currentInstructionsSection');
+        const currentDisplay = document.getElementById('currentInstructionsDisplay');
+        if (currentInstructions) {
+            currentDisplay.textContent = currentInstructions;
+            currentSection.classList.remove('hidden');
+        } else {
+            currentSection.classList.add('hidden');
+        }
+
+        // Reset input and preview
+        document.getElementById('pmInstructionsInput').value = '';
+        document.getElementById('pmInstructionsPreview').classList.add('hidden');
+        document.getElementById('summarizePMInstructionsBtn').classList.remove('hidden');
+        document.getElementById('applyPMInstructionsBtn').classList.add('hidden');
+
+        // Show modal
+        document.getElementById('pmInstructionsModal').classList.remove('hidden');
+        document.getElementById('pmInstructionsInput').focus();
+    },
+
+    /**
+     * Close PM Instructions modal
+     */
+    closePMInstructions() {
+        document.getElementById('pmInstructionsModal').classList.add('hidden');
+        this.selectedAgent = null;
+        this.pendingSummary = null;
+    },
+
+    /**
+     * Summarize the raw instructions using Haiku
+     */
+    async summarizeInstructions() {
+        if (!this.selectedAgent) return;
+
+        const input = document.getElementById('pmInstructionsInput');
+        const rawText = input.value.trim();
+
+        if (!rawText) {
+            PlayApp.showToast('Please enter your instructions', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('summarizePMInstructionsBtn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Summarizing...';
+
+        try {
+            const result = await ApiAdapter.summarizePMInstructions(this.selectedAgent.id, rawText);
+
+            if (result.success && result.summary) {
+                this.pendingSummary = result.summary;
+
+                // Show preview
+                document.getElementById('pmInstructionsSummary').textContent = result.summary;
+                document.getElementById('pmInstructionsPreview').classList.remove('hidden');
+
+                // Switch buttons
+                btn.classList.add('hidden');
+                document.getElementById('applyPMInstructionsBtn').classList.remove('hidden');
+            } else {
+                PlayApp.showToast(result.error || 'Failed to summarize instructions', 'error');
+            }
+        } catch (error) {
+            console.error('[EntityPanel] Summarize error:', error);
+            PlayApp.showToast('Failed to summarize instructions', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    },
+
+    /**
+     * Apply the summarized instructions to the agent
+     */
+    async applyInstructions() {
+        if (!this.selectedAgent || !this.pendingSummary) return;
+
+        const btn = document.getElementById('applyPMInstructionsBtn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Applying...';
+
+        try {
+            const result = await ApiAdapter.applyPMInstructions(this.selectedAgent.id, this.pendingSummary);
+
+            if (result.success) {
+                PlayApp.showToast(`Directive applied to ${this.selectedAgent.name}`, 'success');
+                this.closePMInstructions();
+            } else {
+                PlayApp.showToast(result.error || 'Failed to apply directive', 'error');
+            }
+        } catch (error) {
+            console.error('[EntityPanel] Apply error:', error);
+            PlayApp.showToast('Failed to apply directive', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
     }
 };
 
